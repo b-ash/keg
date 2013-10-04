@@ -12,6 +12,7 @@ module.exports.config =
         before: [
           'vendor/scripts/jquery.js'
           'vendor/scripts/jquery.scrollto.js'
+          'vendor/scripts/jquery.ticker.js'
           'vendor/scripts/bootstrap.js'
           'vendor/scripts/moment.js'
           'vendor/scripts/handlebars.js'

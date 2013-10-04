@@ -110,7 +110,14 @@ window.require.register("coffee/lib/application", function(exports, require, mod
 
   $(function() {
     window.app = new Application;
-    return window.app.start();
+    window.app.start();
+    return setTimeout(function() {
+      return window.app.model.set({
+        lastPour: '10/2/12',
+        totalPours: 15.2,
+        poursLeft: 35.8
+      });
+    }, 3000);
   });
   
 });
@@ -247,12 +254,14 @@ window.require.register("coffee/views/edit", function(exports, require, module) 
   
 });
 window.require.register("coffee/views/index", function(exports, require, module) {
-  var IndexView, View,
+  var IndexView, TickerView, View,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   View = require('coffee/views/view');
+
+  TickerView = require('coffee/views/ticker');
 
   IndexView = (function(_super) {
 
@@ -286,7 +295,24 @@ window.require.register("coffee/views/index", function(exports, require, module)
     };
 
     IndexView.prototype.afterRender = function() {
-      return this.interval = setInterval(this.updateEllipsis(1), 500);
+      var els, key, ticker, _i, _len, _ref, _results;
+      els = {
+        lastPour: this.$('#last_pour'),
+        totalPours: this.$('#total_pours'),
+        poursLeft: this.$('#pours_left')
+      };
+      _ref = ['lastPour', 'totalPours', 'poursLeft'];
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        key = _ref[_i];
+        ticker = new TickerView({
+          model: this.model,
+          length: 8,
+          field: key
+        });
+        _results.push(els[key].append(ticker.render().el));
+      }
+      return _results;
     };
 
     IndexView.prototype.updateEllipsis = function(count) {
@@ -350,6 +376,148 @@ window.require.register("coffee/views/nav", function(exports, require, module) {
   })(View);
 
   module.exports = Nav;
+  
+});
+window.require.register("coffee/views/ticker", function(exports, require, module) {
+  var TickerView,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  TickerView = (function(_super) {
+
+    __extends(TickerView, _super);
+
+    function TickerView() {
+      this.getLettersForField = __bind(this.getLettersForField, this);
+
+      this.setTickerFields = __bind(this.setTickerFields, this);
+
+      this.afterRender = __bind(this.afterRender, this);
+
+      this.render = __bind(this.render, this);
+
+      this.getRenderData = __bind(this.getRenderData, this);
+
+      this.initialize = __bind(this.initialize, this);
+      return TickerView.__super__.constructor.apply(this, arguments);
+    }
+
+    TickerView.prototype.className = 'ticker';
+
+    TickerView.prototype.template = require('html/ticker');
+
+    TickerView.prototype.speed = 30;
+
+    TickerView.prototype.alph = 'ABCDEFGHIJKLMNOPQRSTUVXYZ01234567890/.';
+
+    TickerView.prototype.initialize = function(options) {
+      if (options == null) {
+        options = {};
+      }
+      if (!((this.model != null) && (options.field != null) && (options.length != null))) {
+        throw Error('Tickers need a model, a field to listen to, and a desired length');
+      }
+      return this.model.on("change:" + options.field, this.setTickerFields);
+    };
+
+    TickerView.prototype.getRenderData = function() {
+      return {
+        fieldLetters: this.getLettersForField()
+      };
+    };
+
+    TickerView.prototype.render = function() {
+      this.$el.html(this.template(this.getRenderData()));
+      this.afterRender();
+      return this;
+    };
+
+    TickerView.prototype.afterRender = function() {
+      var alphabet, alphabetLength, letterElements, timeout,
+        _this = this;
+      letterElements = this.$('span');
+      alphabet = this.alph.split('');
+      alphabetLength = alphabet.length;
+      timeout = 0;
+      return letterElements.each(function(i, el) {
+        var $el, index;
+        $el = $(el);
+        index = Math.floor(Math.random() * alphabetLength);
+        setTimeout(function() {
+          var tid;
+          return tid = setInterval(function() {
+            var currentL, l;
+            l = $el.attr('letter');
+            currentL = alphabet[index];
+            if (l === currentL) {
+              $el.text(l);
+              return clearInterval(tid);
+            } else if (l === 'empty') {
+              $el.html('&nbsp;');
+              return clearInterval(tid);
+            } else {
+              $el.text(currentL);
+              return index = index === alphabet.length - 1 ? 0 : index + 1;
+            }
+          }, _this.speed);
+        }, timeout);
+        return timeout += 50;
+      });
+    };
+
+    TickerView.prototype.setTickerFields = function() {
+      var fieldLetters, i, letter, letterElements, _i, _len, _results;
+      fieldLetters = this.getLettersForField();
+      letterElements = this.$('span');
+      _results = [];
+      for (i = _i = 0, _len = fieldLetters.length; _i < _len; i = ++_i) {
+        letter = fieldLetters[i];
+        if (letter === '&nbsp;') {
+          letter = 'empty';
+        }
+        _results.push($(letterElements.get(i)).attr('letter', letter));
+      }
+      return _results;
+    };
+
+    TickerView.prototype.getLettersForField = function(placeholder) {
+      var fieldLetters, fillLetters, i, val;
+      if (placeholder == null) {
+        placeholder = '&nbsp;';
+      }
+      val = this.model.get(this.options.field);
+      if (val == null) {
+        return (function() {
+          var _i, _ref, _results;
+          _results = [];
+          for (i = _i = 0, _ref = this.options.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+            _results.push(placeholder);
+          }
+          return _results;
+        }).call(this);
+      }
+      fieldLetters = ('' + val).split('');
+      if (fieldLetters.length < this.options.length) {
+        fillLetters = (function() {
+          var _i, _ref, _results;
+          _results = [];
+          for (i = _i = 0, _ref = this.options.length - fieldLetters.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+            _results.push(placeholder);
+          }
+          return _results;
+        }).call(this);
+        fillLetters.push.apply(fillLetters, fieldLetters);
+        fieldLetters = fillLetters;
+      }
+      return fieldLetters;
+    };
+
+    return TickerView;
+
+  })(Backbone.View);
+
+  module.exports = TickerView;
   
 });
 window.require.register("coffee/views/view", function(exports, require, module) {
@@ -428,92 +596,15 @@ window.require.register("html/edit", function(exports, require, module) {
 window.require.register("html/index", function(exports, require, module) {
   module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
     helpers = helpers || Handlebars.helpers;
-    var buffer = "", stack1, stack2, foundHelper, tmp1, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+    var buffer = "", stack1, foundHelper, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
 
-  function program1(depth0,data) {
-    
-    var buffer = "", stack1;
-    buffer += "\n    <p>";
-    foundHelper = helpers.lastPour;
-    stack1 = foundHelper || depth0.lastPour;
-    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "lastPour", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n    ";
-    return buffer;}
-
-  function program3(depth0,data) {
-    
-    
-    return "\n    <p id=\"last_pour\">\n      checking\n      <span class=\"ellipsis\">.</span>\n    </p>\n    ";}
-
-  function program5(depth0,data) {
-    
-    var buffer = "", stack1;
-    buffer += "\n    <p>";
-    foundHelper = helpers.totalPours;
-    stack1 = foundHelper || depth0.totalPours;
-    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "totalPours", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n    ";
-    return buffer;}
-
-  function program7(depth0,data) {
-    
-    
-    return "\n    <p id=\"total_pours\">\n      checking\n      <span class=\"ellipsis\">.</span>\n    </p>\n    ";}
-
-  function program9(depth0,data) {
-    
-    var buffer = "", stack1;
-    buffer += "\n    <p>";
-    foundHelper = helpers.poursLeft;
-    stack1 = foundHelper || depth0.poursLeft;
-    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "poursLeft", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n    ";
-    return buffer;}
-
-  function program11(depth0,data) {
-    
-    
-    return "\n    <p id=\"pours_left\">\n      checking\n      <span class=\"ellipsis\">.</span>\n    </p>\n    ";}
 
     buffer += "<!-- Two grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <h3>Current keg</h3>\n    <p>";
     foundHelper = helpers.keg;
     stack1 = foundHelper || depth0.keg;
     if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
     else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "keg", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <img src=\"/static/images/current_keg.png\" />\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    ";
-    foundHelper = helpers.lastPour;
-    stack1 = foundHelper || depth0.lastPour;
-    stack2 = helpers['if'];
-    tmp1 = self.program(1, program1, data);
-    tmp1.hash = {};
-    tmp1.fn = tmp1;
-    tmp1.inverse = self.program(3, program3, data);
-    stack1 = stack2.call(depth0, stack1, tmp1);
-    if(stack1 || stack1 === 0) { buffer += stack1; }
-    buffer += "\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    ";
-    foundHelper = helpers.totalPours;
-    stack1 = foundHelper || depth0.totalPours;
-    stack2 = helpers['if'];
-    tmp1 = self.program(5, program5, data);
-    tmp1.hash = {};
-    tmp1.fn = tmp1;
-    tmp1.inverse = self.program(7, program7, data);
-    stack1 = stack2.call(depth0, stack1, tmp1);
-    if(stack1 || stack1 === 0) { buffer += stack1; }
-    buffer += "\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    ";
-    foundHelper = helpers.poursLeft;
-    stack1 = foundHelper || depth0.poursLeft;
-    stack2 = helpers['if'];
-    tmp1 = self.program(9, program9, data);
-    tmp1.hash = {};
-    tmp1.fn = tmp1;
-    tmp1.inverse = self.program(11, program11, data);
-    stack1 = stack2.call(depth0, stack1, tmp1);
-    if(stack1 || stack1 === 0) { buffer += stack1; }
-    buffer += "\n  </div>\n</div>\n";
+    buffer += escapeExpression(stack1) + "</p>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <img src=\"/static/images/current_keg.png\" />\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    <div id=\"last_pour\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    <div id=\"total_pours\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    <div id=\"pours_left\"></div>\n  </div>\n</div>\n";
     return buffer;});
 });
 window.require.register("html/nav", function(exports, require, module) {
@@ -523,4 +614,34 @@ window.require.register("html/nav", function(exports, require, module) {
 
 
     return "<div class=\"navbar-header\">\n  <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\">Kegums</a>\n</div>\n<ul class=\"nav navbar-nav\">\n  <li class=\"active\"><a href=\"#\">Home</a></li>\n</ul>\n";});
+});
+window.require.register("html/ticker", function(exports, require, module) {
+  module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+    helpers = helpers || Handlebars.helpers;
+    var stack1, stack2, foundHelper, tmp1, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+
+  function program1(depth0,data) {
+    
+    var buffer = "", stack1;
+    buffer += "\n<span letter=\"";
+    stack1 = depth0;
+    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "this", { hash: {} }); }
+    buffer += escapeExpression(stack1) + "\">";
+    stack1 = depth0;
+    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "this", { hash: {} }); }
+    buffer += escapeExpression(stack1) + "</span>\n";
+    return buffer;}
+
+    foundHelper = helpers.fieldLetters;
+    stack1 = foundHelper || depth0.fieldLetters;
+    stack2 = helpers.each;
+    tmp1 = self.program(1, program1, data);
+    tmp1.hash = {};
+    tmp1.fn = tmp1;
+    tmp1.inverse = self.noop;
+    stack1 = stack2.call(depth0, stack1, tmp1);
+    if(stack1 || stack1 === 0) { return stack1; }
+    else { return ''; }});
 });

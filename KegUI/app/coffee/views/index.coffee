@@ -1,4 +1,5 @@
 View = require('coffee/views/view')
+TickerView = require('coffee/views/ticker')
 
 
 class IndexView extends View
@@ -13,7 +14,18 @@ class IndexView extends View
     @model.toJSON()
 
   afterRender: =>
-    @interval = setInterval(@updateEllipsis(1), 500)
+    els =
+      lastPour: @$('#last_pour')
+      totalPours: @$('#total_pours')
+      poursLeft: @$('#pours_left')
+
+    for key in ['lastPour', 'totalPours', 'poursLeft']
+      ticker = new TickerView
+        model: @model
+        length: 8
+        field: key
+
+      els[key].append ticker.render().el
 
   updateEllipsis: (count) =>
     =>

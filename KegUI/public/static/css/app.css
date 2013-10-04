@@ -7185,7 +7185,18 @@ td.visible-print {
   td.hidden-print {
     display: none !important;
   }
-}body {
+}.ticker {
+  overflow: hidden;
+  font: 40px/1 monospace;
+}
+.ticker span {
+  display: block;
+  float: left;
+  background: #444;
+  color: #fff;
+  margin-right: 1px;
+}
+body {
   background-color: #fff;
 }
 ::selection {

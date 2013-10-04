@@ -14,37 +14,16 @@
 <div class="row">
   <div class="col-xs-6 col-sm-4 col-lg-4">
     <h3>Last pour</h3>
-    {{#if lastPour}}
-    <p>{{lastPour}}</p>
-    {{else}}
-    <p id="last_pour">
-      checking
-      <span class="ellipsis">.</span>
-    </p>
-    {{/if}}
+    <div id="last_pour"></div>
   </div>
 
   <div class="col-xs-6 col-sm-4 col-lg-4">
     <h3>Total pours</h3>
-    {{#if totalPours}}
-    <p>{{totalPours}}</p>
-    {{else}}
-    <p id="total_pours">
-      checking
-      <span class="ellipsis">.</span>
-    </p>
-    {{/if}}
+    <div id="total_pours"></div>
   </div>
 
   <div class="col-xs-6 col-sm-4 col-lg-4">
     <h3>Pours until empty</h3>
-    {{#if poursLeft}}
-    <p>{{poursLeft}}</p>
-    {{else}}
-    <p id="pours_left">
-      checking
-      <span class="ellipsis">.</span>
-    </p>
-    {{/if}}
+    <div id="pours_left"></div>
   </div>
 </div>
