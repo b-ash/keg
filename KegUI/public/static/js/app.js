@@ -433,43 +433,59 @@ window.require.register("html/index", function(exports, require, module) {
   function program1(depth0,data) {
     
     var buffer = "", stack1;
-    buffer += "\n  <p>";
-    foundHelper = helpers.totalPours;
-    stack1 = foundHelper || depth0.totalPours;
+    buffer += "\n    <p>";
+    foundHelper = helpers.lastPour;
+    stack1 = foundHelper || depth0.lastPour;
     if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "totalPours", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n  ";
+    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "lastPour", { hash: {} }); }
+    buffer += escapeExpression(stack1) + "</p>\n    ";
     return buffer;}
 
   function program3(depth0,data) {
     
     
-    return "\n  <p id=\"total_pours\">\n    checking\n    <span class=\"ellipsis\"></span>\n  </p>\n  ";}
+    return "\n    <p id=\"last_pour\">\n      checking\n      <span class=\"ellipsis\">.</span>\n    </p>\n    ";}
 
   function program5(depth0,data) {
     
     var buffer = "", stack1;
-    buffer += "\n  <p>";
-    foundHelper = helpers.poursLeft;
-    stack1 = foundHelper || depth0.poursLeft;
+    buffer += "\n    <p>";
+    foundHelper = helpers.totalPours;
+    stack1 = foundHelper || depth0.totalPours;
     if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "poursLeft", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n  ";
+    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "totalPours", { hash: {} }); }
+    buffer += escapeExpression(stack1) + "</p>\n    ";
     return buffer;}
 
   function program7(depth0,data) {
     
     
-    return "\n  <p id=\"pours_left\">\n    checking\n    <span class=\"ellipsis\"></span>\n  </p>\n  ";}
+    return "\n    <p id=\"total_pours\">\n      checking\n      <span class=\"ellipsis\">.</span>\n    </p>\n    ";}
 
-    buffer += "<div class=\"col-xs-6 col-sm-6 col-lg-6\">\n  <h3>Current keg</h3>\n  <p>";
+  function program9(depth0,data) {
+    
+    var buffer = "", stack1;
+    buffer += "\n    <p>";
+    foundHelper = helpers.poursLeft;
+    stack1 = foundHelper || depth0.poursLeft;
+    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
+    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "poursLeft", { hash: {} }); }
+    buffer += escapeExpression(stack1) + "</p>\n    ";
+    return buffer;}
+
+  function program11(depth0,data) {
+    
+    
+    return "\n    <p id=\"pours_left\">\n      checking\n      <span class=\"ellipsis\">.</span>\n    </p>\n    ";}
+
+    buffer += "<!-- Two grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <h3>Current keg</h3>\n    <p>";
     foundHelper = helpers.keg;
     stack1 = foundHelper || depth0.keg;
     if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
     else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "keg", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n</div>\n\n<div class=\"col-xs-6 col-sm-6 col-lg-6\">\n  <img src=\"/static/images/current_keg.png\" />\n</div>\n\n<div class=\"col-xs-6 col-sm-6 col-lg-6\">\n  <h3>Total pours</h3>\n  ";
-    foundHelper = helpers.totalPours;
-    stack1 = foundHelper || depth0.totalPours;
+    buffer += escapeExpression(stack1) + "</p>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <img src=\"/static/images/current_keg.png\" />\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    ";
+    foundHelper = helpers.lastPour;
+    stack1 = foundHelper || depth0.lastPour;
     stack2 = helpers['if'];
     tmp1 = self.program(1, program1, data);
     tmp1.hash = {};
@@ -477,9 +493,9 @@ window.require.register("html/index", function(exports, require, module) {
     tmp1.inverse = self.program(3, program3, data);
     stack1 = stack2.call(depth0, stack1, tmp1);
     if(stack1 || stack1 === 0) { buffer += stack1; }
-    buffer += "\n</div>\n\n<div class=\"col-xs-6 col-sm-6 col-lg-6\">\n  <h3>Pours until empty</h3>\n  ";
-    foundHelper = helpers.poursLeft;
-    stack1 = foundHelper || depth0.poursLeft;
+    buffer += "\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    ";
+    foundHelper = helpers.totalPours;
+    stack1 = foundHelper || depth0.totalPours;
     stack2 = helpers['if'];
     tmp1 = self.program(5, program5, data);
     tmp1.hash = {};
@@ -487,7 +503,17 @@ window.require.register("html/index", function(exports, require, module) {
     tmp1.inverse = self.program(7, program7, data);
     stack1 = stack2.call(depth0, stack1, tmp1);
     if(stack1 || stack1 === 0) { buffer += stack1; }
-    buffer += "\n</div>\n";
+    buffer += "\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    ";
+    foundHelper = helpers.poursLeft;
+    stack1 = foundHelper || depth0.poursLeft;
+    stack2 = helpers['if'];
+    tmp1 = self.program(9, program9, data);
+    tmp1.hash = {};
+    tmp1.fn = tmp1;
+    tmp1.inverse = self.program(11, program11, data);
+    stack1 = stack2.call(depth0, stack1, tmp1);
+    if(stack1 || stack1 === 0) { buffer += stack1; }
+    buffer += "\n  </div>\n</div>\n";
     return buffer;});
 });
 window.require.register("html/nav", function(exports, require, module) {

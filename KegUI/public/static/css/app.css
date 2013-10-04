@@ -7210,6 +7210,9 @@ body.inverse .content {
   border-radius: 6px;
   background-color: #101010;
 }
+body.inverse .content .row {
+  margin-bottom: 20px;
+}
 body.inverse .content .jumbotron {
   -webkit-box-shadow: inset 0 0 5px 5px #222;
   box-shadow: inset 0 0 5px 5px #222;
