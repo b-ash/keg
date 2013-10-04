@@ -10,7 +10,7 @@ module.exports.config =
                 'static/js/vendor.js': /^vendor/
             order:
                 before: [
-                    'vendor/js/jquery.js'
+                    'vendor/scripts/jquery.js'
                 ]
 
         stylesheets:
