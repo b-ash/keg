@@ -1,0 +1,26 @@
+{
+  "author": "Bash Ash",
+  "name": "keg",
+  "description": "Keg info app",
+  "version": "0.0.1",
+  "homepage": "keg.bry.io",
+  "engines": {
+    "node": "0.8.15"
+  },
+  "scripts": {
+    "start": "server.js"
+  },
+  "dependencies": {
+    "coffee-script": "1.3.3",
+    "javascript-brunch": "1.3.x",
+    "coffee-script-brunch": "1.3.x",
+    "css-brunch": "1.3.x",
+    "stylus-brunch": "1.3.x",
+    "handlebars-brunch": "1.3.x",
+    "uglify-js-brunch": "1.3.x",
+    "clean-css-brunch": "1.3.x",
+    "express": "3.0.x"
+  },
+  "devDependencies": {
+  }
+}
