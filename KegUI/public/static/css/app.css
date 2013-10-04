@@ -7197,6 +7197,26 @@ td.visible-print {
 .content > div {
   padding-left: inherit;
 }
+.content img {
+  width: 300px;
+  height: 104px;
+}
+body.inverse {
+  background-color: #1a1a1a;
+  color: #999;
+}
+body.inverse .content {
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #101010;
+}
+body.inverse .content .jumbotron {
+  -webkit-box-shadow: inset 0 0 5px 5px #222;
+  box-shadow: inset 0 0 5px 5px #222;
+  margin-bottom: 0;
+  background-color: #121212;
+  border: 1px solid #2a2a2a;
+}
 /*
  * HTML5 ✰ Boilerplate
  *

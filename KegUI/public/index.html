@@ -12,50 +12,14 @@
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <script src="/static/js/vendor.js"></script>
   <script src="/static/js/app.js"></script>
-  <script>require('coffee/index');</script>
+  <script>require('coffee/lib/application');</script>
 
   <title>Keg | bry.io</title>
 </head>
 
-<body>
-  <div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Kegums</a>
-      </div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="container content">
-    <div class="row jumbotron">
-      <div class="col-xs-6 col-sm-6 col-lg-6">
-        <h3>Current keg</h3>
-        <p>Shock Top Pumpkin Wheat</p>
-      </div>
-
-      <div class="col-xs-6 col-sm-6 col-lg-6">
-        <img src="/static/images/current_keg.png" />
-      </div>
-
-      <div class="col-xs-6 col-sm-6 col-lg-6">
-        <h3>Total pours</h3>
-        <p>Not many</p>
-      </div>
-
-      <div class="col-xs-6 col-sm-6 col-lg-6">
-        <h3>Pours until empty</h3>
-        <p>A lot</p>
-      </div>
-    </div>
-  </div>
+<body class="inverse">
+  <div class="navbar navbar-default navbar-fixed-top navbar-inverse"></div>
+  <div class="container content"></div>
 
   <!-- Start of Async HubSpot Analytics Code -->
   <script type="text/javascript">
