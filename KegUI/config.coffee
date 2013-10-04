@@ -8,6 +8,10 @@ module.exports.config =
             joinTo:
                 'static/js/app.js': /^app/
                 'static/js/vendor.js': /^vendor/
+            order:
+                before: [
+                    'vendor/js/jquery.js'
+                ]
 
         stylesheets:
             defaultExtension: 'css'
