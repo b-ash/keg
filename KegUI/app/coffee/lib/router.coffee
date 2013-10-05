@@ -1,6 +1,7 @@
 Nav = require('coffee/views/nav')
 IndexView = require('coffee/views/index')
 EditView = require('coffee/views/edit')
+Simulation = require('coffee/lib/simulation')
 
 $ = jQuery
 
@@ -8,6 +9,7 @@ class Router extends Backbone.Router
 
   routes:
     'edit': 'edit'
+    'simulate': 'simulate'
     '*query': 'index'
 
   initialize: (options={}) =>
@@ -19,6 +21,10 @@ class Router extends Backbone.Router
 
   edit: =>
     @changeView EditView
+
+  simulate: =>
+    @index()
+    new Simulation().start()
 
   setupNav: =>
     unless @nav?

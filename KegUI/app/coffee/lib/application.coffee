@@ -1,7 +1,6 @@
 Router = require('coffee/lib/router')
 KegStats = require('coffee/models/keg_stats')
 SocketListener = require('coffee/lib/socket_listener')
-Simulation = require('coffee/lib/simulation')
 
 $ = jQuery
 
@@ -19,5 +18,3 @@ class Application
 $ ->
   window.app = new Application
   window.app.start()
-
-  new Simulation().start()

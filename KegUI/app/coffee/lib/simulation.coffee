@@ -11,19 +11,21 @@ class Simulation
         poursLeft: 35.8
     , @timeout
 
-    @timeout += 500
+    @timeout += 1000
 
     simulate = (amt) =>
       if amt is 'done'
         msg = {action: 'done'}
+        wait = 1500
       else
         msg = {action: 'pouring', amount: amt}
+        wait = 150
+
+      @timeout += wait
 
       setTimeout ->
         window.app.socket.onMessage {data: JSON.stringify msg}
       , @timeout
-
-      @timeout += 150
 
     simulate(amount) for amount in @pourMessages
 

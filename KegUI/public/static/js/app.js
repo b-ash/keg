@@ -80,7 +80,7 @@
 })();
 
 window.require.register("coffee/lib/application", function(exports, require, module) {
-  var $, Application, KegStats, Router, Simulation, SocketListener,
+  var $, Application, KegStats, Router, SocketListener,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Router = require('coffee/lib/router');
@@ -88,8 +88,6 @@ window.require.register("coffee/lib/application", function(exports, require, mod
   KegStats = require('coffee/models/keg_stats');
 
   SocketListener = require('coffee/lib/socket_listener');
-
-  Simulation = require('coffee/lib/simulation');
 
   $ = jQuery;
 
@@ -117,13 +115,12 @@ window.require.register("coffee/lib/application", function(exports, require, mod
 
   $(function() {
     window.app = new Application;
-    window.app.start();
-    return new Simulation().start();
+    return window.app.start();
   });
   
 });
 window.require.register("coffee/lib/router", function(exports, require, module) {
-  var $, EditView, IndexView, Nav, Router,
+  var $, EditView, IndexView, Nav, Router, Simulation,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -133,6 +130,8 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
   IndexView = require('coffee/views/index');
 
   EditView = require('coffee/views/edit');
+
+  Simulation = require('coffee/lib/simulation');
 
   $ = jQuery;
 
@@ -145,6 +144,8 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
 
       this.setupNav = __bind(this.setupNav, this);
 
+      this.simulate = __bind(this.simulate, this);
+
       this.edit = __bind(this.edit, this);
 
       this.index = __bind(this.index, this);
@@ -155,6 +156,7 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
 
     Router.prototype.routes = {
       'edit': 'edit',
+      'simulate': 'simulate',
       '*query': 'index'
     };
 
@@ -172,6 +174,11 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
 
     Router.prototype.edit = function() {
       return this.changeView(EditView);
+    };
+
+    Router.prototype.simulate = function() {
+      this.index();
+      return new Simulation().start();
     };
 
     Router.prototype.setupNav = function() {
@@ -229,25 +236,27 @@ window.require.register("coffee/lib/simulation", function(exports, require, modu
           poursLeft: 35.8
         });
       }, this.timeout);
-      this.timeout += 500;
+      this.timeout += 1000;
       simulate = function(amt) {
-        var msg;
+        var msg, wait;
         if (amt === 'done') {
           msg = {
             action: 'done'
           };
+          wait = 1500;
         } else {
           msg = {
             action: 'pouring',
             amount: amt
           };
+          wait = 150;
         }
-        setTimeout(function() {
+        _this.timeout += wait;
+        return setTimeout(function() {
           return window.app.socket.onMessage({
             data: JSON.stringify(msg)
           });
         }, _this.timeout);
-        return _this.timeout += 150;
       };
       _ref = this.pourMessages;
       _results = [];
@@ -815,7 +824,7 @@ window.require.register("html/index", function(exports, require, module) {
     stack1 = foundHelper || depth0.keg;
     if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
     else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "keg", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <img src=\"/static/images/current_keg.png\" />\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    <div id=\"last_pour\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    <div id=\"total_pours\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    <div id=\"pours_left\"></div>\n  </div>\n</div>\n";
+    buffer += escapeExpression(stack1) + "</p>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-6 col-lg-6 brand-banner\">\n    <div>\n      <img src=\"/static/images/current_keg.png\" />\n    </div>\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    <div id=\"last_pour\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    <div id=\"total_pours\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    <div id=\"pours_left\"></div>\n  </div>\n</div>\n";
     return buffer;});
 });
 window.require.register("html/nav", function(exports, require, module) {
