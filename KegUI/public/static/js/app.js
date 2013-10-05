@@ -80,14 +80,18 @@
 })();
 
 window.require.register("coffee/lib/application", function(exports, require, module) {
-  var $, Application, KegStats, Router,
+  var $, Application, KegStats, Router, SocketListener,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Router = require('coffee/lib/router');
 
   KegStats = require('coffee/models/keg_stats');
 
+  SocketListener = require('coffee/lib/socket_listener');
+
   $ = jQuery;
+
+  vex.defaultOptions.className = 'vex-theme-wireframe';
 
   Application = (function() {
 
@@ -98,6 +102,7 @@ window.require.register("coffee/lib/application", function(exports, require, mod
 
     Application.prototype.start = function() {
       this.model = new KegStats;
+      this.socket = new SocketListener().listen();
       this.router = new Router({
         model: this.model
       });
@@ -201,6 +206,32 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
   })(Backbone.Router);
 
   module.exports = Router;
+  
+});
+window.require.register("coffee/lib/socket_listener", function(exports, require, module) {
+  var SocketListener,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  SocketListener = (function() {
+
+    function SocketListener() {
+      this.listen = __bind(this.listen, this);
+
+      this.initialize = __bind(this.initialize, this);
+
+    }
+
+    SocketListener.prototype.initialize = function() {};
+
+    SocketListener.prototype.listen = function() {
+      return this;
+    };
+
+    return SocketListener;
+
+  })();
+
+  module.exports = SocketListener;
   
 });
 window.require.register("coffee/models/keg_stats", function(exports, require, module) {
