@@ -234,6 +234,7 @@ window.require.register("coffee/lib/simulation", function(exports, require, modu
           lastPour: '10/2/12',
           totalPours: 15.2,
           poursLeft: 35.8,
+          keg: 'Shock Top Pumpkin Wheat',
           bannerImage: 'shocktop_pumpkin.png'
         });
       }, this.timeout);
@@ -366,10 +367,6 @@ window.require.register("coffee/models/keg_stats", function(exports, require, mo
       return KegStats.__super__.constructor.apply(this, arguments);
     }
 
-    KegStats.prototype.defaults = {
-      keg: 'Shock Top Pumpkin Wheat'
-    };
-
     return KegStats;
 
   })(Backbone.Model);
@@ -424,6 +421,8 @@ window.require.register("coffee/views/index", function(exports, require, module)
 
       this.updateBanner = __bind(this.updateBanner, this);
 
+      this.updateKegName = __bind(this.updateKegName, this);
+
       this.updateEllipsis = __bind(this.updateEllipsis, this);
 
       this.afterRender = __bind(this.afterRender, this);
@@ -439,6 +438,7 @@ window.require.register("coffee/views/index", function(exports, require, module)
     IndexView.prototype.template = require('html/index');
 
     IndexView.prototype.initialize = function() {
+      this.model.on('change:keg', this.updateKegName);
       return this.model.on('change:bannerImage', this.updateBanner);
     };
 
@@ -482,6 +482,10 @@ window.require.register("coffee/views/index", function(exports, require, module)
         count++;
         return _this.$('.ellipsis').text(ellipsis);
       };
+    };
+
+    IndexView.prototype.updateKegName = function() {
+      return this.$('#keg_wrap p').text(this.model.get('keg'));
     };
 
     IndexView.prototype.updateBanner = function() {
@@ -613,6 +617,8 @@ window.require.register("coffee/views/ticker", function(exports, require, module
     __extends(TickerView, _super);
 
     function TickerView() {
+      this.clear = __bind(this.clear, this);
+
       this.getLettersForField = __bind(this.getLettersForField, this);
 
       this.setTickerFields = __bind(this.setTickerFields, this);
@@ -630,6 +636,8 @@ window.require.register("coffee/views/ticker", function(exports, require, module
     TickerView.prototype.className = 'ticker';
 
     TickerView.prototype.template = require('html/ticker');
+
+    TickerView.prototype.ticking = false;
 
     TickerView.prototype.speed = 30;
 
@@ -664,7 +672,7 @@ window.require.register("coffee/views/ticker", function(exports, require, module
       alphabet = this.alph.split('');
       alphabetLength = alphabet.length;
       timeout = 0;
-      return letterElements.each(function(i, el) {
+      letterElements.each(function(i, el) {
         var $el, index;
         $el = $(el);
         index = Math.floor(Math.random() * alphabetLength);
@@ -676,10 +684,10 @@ window.require.register("coffee/views/ticker", function(exports, require, module
             currentL = alphabet[index];
             if (l === currentL) {
               $el.text(l);
-              return clearInterval(tid);
+              return _this.clear(tid);
             } else if (l === 'empty') {
               $el.html('&nbsp;');
-              return clearInterval(tid);
+              return _this.clear(tid);
             } else {
               $el.text(currentL);
               return index = index === alphabet.length - 1 ? 0 : index + 1;
@@ -688,6 +696,7 @@ window.require.register("coffee/views/ticker", function(exports, require, module
         }, timeout);
         return timeout += 50;
       });
+      return this.ticking = true;
     };
 
     TickerView.prototype.setTickerFields = function() {
@@ -735,6 +744,11 @@ window.require.register("coffee/views/ticker", function(exports, require, module
         fieldLetters = fillLetters;
       }
       return fieldLetters;
+    };
+
+    TickerView.prototype.clear = function(tid) {
+      clearInterval(tid);
+      return this.ticking = false;
     };
 
     return TickerView;
@@ -834,16 +848,10 @@ window.require.register("html/edit", function(exports, require, module) {
 window.require.register("html/index", function(exports, require, module) {
   module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
     helpers = helpers || Handlebars.helpers;
-    var buffer = "", stack1, foundHelper, self=this, functionType="function", helperMissing=helpers.helperMissing, undef=void 0, escapeExpression=this.escapeExpression;
+    var foundHelper, self=this;
 
 
-    buffer += "<!-- Two grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <h3>Current keg</h3>\n    <p>";
-    foundHelper = helpers.keg;
-    stack1 = foundHelper || depth0.keg;
-    if(typeof stack1 === functionType) { stack1 = stack1.call(depth0, { hash: {} }); }
-    else if(stack1=== undef) { stack1 = helperMissing.call(depth0, "keg", { hash: {} }); }
-    buffer += escapeExpression(stack1) + "</p>\n  </div>\n\n  <div id=\"brand_banner_wrap\" class=\"col-xs-6 col-sm-6 col-lg-6 brand-banner\">\n    <p>Finding banner...</p>\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    <div id=\"last_pour\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    <div id=\"total_pours\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    <div id=\"pours_left\"></div>\n  </div>\n</div>\n";
-    return buffer;});
+    return "<!-- Two grid -->\n<div class=\"row\">\n  <div id=\"keg_wrap\" class=\"col-xs-6 col-sm-6 col-lg-6\">\n    <h3>Current keg</h3>\n    <p>Looking in the fridge...</p>\n  </div>\n\n  <div id=\"brand_banner_wrap\" class=\"col-xs-6 col-sm-6 col-lg-6 brand-banner\">\n    <p>Finding banner...</p>\n  </div>\n</div>\n\n<!-- Three grid -->\n<div class=\"row\">\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Last pour</h3>\n    <div id=\"last_pour\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Total pours</h3>\n    <div id=\"total_pours\"></div>\n  </div>\n\n  <div class=\"col-xs-6 col-sm-4 col-lg-4\">\n    <h3>Pours until empty</h3>\n    <div id=\"pours_left\"></div>\n  </div>\n</div>\n";});
 });
 window.require.register("html/nav", function(exports, require, module) {
   module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {

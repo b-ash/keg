@@ -9,6 +9,7 @@ class Simulation
         lastPour: '10/2/12'
         totalPours: 15.2
         poursLeft: 35.8
+        keg: 'Shock Top Pumpkin Wheat'
         bannerImage: 'shocktop_pumpkin.png'
     , @timeout
 

@@ -9,6 +9,7 @@ class IndexView extends View
   template: require('html/index')
 
   initialize: =>
+    @model.on 'change:keg', @updateKegName
     @model.on 'change:bannerImage', @updateBanner
 
   getRenderData: =>
@@ -35,11 +36,14 @@ class IndexView extends View
 
       @$('.ellipsis').text ellipsis
 
+  updateKegName: =>
+    @$('#keg_wrap p').text @model.get('keg')
+
   updateBanner: =>
     @$('#brand_banner_wrap')
       .html(BrandBannerTemplate {bannerImage: @model.get('bannerImage')})
       .find('img')
-        .fadeIn()
+      .fadeIn()
 
   onClose: =>
     clearTimeout @timeout

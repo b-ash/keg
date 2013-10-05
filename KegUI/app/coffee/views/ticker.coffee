@@ -3,6 +3,7 @@ class TickerView extends Backbone.View
   className: 'ticker'
   template: require('html/ticker')
 
+  ticking: false
   speed: 30
   alph: 'ABCDEFGHIJKLMNOPQRSTUVXYZ01234567890/.'
 
@@ -37,10 +38,10 @@ class TickerView extends Backbone.View
 
           if l is currentL
             $el.text l
-            clearInterval(tid)
+            @clear(tid)
           else if l is 'empty'
             $el.html '&nbsp;'
-            clearInterval(tid)
+            @clear(tid)
           else
             $el.text currentL
             index = if index is alphabet.length - 1 then 0 else (index + 1)
@@ -49,6 +50,8 @@ class TickerView extends Backbone.View
       , timeout
 
       timeout += 50
+
+    @ticking = true
 
   setTickerFields: =>
     fieldLetters = @getLettersForField()
@@ -74,6 +77,10 @@ class TickerView extends Backbone.View
       fieldLetters = fillLetters
 
     return fieldLetters
+
+  clear: (tid) =>
+    clearInterval(tid)
+    @ticking = false
 
 
 module.exports = TickerView
