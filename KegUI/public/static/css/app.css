@@ -7187,7 +7187,7 @@ td.visible-print {
   }
 }.ticker {
   overflow: hidden;
-  font: 40px/1 monospace;
+  font: 35px/1 monospace;
 }
 .ticker span {
   display: block;
@@ -7204,6 +7204,9 @@ body {
 }
 .content {
   margin-top: 80px;
+}
+.content h3 {
+  font-size: 23px;
 }
 .content > div {
   padding-left: inherit;
