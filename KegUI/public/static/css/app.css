@@ -7804,10 +7804,12 @@ body {
 .content .brand-banner {
   -webkit-border-radius: 6px;
   border-radius: 6px;
-  -webkit-box-shadow: inset 0 0 5px 5px #222;
-  box-shadow: inset 0 0 5px 5px #222;
+  -webkit-box-shadow: inset 0 0 5px 5px #444;
+  box-shadow: inset 0 0 5px 5px #444;
+  border: 1px solid #2a2a2a;
   width: 310px;
   height: 114px;
+  margin-top: -5px;
   padding: 5px;
 }
 .content .brand-banner > div {
