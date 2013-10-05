@@ -9,6 +9,7 @@ class Simulation
         lastPour: '10/2/12'
         totalPours: 15.2
         poursLeft: 35.8
+        bannerImage: 'shocktop_pumpkin.png'
     , @timeout
 
     @timeout += 1000

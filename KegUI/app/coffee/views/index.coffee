@@ -1,5 +1,6 @@
 View = require('coffee/views/view')
 TickerView = require('coffee/views/ticker')
+BrandBannerTemplate = require('html/brand_banner')
 
 
 class IndexView extends View
@@ -8,7 +9,7 @@ class IndexView extends View
   template: require('html/index')
 
   initialize: =>
-    @model.on 'sync', @updateCounts
+    @model.on 'change:bannerImage', @updateBanner
 
   getRenderData: =>
     @model.toJSON()
@@ -34,9 +35,11 @@ class IndexView extends View
 
       @$('.ellipsis').text ellipsis
 
-  updateCounts: =>
-    @$('#total_pours').val 'Not many'
-    @$('#pours_left').val 'A bunch'
+  updateBanner: =>
+    @$('#brand_banner_wrap')
+      .html(BrandBannerTemplate {bannerImage: @model.get('bannerImage')})
+      .find('img')
+        .fadeIn()
 
   onClose: =>
     clearTimeout @timeout
