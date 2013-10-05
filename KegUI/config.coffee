@@ -18,6 +18,7 @@ module.exports.config =
           'vendor/scripts/handlebars.js'
           'vendor/scripts/underscore.js'
           'vendor/scripts/backbone.js'
+          'vendor/scripts/vex.combined.js'
         ]
 
     stylesheets:
