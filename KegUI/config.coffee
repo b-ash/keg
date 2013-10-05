@@ -19,12 +19,18 @@ module.exports.config =
           'vendor/scripts/underscore.js'
           'vendor/scripts/backbone.js'
           'vendor/scripts/vex.combined.js'
+          'vendor/scripts/vex.mixen.coffee'
+          'vendor/scripts/mixen.coffee'
         ]
 
     stylesheets:
       defaultExtension: 'css'
       joinTo: 'static/css/app.css'
       order:
+        before: [
+          'vendor/styles/vex.css'
+          'vendor/styles/vex-theme-wireframe.css'
+        ]
         after: [
           'vendor/styles/normalize.css'
           'vendor/styles/helpers.css'

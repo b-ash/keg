@@ -80,7 +80,7 @@
 })();
 
 window.require.register("coffee/lib/application", function(exports, require, module) {
-  var $, Application, KegStats, Router, SocketListener,
+  var $, Application, KegStats, Router, Simulation, SocketListener,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Router = require('coffee/lib/router');
@@ -88,6 +88,8 @@ window.require.register("coffee/lib/application", function(exports, require, mod
   KegStats = require('coffee/models/keg_stats');
 
   SocketListener = require('coffee/lib/socket_listener');
+
+  Simulation = require('coffee/lib/simulation');
 
   $ = jQuery;
 
@@ -102,7 +104,7 @@ window.require.register("coffee/lib/application", function(exports, require, mod
 
     Application.prototype.start = function() {
       this.model = new KegStats;
-      this.socket = new SocketListener().listen();
+      this.socket = new SocketListener();
       this.router = new Router({
         model: this.model
       });
@@ -116,13 +118,7 @@ window.require.register("coffee/lib/application", function(exports, require, mod
   $(function() {
     window.app = new Application;
     window.app.start();
-    return setTimeout(function() {
-      return window.app.model.set({
-        lastPour: '10/2/12',
-        totalPours: 15.2,
-        poursLeft: 35.8
-      });
-    }, 3000);
+    return new Simulation().start();
   });
   
 });
@@ -208,23 +204,136 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
   module.exports = Router;
   
 });
-window.require.register("coffee/lib/socket_listener", function(exports, require, module) {
-  var SocketListener,
+window.require.register("coffee/lib/simulation", function(exports, require, module) {
+  var Simulation,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Simulation = (function() {
+
+    function Simulation() {
+      this.start = __bind(this.start, this);
+
+    }
+
+    Simulation.prototype.timeout = 3000;
+
+    Simulation.prototype.pourMessages = [0.6, 0.9, 1.4, 1.8, 2.1, 2.7, 3.2, 3.8, 4.4, 5.0, 5.2, 5.8, 6.4, 6.8, 7.3, 7.9, 8.4, 8.8, 9.3, 9.9, 10.5, 11, 11.8, 12.4, 'done'];
+
+    Simulation.prototype.start = function() {
+      var amount, simulate, _i, _len, _ref, _results,
+        _this = this;
+      setTimeout(function() {
+        return window.app.model.set({
+          lastPour: '10/2/12',
+          totalPours: 15.2,
+          poursLeft: 35.8
+        });
+      }, this.timeout);
+      this.timeout += 500;
+      simulate = function(amt) {
+        var msg;
+        if (amt === 'done') {
+          msg = {
+            action: 'done'
+          };
+        } else {
+          msg = {
+            action: 'pouring',
+            amount: amt
+          };
+        }
+        setTimeout(function() {
+          return window.app.socket.onMessage({
+            data: JSON.stringify(msg)
+          });
+        }, _this.timeout);
+        return _this.timeout += 150;
+      };
+      _ref = this.pourMessages;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        amount = _ref[_i];
+        _results.push(simulate(amount));
+      }
+      return _results;
+    };
+
+    return Simulation;
+
+  })();
+
+  module.exports = Simulation;
+  
+});
+window.require.register("coffee/lib/socket_listener", function(exports, require, module) {
+  var PourDialog, SocketListener,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  PourDialog = require('coffee/views/pour_dialog');
 
   SocketListener = (function() {
 
     function SocketListener() {
-      this.listen = __bind(this.listen, this);
+      this.pourComplete = __bind(this.pourComplete, this);
 
-      this.initialize = __bind(this.initialize, this);
+      this.onClose = __bind(this.onClose, this);
+
+      this.onMessage = __bind(this.onMessage, this);
+
+      this.showDialog = __bind(this.showDialog, this);
+
+      this.listen = __bind(this.listen, this);
 
     }
 
-    SocketListener.prototype.initialize = function() {};
+    SocketListener.prototype.url = '/socket';
 
     SocketListener.prototype.listen = function() {
+      this.sock = new SockJS(this.url);
+      this.sock.onopen = this.onOpen;
+      this.sock.onmessage = this.onMessage;
+      this.sock.onclose = this.onClose;
       return this;
+    };
+
+    SocketListener.prototype.showDialog = function() {
+      var _ref;
+      if ((_ref = this.pourDialog) != null) {
+        _ref.close();
+      }
+      this.pourDialog = new PourDialog().render();
+      return this;
+    };
+
+    SocketListener.prototype.onOpen = function() {
+      return console.log('Socket is open.');
+    };
+
+    SocketListener.prototype.onMessage = function(e) {
+      var message;
+      if (this.pourDialog == null) {
+        this.showDialog();
+      }
+      message = JSON.parse(e.data);
+      if (message.action === 'done') {
+        return this.pourComplete();
+      } else if (message.action === 'pouring') {
+        return this.pourDialog.updatePour(message.amount);
+      } else {
+        return console.error('Bad message from socket:', message.action);
+      }
+    };
+
+    SocketListener.prototype.onClose = function(e) {
+      return console.error('Socket was closed.', e.reason);
+    };
+
+    SocketListener.prototype.pourComplete = function() {
+      var _this = this;
+      this.pourDialog.showPourComplete();
+      return setTimeout(function() {
+        return _this.pourDialog.close();
+      }, 2000);
     };
 
     return SocketListener;
@@ -407,6 +516,77 @@ window.require.register("coffee/views/nav", function(exports, require, module) {
   })(View);
 
   module.exports = Nav;
+  
+});
+window.require.register("coffee/views/pour_dialog", function(exports, require, module) {
+  var PourDialog, View,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  View = require('coffee/views/view');
+
+  PourDialog = (function(_super) {
+
+    __extends(PourDialog, _super);
+
+    function PourDialog() {
+      this.onClose = __bind(this.onClose, this);
+
+      this._showMessage = __bind(this._showMessage, this);
+
+      this.showPourError = __bind(this.showPourError, this);
+
+      this.showPourComplete = __bind(this.showPourComplete, this);
+
+      this.updatePour = __bind(this.updatePour, this);
+
+      this.render = __bind(this.render, this);
+      return PourDialog.__super__.constructor.apply(this, arguments);
+    }
+
+    PourDialog.prototype.template = require('html/pour_dialog');
+
+    PourDialog.prototype.successTemplate = require('html/pour_success');
+
+    PourDialog.prototype.errorTemplate = require('html/pour_error');
+
+    PourDialog.prototype.render = function() {
+      PourDialog.__super__.render.apply(this, arguments);
+      vex.open({
+        content: this.$el
+      });
+      return this;
+    };
+
+    PourDialog.prototype.updatePour = function(oz) {
+      return this.$('#amount').text(oz);
+    };
+
+    PourDialog.prototype.showPourComplete = function() {
+      return this._showMessage(this.successTemplate);
+    };
+
+    PourDialog.prototype.showPourError = function() {
+      return this._showMessage(this.errorTemplate);
+    };
+
+    PourDialog.prototype._showMessage = function(template) {
+      vex.close();
+      return this.vid = vex.open({
+        content: template()
+      });
+    };
+
+    PourDialog.prototype.onClose = function() {
+      return vex.close();
+    };
+
+    return PourDialog;
+
+  })(View);
+
+  module.exports = PourDialog;
   
 });
 window.require.register("coffee/views/ticker", function(exports, require, module) {
@@ -645,6 +825,30 @@ window.require.register("html/nav", function(exports, require, module) {
 
 
     return "<div class=\"navbar-header\">\n  <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\">Kegums</a>\n</div>\n<ul class=\"nav navbar-nav\">\n  <li class=\"active\"><a href=\"#\">Home</a></li>\n</ul>\n";});
+});
+window.require.register("html/pour_dialog", function(exports, require, module) {
+  module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+    helpers = helpers || Handlebars.helpers;
+    var foundHelper, self=this;
+
+
+    return "<h4>Now pouring:</h4>\n\n<p>\n  <span id=\"amount\">0.0</span>\n  oz\n</p>\n";});
+});
+window.require.register("html/pour_error", function(exports, require, module) {
+  module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+    helpers = helpers || Handlebars.helpers;
+    var foundHelper, self=this;
+
+
+    return "<h2>Go tell Bash the socket was closed.</h2>\n";});
+});
+window.require.register("html/pour_success", function(exports, require, module) {
+  module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+    helpers = helpers || Handlebars.helpers;
+    var foundHelper, self=this;
+
+
+    return "<h2>Enjoy your beer, brah.</h2>\n";});
 });
 window.require.register("html/ticker", function(exports, require, module) {
   module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
