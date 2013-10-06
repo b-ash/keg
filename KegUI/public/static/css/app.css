@@ -7826,6 +7826,16 @@ body {
   width: 300px;
   height: 104px;
 }
+.content form {
+  margin-left: 15px;
+}
+.content form label {
+  display: block;
+  line-height: 1;
+}
+.content form input {
+  margin-bottom: 20px;
+}
 body.inverse {
   background-color: #1a1a1a;
   color: #999;

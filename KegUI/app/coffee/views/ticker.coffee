@@ -22,7 +22,8 @@ class TickerView extends Backbone.View
     @
 
   afterRender: =>
-    @startTickers()
+    unless @model.get(@options.field)?
+      @startTickers()
 
   startTickers: =>
     letterElements = @$('span')

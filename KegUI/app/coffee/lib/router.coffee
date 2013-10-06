@@ -24,7 +24,7 @@ class Router extends Backbone.Router
 
   simulate: =>
     @index()
-    new Simulation().start()
+    Simulation.start()
 
   setupNav: =>
     unless @nav?
@@ -38,7 +38,7 @@ class Router extends Backbone.Router
     if @view is @currentView
       return
 
-    @currentView?.remove()
+    @currentView?.close()
     @currentView = @view
 
     $('.content').html @view.render().el

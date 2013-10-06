@@ -178,7 +178,7 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
 
     Router.prototype.simulate = function() {
       this.index();
-      return new Simulation().start();
+      return Simulation.start();
     };
 
     Router.prototype.setupNav = function() {
@@ -198,7 +198,7 @@ window.require.register("coffee/lib/router", function(exports, require, module) 
         return;
       }
       if ((_ref = this.currentView) != null) {
-        _ref.remove();
+        _ref.close();
       }
       this.currentView = this.view;
       return $('.content').html(this.view.render().el);
@@ -222,6 +222,8 @@ window.require.register("coffee/lib/simulation", function(exports, require, modu
 
     }
 
+    Simulation.prototype.running = false;
+
     Simulation.prototype.timeout = 3000;
 
     Simulation.prototype.pourMessages = [0.6, 0.9, 1.4, 1.8, 2.1, 2.7, 3.2, 3.8, 4.4, 5.0, 5.2, 5.8, 6.4, 6.8, 7.3, 7.9, 8.4, 8.8, 9.3, 9.9, 10.5, 11, 11.8, 12.4, 'done'];
@@ -229,6 +231,10 @@ window.require.register("coffee/lib/simulation", function(exports, require, modu
     Simulation.prototype.start = function() {
       var amount, simulate, _i, _len, _ref, _results,
         _this = this;
+      if (this.running) {
+        return;
+      }
+      this.running = true;
       setTimeout(function() {
         return window.app.model.set({
           lastPour: '10/2/12',
@@ -240,24 +246,27 @@ window.require.register("coffee/lib/simulation", function(exports, require, modu
       }, this.timeout);
       this.timeout += 1000;
       simulate = function(amt) {
-        var msg, wait;
+        var last, msg, wait;
         if (amt === 'done') {
           msg = {
             action: 'done'
           };
           wait = 1500;
+          last = true;
         } else {
           msg = {
             action: 'pouring',
             amount: amt
           };
           wait = 150;
+          last = false;
         }
         _this.timeout += wait;
         return setTimeout(function() {
-          return window.app.socket.onMessage({
+          window.app.socket.onMessage({
             data: JSON.stringify(msg)
           });
+          return _this.running = !last;
         }, _this.timeout);
       };
       _ref = this.pourMessages;
@@ -273,7 +282,7 @@ window.require.register("coffee/lib/simulation", function(exports, require, modu
 
   })();
 
-  module.exports = Simulation;
+  module.exports = new Simulation;
   
 });
 window.require.register("coffee/lib/socket_listener", function(exports, require, module) {
@@ -367,6 +376,8 @@ window.require.register("coffee/models/keg_stats", function(exports, require, mo
       return KegStats.__super__.constructor.apply(this, arguments);
     }
 
+    KegStats.prototype.urlRoot = '/';
+
     return KegStats;
 
   })(Backbone.Model);
@@ -376,6 +387,7 @@ window.require.register("coffee/models/keg_stats", function(exports, require, mo
 });
 window.require.register("coffee/views/edit", function(exports, require, module) {
   var EditView, View,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -386,12 +398,36 @@ window.require.register("coffee/views/edit", function(exports, require, module) 
     __extends(EditView, _super);
 
     function EditView() {
+      this.edit = __bind(this.edit, this);
       return EditView.__super__.constructor.apply(this, arguments);
     }
 
     EditView.prototype.className = 'row jumbotron';
 
     EditView.prototype.template = require('html/edit');
+
+    EditView.prototype.events = {
+      'submit form': 'edit'
+    };
+
+    EditView.prototype.edit = function(event) {
+      var $input, data, input, inputs, val, _i, _len;
+      event.preventDefault();
+      inputs = this.$('form input');
+      data = {};
+      for (_i = 0, _len = inputs.length; _i < _len; _i++) {
+        input = inputs[_i];
+        $input = $(input);
+        val = $input.val();
+        if (val.length) {
+          data[$input.attr('name')] = val;
+        }
+      }
+      this.model.save(data);
+      return app.router.navigate('#/simulate', {
+        trigger: true
+      });
+    };
 
     return EditView;
 
@@ -448,6 +484,12 @@ window.require.register("coffee/views/index", function(exports, require, module)
 
     IndexView.prototype.afterRender = function() {
       var els, key, ticker, _i, _len, _ref, _results;
+      if (this.model.get('keg') != null) {
+        this.updateKegName();
+      }
+      if (this.model.get('bannerImage') != null) {
+        this.updateBanner();
+      }
       els = {
         lastPour: this.$('#last_pour'),
         totalPours: this.$('#total_pours'),
@@ -506,17 +548,21 @@ window.require.register("coffee/views/index", function(exports, require, module)
   
 });
 window.require.register("coffee/views/nav", function(exports, require, module) {
-  var Nav, View,
+  var $, Nav, View,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   View = require('coffee/views/view');
+
+  $ = jQuery;
 
   Nav = (function(_super) {
 
     __extends(Nav, _super);
 
     function Nav() {
+      this.routeEvent = __bind(this.routeEvent, this);
       return Nav.__super__.constructor.apply(this, arguments);
     }
 
@@ -526,6 +572,12 @@ window.require.register("coffee/views/nav", function(exports, require, module) {
 
     Nav.prototype.events = {
       'click a': 'routeEvent'
+    };
+
+    Nav.prototype.routeEvent = function(event) {
+      this.$('li.active').removeClass('active');
+      $(event.currentTarget).parent().addClass('active');
+      return Nav.__super__.routeEvent.apply(this, arguments);
     };
 
     return Nav;
@@ -665,7 +717,9 @@ window.require.register("coffee/views/ticker", function(exports, require, module
     };
 
     TickerView.prototype.afterRender = function() {
-      return this.startTickers();
+      if (this.model.get(this.options.field) == null) {
+        return this.startTickers();
+      }
     };
 
     TickerView.prototype.startTickers = function() {
@@ -847,7 +901,7 @@ window.require.register("html/edit", function(exports, require, module) {
     var foundHelper, self=this;
 
 
-    return "<div>Edit (rumor has it auoooooooo wooooooo)</div>";});
+    return "<h2>Edit</h2>\n\n<div>\n  <form role=\"form\">\n    <div class=\"form-group\">\n      <label>Keg</label>\n      <input id=\"keg\" type=\"text\" name=\"keg\" class=\"form-control\" placeholder=\"Keg name\" />\n\n      <label>Banner image</label>\n      <input id=\"banner_image\" type=\"text\" name=\"bannerImage\" class=\"form-control\" placeholder=\"Banner image filename\" />\n\n      <label>Last pour</label>\n      <input id=\"last_pour\" type=\"text\" name=\"lastPour\" class=\"form-control\" placeholder=\"Last pour time\" />\n\n      <label>Total pours</label>\n      <input id=\"total_pours\" type=\"text\" name=\"totalPours\" class=\"form-control\" placeholder=\"Total number of pours of this keg\" />\n\n      <label>Pours left</label>\n      <input id=\"pours_left\" type=\"text\" name=\"poursLeft\" class=\"form-control\" placeholder=\"Pours left in this keg\" />\n    </div>\n\n    <div class=\"form-group\">\n      <button type=\"submit\" class=\"btn btn-primary\">Change</a>\n    </div>\n  </form>\n</div>";});
 });
 window.require.register("html/index", function(exports, require, module) {
   module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -863,7 +917,7 @@ window.require.register("html/nav", function(exports, require, module) {
     var foundHelper, self=this;
 
 
-    return "<div class=\"navbar-header\">\n  <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\">Kegums</a>\n</div>\n<ul class=\"nav navbar-nav\">\n  <li class=\"active\"><a href=\"#\">Home</a></li>\n</ul>\n";});
+    return "<div class=\"navbar-header\">\n  <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n    <span class=\"icon-bar\"></span>\n  </button>\n  <a class=\"navbar-brand\" href=\"#\">Kegums</a>\n</div>\n<ul class=\"nav navbar-nav\">\n  <li class=\"active\">\n    <a href=\"#\">Home</a>\n  </li>\n\n  <li>\n    <a href=\"#/simulate\">Simulate</a>\n  </li>\n</ul>\n";});
 });
 window.require.register("html/pour_dialog", function(exports, require, module) {
   module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {

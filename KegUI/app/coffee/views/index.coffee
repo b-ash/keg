@@ -16,6 +16,12 @@ class IndexView extends View
     @model.toJSON()
 
   afterRender: =>
+    if @model.get('keg')?
+      @updateKegName()
+
+    if @model.get('bannerImage')?
+      @updateBanner()
+
     els =
       lastPour: @$('#last_pour')
       totalPours: @$('#total_pours')
