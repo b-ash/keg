@@ -22,10 +22,9 @@ class PourDialog extends View
     @_showMessage @errorTemplate
 
   _showMessage: (template) =>
-    vex.close()
-    @vid = vex.open {content: template()}
+    @$el.html template()
 
-  onClose: =>
+  close: =>
     vex.close()
 
 

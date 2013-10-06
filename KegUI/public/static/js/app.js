@@ -548,7 +548,7 @@ window.require.register("coffee/views/pour_dialog", function(exports, require, m
     __extends(PourDialog, _super);
 
     function PourDialog() {
-      this.onClose = __bind(this.onClose, this);
+      this.close = __bind(this.close, this);
 
       this._showMessage = __bind(this._showMessage, this);
 
@@ -589,13 +589,10 @@ window.require.register("coffee/views/pour_dialog", function(exports, require, m
     };
 
     PourDialog.prototype._showMessage = function(template) {
-      vex.close();
-      return this.vid = vex.open({
-        content: template()
-      });
+      return this.$el.html(template());
     };
 
-    PourDialog.prototype.onClose = function() {
+    PourDialog.prototype.close = function() {
       return vex.close();
     };
 
