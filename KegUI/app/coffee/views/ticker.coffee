@@ -22,6 +22,9 @@ class TickerView extends Backbone.View
     @
 
   afterRender: =>
+    @startTickers()
+
+  startTickers: =>
     letterElements = @$('span')
     alphabet = @alph.split('')
     alphabetLength = alphabet.length
@@ -39,7 +42,7 @@ class TickerView extends Backbone.View
           if l is currentL
             $el.text l
             @clear(tid)
-          else if l is 'empty'
+          else if l is 'EMPTY'
             $el.html '&nbsp;'
             @clear(tid)
           else
@@ -59,9 +62,12 @@ class TickerView extends Backbone.View
 
     for letter, i in fieldLetters
       if letter is '&nbsp;'
-        letter = 'empty'
+        letter = 'EMPTY'
 
-      $(letterElements.get(i)).attr('letter', letter)
+      $(letterElements.get(i)).attr('letter', letter.toUpperCase())
+
+    unless @ticking
+      @startTickers()
 
   getLettersForField: (placeholder='&nbsp;') =>
     val = @model.get(@options.field)

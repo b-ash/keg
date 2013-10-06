@@ -620,6 +620,8 @@ window.require.register("coffee/views/ticker", function(exports, require, module
 
       this.setTickerFields = __bind(this.setTickerFields, this);
 
+      this.startTickers = __bind(this.startTickers, this);
+
       this.afterRender = __bind(this.afterRender, this);
 
       this.render = __bind(this.render, this);
@@ -663,6 +665,10 @@ window.require.register("coffee/views/ticker", function(exports, require, module
     };
 
     TickerView.prototype.afterRender = function() {
+      return this.startTickers();
+    };
+
+    TickerView.prototype.startTickers = function() {
       var alphabet, alphabetLength, letterElements, timeout,
         _this = this;
       letterElements = this.$('span');
@@ -682,7 +688,7 @@ window.require.register("coffee/views/ticker", function(exports, require, module
             if (l === currentL) {
               $el.text(l);
               return _this.clear(tid);
-            } else if (l === 'empty') {
+            } else if (l === 'EMPTY') {
               $el.html('&nbsp;');
               return _this.clear(tid);
             } else {
@@ -697,18 +703,19 @@ window.require.register("coffee/views/ticker", function(exports, require, module
     };
 
     TickerView.prototype.setTickerFields = function() {
-      var fieldLetters, i, letter, letterElements, _i, _len, _results;
+      var fieldLetters, i, letter, letterElements, _i, _len;
       fieldLetters = this.getLettersForField();
       letterElements = this.$('span');
-      _results = [];
       for (i = _i = 0, _len = fieldLetters.length; _i < _len; i = ++_i) {
         letter = fieldLetters[i];
         if (letter === '&nbsp;') {
-          letter = 'empty';
+          letter = 'EMPTY';
         }
-        _results.push($(letterElements.get(i)).attr('letter', letter));
+        $(letterElements.get(i)).attr('letter', letter.toUpperCase());
       }
-      return _results;
+      if (!this.ticking) {
+        return this.startTickers();
+      }
     };
 
     TickerView.prototype.getLettersForField = function(placeholder) {
