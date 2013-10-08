@@ -7777,7 +7777,7 @@ td.visible-print {
   }
 }.ticker {
   overflow: hidden;
-  font: 35px/1 monospace;
+  font: 30px/1 monospace;
 }
 .ticker span {
   display: block;
@@ -7786,14 +7786,16 @@ td.visible-print {
   color: #fff;
   margin-right: 1px;
 }
+@media (min-width: 768px) {
+  .ticker {
+    font: 35px/1 monospace;
+  }
+}
 body {
   background-color: #fff;
 }
 ::selection {
   background: #999;
-}
-.content {
-  margin-top: 80px;
 }
 .content h3 {
   font-size: 23px;
@@ -7854,6 +7856,56 @@ body.inverse .content .jumbotron {
   margin-bottom: 0;
   background-color: #121212;
   border: 1px solid #2a2a2a;
+}
+.content {
+  margin-top: 146px;
+}
+.content .col-sm-6,
+.content .col-sm-4 {
+  float: none;
+  width: 100%;
+  text-align: center;
+}
+.content .col-sm-6 > div,
+.content .col-sm-4 > div {
+  width: 153px;
+  margin: 0 auto;
+}
+.content #keg_wrap {
+  margin-bottom: 10px;
+}
+.content #brand_banner_wrap {
+  width: 310px;
+  margin: -5px auto;
+}
+.content #brand_banner_wrap > div {
+  width: 298px;
+}
+@media (min-width: 768px) {
+  .content {
+    margin-top: 80px;
+  }
+  .content .col-sm-6 {
+    float: left;
+    width: 50%;
+    text-align: left;
+  }
+  .content .col-sm-4 {
+    float: left;
+    width: 33%;
+    text-align: left;
+  }
+  .content .col-sm-4 > div {
+    margin: 0;
+    width: 189px;
+  }
+  .content #brand_banner_wrap {
+    width: 310px;
+    float: right;
+  }
+  .content #brand_banner_wrap > div {
+    width: 298px;
+  }
 }
 /*
  * HTML5 ✰ Boilerplate
