@@ -19,9 +19,10 @@ api_url = "/pour"
 
 
 def send(data):
-    resp = requests.post(api_url, data=json.dumps(data))
-    print resp.status_text
-    return resp
+    # resp = requests.post(api_url, data=json.dumps(data))
+    # print resp.status_text
+    # return resp
+    print json.dumps(data)
 
 while True:
     line = input.readline().strip()
@@ -29,10 +30,14 @@ while True:
     if line:
         print line
 
-        [info, output] = line.split(':')
-        pulses = int(output.strip())
-        ounces = float(pulses) / 175
-        print "Ounces: %i" % ounces
-        send({
-            'ounces': ounces
-        })
+        action, output = line.split(':')
+
+        if action == 'pulses':
+            pulses = int(output.strip())
+            ounces = float(pulses) / 175
+            data = {'ounces': ounces}
+            print "Ounces: %i" % ounces
+        elif action == 'temp':
+            data = {'temp': output.strip()}
+
+        send(data)
