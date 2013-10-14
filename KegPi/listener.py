@@ -32,7 +32,7 @@ while True:
 
         action, output = line.split(':')
 
-        if action == 'pulses':
+        if action == 'pulse':
             pulses = int(output.strip())
             ounces = float(pulses) / 175
             data = {'ounces': ounces}
