@@ -21,13 +21,19 @@ pourManager = new PourManager(app)
 BannerDao = require('./bannerDao')
 bannerDao = new BannerDao
 
-server.get('/', (request, response) ->
-  kegManager.list((kegs)->
+TempDao = require('./tempDao')
+tempDao = new TempDao
+
+TempManager = require('./tempManager')
+tempManager = new TempManager(tempDao)
+
+server.get('/kegs', (request, response) ->
+  kegManager.list((kegs) ->
     response.json(kegs)
   )
 )
 
-server.post('/', (request, response) ->
+server.post('/kegs', (request, response) ->
   kegManager.create(request.body)
   response.send(201)
 )
@@ -38,13 +44,13 @@ server.get('/current', (request, response) ->
   )
 )
 
-server.get('/:kegId', (request, response) ->
+server.get('/kegs/:kegId', (request, response) ->
   kegManager.get(request.params.kegId, (keg) ->
     response.json(keg)
   )
 )
 
-server.post('/pour', (request, response) ->
+server.post('/pours', (request, response) ->
   pourManager.pour(request.body.volume)
   response.send(204)
 )
@@ -54,7 +60,7 @@ server.post('/pour-end', (request, response) ->
   response.send(201)
 )
 
-server.get('/:kegId/pours', (request, response) ->
+server.get('/kegs/:kegId/pours', (request, response) ->
   pourManager.list(request.params.kegId, (pours) ->
     response.json(pours)
   )
@@ -78,9 +84,9 @@ server.get('/pours/weekly', (request, response) ->
   )
 )
 
-server.get('/:kegId/pours/:pourId', (request, response) ->
+server.get('/kegs/:kegId/pours/:pourId', (request, response) ->
   pourManager.get(request.params.pourId, (pour) ->
-    response.josn(pour)
+    response.json(pour)
   )
 )
 
@@ -93,6 +99,17 @@ server.get('/banners', (request, response) ->
 server.post('/banners', (request, response) ->
   bannerDao.create(request.body.url)
   response.send(201)
+)
+
+server.get('/temps', (request, response) ->
+  tempManager.list((temps) ->
+    response.json(temps)
+  )
+)
+
+server.post('/temps', (request, response) ->
+  tempManager.create(request.body.degrees)
+  response.send(204)
 )
 
 app.listen(8888)
