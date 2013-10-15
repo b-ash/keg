@@ -4,8 +4,8 @@ server.use(express.bodyParser())
 
 app = require('http').createServer(server)
 
-KegDao = require('./kegDao')
-kegDao = new KegDao
+KegManager = require('./kegManager')
+kegManager = new KegManager
 
 PourManager = require('./pourManager')
 pourManager = new PourManager(app)
@@ -14,24 +14,24 @@ BannerDao = require('./bannerDao')
 bannerDao = new BannerDao
 
 server.get('/', (request, response) ->
-  kegDao.list((kegs)->
+  kegManager.list((kegs)->
     response.json(kegs)
   )
 )
 
 server.post('/', (request, response) ->
-  kegDao.create(request.body)
+  kegManager.create(request.body)
   response.send(201)
 )
 
 server.get('/current', (request, response) ->
-  kegDao.current((keg) ->
+  kegManager.current((keg) ->
     response.json(keg)
   )
 )
 
 server.get('/:kegId', (request, response) ->
-  kegDao.get(request.params.kegId, (keg) ->
+  kegManager.get(request.params.kegId, (keg) ->
     response.json(keg)
   )
 )
