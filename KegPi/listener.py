@@ -24,6 +24,12 @@ def send(data):
     # return resp
     print json.dumps(data)
 
+
+def parse_ounces(output):
+    pulses = int(output.strip())
+    return float(pulses) / 175
+
+
 while True:
     line = input.readline().strip()
 
@@ -31,13 +37,11 @@ while True:
         print line
 
         action, output = line.split(':')
+        data = {'action': action}
 
-        if action == 'pulse':
-            pulses = int(output.strip())
-            ounces = float(pulses) / 175
-            data = {'ounces': ounces}
-            print "Ounces: %i" % ounces
+        if action == 'pour' or action == 'pourEnd':
+            data.volume = parse_ounces(output)
         elif action == 'temp':
-            data = {'temp': output.strip()}
+            data.temp = output.strip()
 
         send(data)
