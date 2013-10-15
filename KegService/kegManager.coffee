@@ -8,7 +8,7 @@ class KegManager
     kegDao.list(callback)
 
   create: (keg) ->
-    keg.create(keg)
+    kegDao.create(keg)
 
   get: (kegId, callback) ->
     kegDao.get(kegId, callback)
