@@ -30,8 +30,6 @@ while True:
     line = input.readline().strip()
 
     if line:
-        print line
-
         action, output = line.split(':')
         data = {'action': action}
 
