@@ -30,6 +30,7 @@ class PourManager
   list: (request, response) ->
     pourDao.list(request.params.kegId, (pours) ->
       response.json(pours)
+    )
 
   get: (request, response) ->
     pourDao.get(request.params.pourId, (pour) ->
