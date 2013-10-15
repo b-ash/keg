@@ -13,9 +13,6 @@ try:
 except:
     input = serial.Serial('/dev/ttyACM1', 9600, timeout=1)
 
-pulses = 0
-liters = 0
-
 
 def send(data):
     # resp = requests.post("/%s" % data.action, data=json.dumps(data))
