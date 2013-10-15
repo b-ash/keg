@@ -18,7 +18,7 @@ class PourManager
             delete @clients[conn.id]
 
   _broadcast: (data) ->
-    for id, client in clients when clients.hasOwnProperty(id)
+    for id, client of clients when clients.hasOwnProperty(id)
       client.write JSON.stringify(data)
 
   create: (request, response) ->
