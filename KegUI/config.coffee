@@ -9,6 +9,9 @@ module.exports.config =
         'static/js/app.js': /^app/
         'static/js/vendor.js': /^vendor/
       order:
+        after: [
+          'vendor/scripts/d3.v3.js'
+        ]
         before: [
           'vendor/scripts/jquery.js'
           'vendor/scripts/jquery.scrollto.js'

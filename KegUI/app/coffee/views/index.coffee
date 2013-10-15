@@ -1,6 +1,8 @@
 View = require('coffee/views/view')
 TickerView = require('coffee/views/ticker')
 BrandBannerTemplate = require('html/brand_banner')
+ChartView = require('coffee/views/chart')
+PoursSummary = require("coffee/collections/pours_summary")
 
 
 class IndexView extends View
@@ -34,6 +36,24 @@ class IndexView extends View
         field: key
 
       els[key].append ticker.render().el
+
+    dailyCollection = new PoursSummary()
+    dailyCollection.period = 'daily'
+    dailyCollection.fetch
+      success: =>
+        dailyView = new ChartView
+          collection: dailyCollection
+          el: '.daily-chart'
+        dailyView.chart()
+
+    weeklyCollection = new PoursSummary()
+    weeklyCollection.period = 'weekly'
+    weeklyCollection.fetch
+      success: =>
+        weeklyView = new ChartView
+          collection: weeklyCollection
+          el: '.weekly-chart'
+        weeklyView.chart()
 
   updateEllipsis: (count) =>
     =>
