@@ -21,21 +21,14 @@ class PourManager
     for id, client of clients when clients.hasOwnProperty(id)
       client.write JSON.stringify(data)
 
-  create: (request, response) ->
-    pourDao.create(request.body.volume)
-    @_broadcast JSON.stringify({ounces: request.body.volume})
+  create: (volume) ->
+    pourDao.create(volume)
+    @_broadcast JSON.stringify({ounces: volume})
 
-    response.send(201)
+  list: (kegId, callback) ->
+    pourDao.list(kegId, callback)
 
-  list: (request, response) ->
-    pourDao.list(request.params.kegId, (pours) ->
-      response.json(pours)
-    )
-
-  get: (request, response) ->
-    pourDao.get(request.params.pourId, (pour) ->
-      response.json(pour)
-    )
-
+  get: (pourId, callback) ->
+    pourDao.get(pourId, callback)
 
 module.exports = PourManager

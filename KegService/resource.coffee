@@ -34,9 +34,22 @@ server.get('/:kegId', (request, response) ->
   )
 )
 
-server.post('/pour', pourManager.create)
-server.get('/:kegId/pours', pourManager.list)
-server.get('/:kegId/pours/:pourId', pourManager.get)
+server.post('/pour', (request, response) ->
+  pourManager.create(request.body.volume)
+  response.send(201)
+)
+
+server.get('/:kegId/pours', (request, response) ->
+  pourManager.list(request.params.kegId, (pours) ->
+    response.json(pours)
+  )
+)
+
+server.get('/:kegId/pours/:pourId', (request, response) ->
+  pourManager.get(request.params.pourId, (pour) ->
+    response.josn(pour)
+  )
+)
 
 server.get('/banners', (request, response) ->
   bannerDao.list((banners) ->
