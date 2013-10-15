@@ -11,11 +11,11 @@ class PourManager
   constructor: (app) ->
     @server = SockJS.createServer()
     @server.installHandlers app, {prefix: "/io"}
-    @server.on 'connection', (conn) ->
-        clients[conn.id] = conn
+    @server.on 'connection', (conn) =>
+        @clients[conn.id] = conn
 
-        conn.on 'close', ->
-            delete clients[conn.id]
+        conn.on 'close', =>
+            delete @clients[conn.id]
 
   _broadcast: (data) ->
     for id, client in clients when clients.hasOwnProperty(id)
