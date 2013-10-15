@@ -10,6 +10,7 @@
     "coffee-script": "1.6.2",
     "require": "*",
     "express": "*",
-    "mysql": "2.0.0-alpha9"
+    "mysql": "2.0.0-alpha9",
+    "sockjs": "0.3.8"
   }
 }

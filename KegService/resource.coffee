@@ -1,16 +1,15 @@
 express = require('express')
+server = express()
+server.use(express.bodyParser())
 
 KegDao = require('./kegDao')
 kegDao = new KegDao
 
-PourDao = require('./pourDao')
-pourDao = new PourDao
+PourManager = require('./pourManager')
+pourManager = new PourManager(server)
 
 BannerDao = require('./bannerDao')
 bannerDao = new BannerDao
-
-server = express()
-server.use(express.bodyParser())
 
 server.get('/', (request, response) ->
   kegDao.list((kegs)->
@@ -35,22 +34,9 @@ server.get('/:kegId', (request, response) ->
   )
 )
 
-server.post('/pour', (request, response) ->
-  pourDao.create(request.body.volume)
-  response.send(201)
-)
-
-server.get('/:kegId/pours', (request, response) ->
-  pourDao.list(request.params.kegId, (pours) ->
-    response.json(pours)
-  )
-)
-
-server.get('/:kegId/pours/:pourId', (request, response) ->
-  pourDao.get(request.params.pourId, (pour) ->
-    response.json(pour)
-  )
-)
+server.post('/pour', pourManager.create)
+server.get('/:kegId/pours', pourManager.list)
+server.get('/:kegId/pours/:pourId', pourManager.get)
 
 server.get('/banners', (request, response) ->
   bannerDao.list((banners) ->
