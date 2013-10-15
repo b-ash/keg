@@ -692,7 +692,7 @@ window.require.register("coffee/views/ticker", function(exports, require, module
 
     TickerView.prototype.speed = 30;
 
-    TickerView.prototype.alph = 'ABCDEFGHIJKLMNOPQRSTUVXYZ01234567890/.';
+    TickerView.prototype.alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890/.';
 
     TickerView.prototype.initialize = function(options) {
       if (options == null) {
