@@ -9,7 +9,7 @@ class PourManager
   clients: {}
 
   constructor: (app) ->
-    @server = SockJS.createServer {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"}
+    @server = SockJS.createServer()
     @server.installHandlers app, {prefix: "/io"}
     @server.on 'connection', (conn) =>
       console.log 'Receiving socket connection'
