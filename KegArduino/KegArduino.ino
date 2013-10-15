@@ -5,37 +5,28 @@
 */
 
 int LED_PIN = 13;
+int TEMP_PIN = A0;
 int FLOW_METER_PIN = 2;
-int LOOPS_TO_WAIT_BEFORE_SENDING = 400; // ~6 seconds
+
+int POUR_INTERVAL_LOOPS = 60; // ~6 seconds
+int TEMP_INTERVAL_LOOPS = 300; // ~30 seconds
 
 int rawPulses = 0;
-int pulseTracker = 0;
+int rawPulsesPrev = 0;
 int loopsAfterPourWithoutPulses = 0;
+int tempCount = 0;
 
-
-/*******
- Helpers
- *******/
-void listenForInterrupts() {
-  sei();  // Enable interrupts
-  delay(15);
-  cli();  // Disable interrupts
-}
-
-void resetCounters() {
+void resetPourCounters() {
   rawPulses = 0;
-  pulseTracker = 0;
+  rawPulsesPrev = 0;
   loopsAfterPourWithoutPulses = 0;
 }
 
 void sendPulsesToRaspberryPi() {
   Serial.print("pulses:");
-  Serial.println(pulseTracker, DEC);
+  Serial.println(rawPulses, DEC);
 }
 
-/***********************
- Arduino function hooks 
- ***********************/
 void rpm() {
   rawPulses++;
 }
@@ -45,21 +36,40 @@ void setup() {
   pinMode(FLOW_METER_PIN, INPUT);
   Serial.begin(9600);
   attachInterrupt(0, rpm, RISING);
+  sei();
 }
 
-void loop() {
-  listenForInterrupts();
-
+void pourLoop() {
   // Has pouring stopped?
-  if(rawPulses != 0 && rawPulses == pulseTracker) {
+  if(rawPulses != 0 && rawPulses == rawPulsesPrev) {
     loopsAfterPourWithoutPulses += 1;
   }
   
-  pulseTracker = rawPulses;
+  rawPulsesPrev = rawPulses;
+  digitalWrite(LED_PIN, rawPulses > 0);
   
   // Send pulses to Raspberry Pi once pouring is done
-  if(rawPulses != 0 && loopsAfterPourWithoutPulses >= LOOPS_TO_WAIT_BEFORE_SENDING) {
-    sendPulsesToRaspberryPi();
-    resetCounters();
+  if(rawPulses != 0 && loopsAfterPourWithoutPulses >= POUR_INTERVAL_LOOPS) {
+    if (rawPulses > 10) {
+      sendPulsesToRaspberryPi();
+    }
+    resetPourCounters();
+  }  
+}
+
+void tempLoop() {
+  tempCount += 1;
+  if (tempCount >= TEMP_INTERVAL_LOOPS) {
+    tempCount = 0;
+    int rawTemp = analogRead(TEMP_PIN);
+    float temp = ((rawTemp / 1024.0 * 5 * 1000) - 500) / 10 * 9 / 5 + 32;
+    Serial.print("temp:");
+    Serial.println(temp, DEC); 
   }
+}
+
+void loop() {
+  pourLoop();
+  tempLoop();
+  delay(100);
 }
