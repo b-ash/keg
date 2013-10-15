@@ -10,7 +10,7 @@ class Application
 
   start: =>
     @model = new KegStats
-    @socket = new SocketListener()#.listen()
+    @socket = new SocketListener().listen()
     @router = new Router {@model}
 
     Backbone.history.start()

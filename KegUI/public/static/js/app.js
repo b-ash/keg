@@ -102,7 +102,7 @@ window.require.register("coffee/lib/application", function(exports, require, mod
 
     Application.prototype.start = function() {
       this.model = new KegStats;
-      this.socket = new SocketListener();
+      this.socket = new SocketListener().listen();
       this.router = new Router({
         model: this.model
       });
@@ -306,7 +306,7 @@ window.require.register("coffee/lib/socket_listener", function(exports, require,
 
     }
 
-    SocketListener.prototype.url = '/socket';
+    SocketListener.prototype.url = '/io';
 
     SocketListener.prototype.listen = function() {
       this.sock = new SockJS(this.url);

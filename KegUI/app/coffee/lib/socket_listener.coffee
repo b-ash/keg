@@ -3,7 +3,7 @@ PourDialog = require('coffee/views/pour_dialog')
 
 class SocketListener
 
-  url: '/socket'
+  url: '/io'
 
   listen: =>
     @sock = new SockJS(@url)
