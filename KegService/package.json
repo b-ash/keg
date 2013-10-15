@@ -11,6 +11,8 @@
     "require": "*",
     "express": "*",
     "mysql": "2.0.0-alpha9",
-    "sockjs": "0.3.8"
+    "sockjs": "0.3.8",
+    "underscore": "~1.5.2",
+    "moment": "~2.3.1"
   }
 }

@@ -43,4 +43,10 @@ class PourManager
   get: (pourId, callback) ->
     pourDao.get(pourId, callback)
 
+  daily: (callback) ->
+    pourDao.daily(callback)
+
+  weekly: (callback) ->
+    pourDao.weekly(callback)
+
 module.exports = PourManager

@@ -1,4 +1,6 @@
 express = require('express')
+_ = require('underscore')
+moment = require('moment')
 server = express()
 server.use(express.bodyParser())
 
@@ -55,6 +57,24 @@ server.post('/pour-end', (request, response) ->
 server.get('/:kegId/pours', (request, response) ->
   pourManager.list(request.params.kegId, (pours) ->
     response.json(pours)
+  )
+)
+
+server.get('/pours/daily', (request, response) ->
+  pourManager.daily((pours) ->
+    response.json(_.map(pours.reverse(), (obj) ->
+      obj.start = moment(obj.start).format('DDD')
+      obj
+    ))
+  )
+)
+
+server.get('/pours/weekly', (request, response) ->
+  pourManager.weekly((pours) ->
+    response.json(_.map(pours.reverse(), (obj) ->
+      obj.start = moment(obj.start).format('w')
+      obj
+    ))
   )
 )
 

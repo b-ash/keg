@@ -33,4 +33,21 @@ class PourDao
     )
     connection.end()
 
+  daily: (callback) =>
+    connection = @getConnection()
+    connection.query('SELECT start, sum(volume) as volume FROM pours GROUP BY DAY(start) ORDER BY start DESC LIMIT 7', (err, pour) ->
+      throw err if err
+      callback(pour)
+    )
+    connection.end()
+
+  weekly: (callback) =>
+    connection = @getConnection()
+    connection.query('SELECT start, sum(volume) as volume FROM pours GROUP BY WEEK(start) ORDER BY start DESC LIMIT 7', (err, pour) ->
+      throw err if err
+      callback(pour)
+    )
+    connection.end()
+
+
 module.exports = PourDao
