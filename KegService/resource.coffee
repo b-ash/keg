@@ -23,6 +23,12 @@ server.post('/', (request, response) ->
   response.send(201)
 )
 
+server.get('/current', (request, response) ->
+  kegDao.current((keg) ->
+    response.json(keg)
+  )
+)
+
 server.get('/:kegId', (request, response) ->
   kegDao.get(request.params.kegId, (keg) ->
     response.json(keg)

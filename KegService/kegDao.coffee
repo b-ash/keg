@@ -34,4 +34,12 @@ class KegDao
     )
     connection.end()
 
+  current: (callback) =>
+    connection = @getConnection()
+    connection.query('SELECT kegs.id, name, volume, tapped, kicked, url FROM kegs LEFT JOIN banners ON banners.id = bannerId WHERE kegs.id = (SELECT MAX(id) FROM kegs)', (err, keg, fields) ->
+      throw err if err
+      callback(keg)
+    )
+    connection.end()
+
 module.exports = KegDao
