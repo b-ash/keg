@@ -30,7 +30,12 @@ while True:
     line = input.readline().strip()
 
     if line:
-        action, output = line.split(':')
+        rawInput = line.split(':')
+
+        if rawInput.length != 2:
+            continue
+
+        action, output = rawInput
         data = {'action': action}
 
         if action == 'pour' or action == 'pour-end':
