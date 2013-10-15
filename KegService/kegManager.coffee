@@ -4,16 +4,27 @@ kegDao = new KegDao
 
 class KegManager
 
-  list: (callback) ->
-    kegDao.list(callback)
+  constructor: (kegDao, pourDao) ->
+    @kegDao = kegDao
+    @pourDao = pourDao
 
-  create: (keg) ->
-    kegDao.create(keg)
+  list: (callback) =>
+    @kegDao.list(callback)
 
-  get: (kegId, callback) ->
-    kegDao.get(kegId, callback)
+  create: (keg) =>
+    @kegDao.create(keg)
 
-  current: (callback) ->
-    kegDao.current(callback)
+  get: (kegId, callback) =>
+    @kegDao.get(kegId, callback)
+
+  current: (callback) =>
+    @kegDao.current((keg) =>
+      @pourDao.list(keg.id, (pours) =>
+        keg.consumed = 0
+        for pour in pours
+          keg.consumed += pour.volume
+        callback(keg)
+      )
+    )
 
 module.exports = KegManager

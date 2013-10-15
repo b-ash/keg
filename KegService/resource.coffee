@@ -4,8 +4,14 @@ server.use(express.bodyParser())
 
 app = require('http').createServer(server)
 
+KegDao = require('./kegDao')
+kegDao = new KegDao
+
+PourDao = require('./pourDao')
+pourDao = new PourDao
+
 KegManager = require('./kegManager')
-kegManager = new KegManager
+kegManager = new KegManager(kegDao, pourDao)
 
 PourManager = require('./pourManager')
 pourManager = new PourManager(app)
