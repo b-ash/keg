@@ -34,8 +34,8 @@ while True:
         data = {'action': action}
 
         if action == 'pour' or action == 'pour-end':
-            data.volume = parse_ounces(output)
+            data['volume'] = parse_ounces(output)
         elif action == 'temp':
-            data.temp = output.strip()
+            data['temp'] = output.strip()
 
         send(data)
