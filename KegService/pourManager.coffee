@@ -29,7 +29,13 @@ class PourManager
 
   create: (volume) ->
     pourDao.create(volume)
-    @_broadcast JSON.stringify({ounces: volume})
+    @_broadcast JSON.stringify({action: 'done'})
+
+  pour: (volume) ->
+    @_broadcast JSON.stringify({
+      action: 'pouring'
+      amount: volume
+    })
 
   list: (kegId, callback) ->
     pourDao.list(kegId, callback)

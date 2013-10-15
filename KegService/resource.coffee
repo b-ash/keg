@@ -37,6 +37,11 @@ server.get('/:kegId', (request, response) ->
 )
 
 server.post('/pour', (request, response) ->
+  pourManager.pour(request.body.volume)
+  response.send(204)
+)
+
+server.post('/pour-end', (request, response) ->
   pourManager.create(request.body.volume)
   response.send(201)
 )
