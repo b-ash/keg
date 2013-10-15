@@ -9,16 +9,22 @@ class PourManager
   clients: {}
 
   constructor: (app) ->
-    @server = SockJS.createServer()
+    @server = SockJS.createServer {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"}
     @server.installHandlers app, {prefix: "/io"}
     @server.on 'connection', (conn) =>
-        @clients[conn.id] = conn
+      console.log 'Receiving socket connection'
+      @clients[conn.id] = conn
 
-        conn.on 'close', =>
-            delete @clients[conn.id]
+      setTimeout =>
+        @_broadcast {ounces: 400}
+      , 2000
 
-  _broadcast: (data) ->
-    for id, client of clients when clients.hasOwnProperty(id)
+      conn.on 'close', =>
+        console.log 'Closing socket connection'
+        delete @clients[conn.id]
+
+  _broadcast: (data) =>
+    for id, client of @clients when @clients.hasOwnProperty(id)
       client.write JSON.stringify(data)
 
   create: (volume) ->

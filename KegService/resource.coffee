@@ -2,11 +2,13 @@ express = require('express')
 server = express()
 server.use(express.bodyParser())
 
+app = require('http').createServer(server)
+
 KegDao = require('./kegDao')
 kegDao = new KegDao
 
 PourManager = require('./pourManager')
-pourManager = new PourManager(server)
+pourManager = new PourManager(app)
 
 BannerDao = require('./bannerDao')
 bannerDao = new BannerDao
@@ -62,4 +64,4 @@ server.post('/banners', (request, response) ->
   response.send(201)
 )
 
-server.listen(8888)
+app.listen(8888)
