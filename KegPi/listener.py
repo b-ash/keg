@@ -32,7 +32,7 @@ while True:
     if line:
         rawInput = line.split(':')
 
-        if rawInput.length != 2:
+        if len(rawInput) != 2:
             continue
 
         action, output = rawInput
