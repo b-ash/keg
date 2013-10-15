@@ -15,11 +15,10 @@ except:
 
 pulses = 0
 liters = 0
-api_url = "/pour"
 
 
 def send(data):
-    # resp = requests.post(api_url, data=json.dumps(data))
+    # resp = requests.post("/%s" % data.action, data=json.dumps(data))
     # print resp.status_text
     # return resp
     print json.dumps(data)
@@ -39,7 +38,7 @@ while True:
         action, output = line.split(':')
         data = {'action': action}
 
-        if action == 'pour' or action == 'pourEnd':
+        if action == 'pour' or action == 'pour-end':
             data.volume = parse_ounces(output)
         elif action == 'temp':
             data.temp = output.strip()
