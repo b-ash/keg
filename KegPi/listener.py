@@ -42,5 +42,8 @@ while True:
             data['volume'] = parse_ounces(output)
         elif action == 'temp':
             data['temp'] = output.strip()
+        else:
+            print "Ignoring unknown action %s" % action
+            continue
 
         send(data)

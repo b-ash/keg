@@ -52,6 +52,9 @@ void pourLoop() {
     return;
   }
   
+  Serial.print('info:raw pulses:');
+  Serial.println(rawPulses, DEC);
+  
   if (rawPulses == rawPulsesPrev) {
     loopsAfterPourWithoutPulses += 1;
   }
