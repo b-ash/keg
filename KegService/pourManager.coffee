@@ -15,10 +15,6 @@ class PourManager
       console.log 'Receiving socket connection'
       @clients[conn.id] = conn
 
-      setTimeout =>
-        @_broadcast {ounces: 400}
-      , 2000
-
       conn.on 'close', =>
         console.log 'Closing socket connection'
         delete @clients[conn.id]
@@ -29,13 +25,12 @@ class PourManager
 
   create: (volume) ->
     pourDao.create(volume)
-    @_broadcast JSON.stringify({action: 'done'})
+    @_broadcast {action: 'done'}
 
   pour: (volume) ->
-    @_broadcast JSON.stringify({
+    @_broadcast
       action: 'pouring'
       amount: volume
-    })
 
   list: (kegId, callback) ->
     pourDao.list(kegId, callback)
