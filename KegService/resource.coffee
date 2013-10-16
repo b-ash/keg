@@ -115,3 +115,4 @@ server.post(base + '/temps', (request, response) ->
 )
 
 app.listen(8000)
+console.log 'Server listening on port 8000'
