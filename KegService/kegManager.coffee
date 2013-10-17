@@ -1,12 +1,10 @@
 KegDao = require('./kegDao')
 kegDao = new KegDao
-
+_ = require('underscore')
 
 class KegManager
 
-  constructor: (kegDao, pourDao) ->
-    @kegDao = kegDao
-    @pourDao = pourDao
+  constructor: (@kegDao, @pourDao, @tempDao) ->
 
   list: (callback) =>
     @kegDao.list(callback)
@@ -19,12 +17,18 @@ class KegManager
 
   current: (callback) =>
     @kegDao.current((keg) =>
-      @pourDao.list(keg.id, (pours) =>
-        keg.consumed = 0
-        for pour in pours
-          keg.consumed += pour.volume
-        callback(keg)
-      )
+      @tempDao.current (temp) =>
+        keg.temp = temp.degrees
+
+        @pourDao.list(keg.id, (pours) ->
+          keg.consumed = 0
+          for pour in pours
+            keg.consumed += pour.volume
+          keg.consumed = keg.consumed
+          keg.lastPour = _.last(pours).start
+
+          callback(keg)
+        )
     )
 
 module.exports = KegManager

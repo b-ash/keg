@@ -23,14 +23,13 @@ class KegDao
     connection.query('INSERT INTO kegs SET ?', [keg], (err, result) ->
       throw err if err
     )
-
     connection.end()
 
   get: (id, callback) =>
     connection = @getConnection()
     connection.query('SELECT kegs.id, name, volume, tapped, kicked, url FROM kegs LEFT JOIN banners ON banners.id = bannerId WHERE kegs.id = ?', [id], (err, keg, fields) ->
       throw err if err
-      callback(keg)
+      callback(keg[0])
     )
     connection.end()
 

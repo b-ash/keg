@@ -23,7 +23,14 @@ class TempDao
     connection.query('INSERT INTO temperature SET degrees = ?', [degrees], (err, result) ->
       throw err if err
     )
+    connection.end()
 
+  current: (callback) =>
+    connection = @getConnection()
+    connection.query('SELECT id, degrees, timestamp FROM temperature WHERE id = (SELECT MAX(id) FROM temperature)', (err, temperature, fields) ->
+      throw err if err
+      callback(temperature[0])
+    )
     connection.end()
 
 module.exports = TempDao
