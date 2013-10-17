@@ -16,17 +16,18 @@ class Simulation
         poursLeft: 35.8
         keg: 'Shock Top Pumpkin Wheat'
         bannerImage: 'shocktop_pumpkin.png'
+        temp: '32.02'
     , @timeout
 
     @timeout += 1000
 
     simulate = (amt) =>
       if amt is 'done'
-        msg = {action: 'done'}
+        msg = {action: 'pour-end'}
         wait = 1500
         last = true
       else
-        msg = {action: 'pouring', amount: amt}
+        msg = {action: 'pour', amount: amt}
         wait = 150
         last = false
 

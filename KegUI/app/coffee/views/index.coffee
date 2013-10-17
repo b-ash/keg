@@ -11,25 +11,26 @@ class IndexView extends View
   template: require('html/index')
 
   initialize: =>
-    @model.on 'change:keg', @updateKegName
-    @model.on 'change:bannerImage', @updateBanner
+    @model.on 'change:name', @updateKegName
+    @model.on 'change:url', @updateBanner
 
   getRenderData: =>
     @model.toJSON()
 
   afterRender: =>
-    if @model.get('keg')?
+    if @model.get('name')?
       @updateKegName()
 
-    if @model.get('bannerImage')?
+    if @model.get('url')?
       @updateBanner()
 
     els =
       lastPour: @$('#last_pour')
-      totalPours: @$('#total_pours')
+      consumed: @$('#total_pours')
       poursLeft: @$('#pours_left')
+      temp: @$('#temp')
 
-    for key in ['lastPour', 'totalPours', 'poursLeft']
+    for key in ['lastPour', 'consumed', 'poursLeft', 'temp']
       ticker = new TickerView
         model: @model
         length: 8
@@ -63,11 +64,11 @@ class IndexView extends View
       @$('.ellipsis').text ellipsis
 
   updateKegName: =>
-    @$('#keg_wrap p').text @model.get('keg')
+    @$('#keg_wrap p').text @model.get('name')
 
   updateBanner: =>
     @$('#brand_banner_wrap')
-      .html(BrandBannerTemplate {bannerImage: @model.get('bannerImage')})
+      .html(BrandBannerTemplate {bannerImage: @model.get('url')})
       .find('img')
       .fadeIn()
 

@@ -27,10 +27,12 @@ class SocketListener
 
     message = JSON.parse(e.data)
 
-    if message.action is 'done'
+    if message.action is 'pour-end'
       @pourComplete()
-    else if message.action is 'pouring'
+    else if message.action is 'pour'
       @pourDialog.updatePour message.amount
+    else if message.action is 'temp'
+      @model.set('temp', message.temp)
     else
       console.error 'Bad message from socket:', message.action
 

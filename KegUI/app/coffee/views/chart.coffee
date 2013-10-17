@@ -23,11 +23,11 @@ class ChartView extends Backbone.View
     "/static/images/beer#{number}.png"
 
   createText: (group, count, column) ->
-    group.append('text')
-      .attr('x', column * @beerWidth)
-      .attr('y', @svgHeight)
-      .attr('text-anchor', 'middle')
-      .text(count)
+    # group.append('text')
+    #   .attr('x', column * @beerWidth)
+    #   .attr('y', @svgHeight)
+    #   .attr('text-anchor', 'middle')
+    #   .text(count)
 
   createBeerImage: (group, row, column) ->
     x = column * @beerWidth
@@ -71,12 +71,12 @@ class ChartView extends Backbone.View
 
     for group in [0 .. data.length]
       g = @main.append('g')
-      count = data[group]
+      count = data[group] / 16  # 16oz per beer
       row = 0
       rows = 1
       column = group * (beersWide + 2)
       if count > 0
-        while count
+        while count > 0
           if count >= BEERS_IN_KEG
             rows = 2
             @createKegImage(g, row, column)
