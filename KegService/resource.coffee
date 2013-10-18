@@ -1,6 +1,7 @@
 express = require('express')
 _ = require('underscore')
 moment = require('moment')
+dbRunner = require('./mysql_runner')
 server = express()
 server.use(express.bodyParser())
 
@@ -10,25 +11,25 @@ Socket = require('./socket')
 socket = new Socket(app)
 
 TempDao = require('./tempDao')
-tempDao = new TempDao
+tempDao = new TempDao(dbRunner)
 
 TempManager = require('./tempManager')
 tempManager = new TempManager(tempDao)
 
 KegDao = require('./kegDao')
-kegDao = new KegDao
+kegDao = new KegDao(dbRunner)
 
 PourDao = require('./pourDao')
-pourDao = new PourDao
+pourDao = new PourDao(dbRunner)
 
 KegManager = require('./kegManager')
 kegManager = new KegManager(kegDao, pourDao, tempDao)
 
 PourManager = require('./pourManager')
-pourManager = new PourManager(socket)
+pourManager = new PourManager(pourDao, socket)
 
 BannerDao = require('./bannerDao')
-bannerDao = new BannerDao
+bannerDao = new BannerDao(dbRunner)
 
 base = "/api";
 

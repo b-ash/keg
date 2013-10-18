@@ -1,5 +1,3 @@
-KegDao = require('./kegDao')
-kegDao = new KegDao
 _ = require('underscore')
 
 class KegManager

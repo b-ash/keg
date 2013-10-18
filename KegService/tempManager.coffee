@@ -1,6 +1,3 @@
-TempDao = require('./tempDao')
-tempDao = new TempDao
-
 class TempManager
 
   constructor: (@tempDao, @socket) ->
