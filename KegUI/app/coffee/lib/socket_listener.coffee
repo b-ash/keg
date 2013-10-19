@@ -5,6 +5,8 @@ class SocketListener
 
   url: '/io'
 
+  constructor: (@model) ->
+
   listen: =>
     @sock = new SockJS(@url)
 
