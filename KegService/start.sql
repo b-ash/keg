@@ -5,3 +5,5 @@ INSERT INTO banners (url) values ('sams_october.jpg');
 INSERT INTO banners (url) values ('sams_winter.jpg');
 
 INSERT INTO kegs (name, bannerId) VALUES ('Shock Top Pumpkin Wheat', 1);
+
+INSERT INTO temperature (degrees) VALUES (32);
