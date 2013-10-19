@@ -5,8 +5,8 @@ class PourDao
   list: (kegId, callback) =>
     @runner('SELECT id, volume, start, end FROM pours WHERE kegId = ?', [kegId], callback)
 
-  create: (volume) =>
-    @runner('INSERT INTO pours SET kegId = (SELECT max(id) FROM kegs), volume = ?', [volume])
+  create: (volume, callback) =>
+    @runner('INSERT INTO pours SET kegId = (SELECT max(id) FROM kegs), volume = ?', [volume], callback)
 
   get: (pourId, callback) =>
     @runner('SELECT id, kegId, volume, start, end FROM pours WHERE id = ?', [pourId], callback, true)

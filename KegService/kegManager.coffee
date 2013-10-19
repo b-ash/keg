@@ -7,8 +7,8 @@ class KegManager
   list: (callback) =>
     @kegDao.list(callback)
 
-  create: (keg) =>
-    @kegDao.create(keg)
+  create: (keg, callback) =>
+    @kegDao.create(keg, callback)
 
   get: (kegId, callback) =>
     @kegDao.get(kegId, callback)

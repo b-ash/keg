@@ -40,8 +40,9 @@ server.get(base + '/kegs', (request, response) ->
 )
 
 server.post(base + '/kegs', (request, response) ->
-  kegManager.create(request.body)
-  response.send(201)
+  kegManager.create(request.body, ->
+    response.send(201)
+  )
 )
 
 server.get(base + '/kegs/current', (request, response) ->
@@ -62,8 +63,9 @@ server.post(base + '/pours', (request, response) ->
 )
 
 server.post(base + '/pour-end', (request, response) ->
-  pourManager.create(request.body.volume)
-  response.send(201)
+  pourManager.create(request.body.volume, ->
+    response.send(201)
+  )
 )
 
 server.get(base + '/kegs/:kegId/pours', (request, response) ->
@@ -103,8 +105,9 @@ server.get(base + '/banners', (request, response) ->
 )
 
 server.post(base + '/banners', (request, response) ->
-  bannerDao.create(request.body.url)
-  response.send(201)
+  bannerDao.create(request.body.url, ->
+    response.send(201)
+  )
 )
 
 server.get(base + '/temps', (request, response) ->
