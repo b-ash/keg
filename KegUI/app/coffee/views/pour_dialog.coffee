@@ -13,7 +13,7 @@ class PourDialog extends View
     @
 
   updatePour: (oz) =>
-    @$('#amount').text oz.toFixed(3)
+    @$('#amount').text oz
 
   showPourComplete: =>
     @_showMessage @successTemplate
