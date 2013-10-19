@@ -15,10 +15,9 @@ except:
 
 
 def send(data):
-    # resp = requests.post("/%s" % data.action, data=json.dumps(data))
-    # print resp.status_text
-    # return resp
-    print json.dumps(data)
+    resp = requests.post("http://keg.bry.io/api/%s" % data.action, data=json.dumps(data))
+    print resp.status_text
+    return resp
 
 
 def parse_ounces(output):
@@ -41,7 +40,7 @@ while True:
         if action == 'pour' or action == 'pour-end':
             data['volume'] = parse_ounces(output)
         elif action == 'temp':
-            data['temp'] = output.strip()
+            data['degrees'] = output.strip()
         else:
             print "Ignoring unknown action %s" % action
             continue
