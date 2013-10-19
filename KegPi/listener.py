@@ -15,8 +15,12 @@ except:
 
 
 def send(data):
-    resp = requests.post("http://keg.bry.io/api/%s" % data.action, data=json.dumps(data))
-    print resp.status_text
+    payload = json.dumps(data)
+    url = "http://keg.bry.io/api/%s" % data['endpoint']
+
+    print "%s to receive %s" % (url, payload)
+    resp = requests.post(url, data=payload, headers={'content-type': 'application/json'})
+    resp.raise_for_status()
     return resp
 
 
@@ -35,12 +39,22 @@ while True:
             continue
 
         action, output = rawInput
-        data = {'action': action}
-
-        if action == 'pour' or action == 'pour-end':
-            data['volume'] = parse_ounces(output)
+        
+        if action == 'pour':
+            data = {
+                'endpoint': 'pours',
+                'volume': parse_ounces(output)
+            }
+        elif action == 'pour-end':
+            data = {
+                'endpoint': 'pour-end',
+                'volume': parse_ounces(output)
+            }
         elif action == 'temp':
-            data['degrees'] = output.strip()
+            data = {
+                'endpoint': 'temps',
+                'degrees': output.strip()
+            }
         else:
             print "Ignoring unknown action %s" % action
             continue
