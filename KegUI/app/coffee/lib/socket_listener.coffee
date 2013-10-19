@@ -35,7 +35,7 @@ class SocketListener
     else if message.action is 'pour'
       @pourDialog.updatePour message.amount
     else if message.action is 'temp'
-      @model.set('temp', message.temp)
+      @model.set('temp', message.temp.toFixed(3))
     else
       console.error 'Bad message from socket:', message.action
 

@@ -7,6 +7,7 @@ class KegStats extends Backbone.Model
     json.poursLeft = ((json.volume - json.consumed) / 16).toFixed(3)
     json.consumed = (json.consumed / 16).toFixed(3)
     json.lastPour = moment(json.lastPour).format('MM/DD/YY')
+    json.temp = json.temp.toFixed(3)
     json
 
 module.exports = KegStats
