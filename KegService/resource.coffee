@@ -14,7 +14,7 @@ TempDao = require('./tempDao')
 tempDao = new TempDao(dbRunner)
 
 TempManager = require('./tempManager')
-tempManager = new TempManager(tempDao)
+tempManager = new TempManager(tempDao, socket)
 
 KegDao = require('./kegDao')
 kegDao = new KegDao(dbRunner)
