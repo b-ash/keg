@@ -6,6 +6,7 @@ class SocketListener
   url: '/io'
 
   constructor: (@model) ->
+    @pourDialog = new PourDialog()
 
   listen: =>
     @sock = new SockJS(@url)
@@ -16,18 +17,18 @@ class SocketListener
     @
 
   showDialog: =>
-    @pourDialog?.close()
-    @pourDialog = new PourDialog().render()
+    @pourDialog.close()
+    @pourDialog.render()
     @
 
   onOpen: ->
     console.log 'Socket is open.'
 
   onMessage: (e) =>
-    unless @pourDialog?
-      @showDialog()
-
     message = JSON.parse(e.data)
+
+    if @pourDialog.$el.is(':hidden') and message.action in ['pour', 'pour-end']
+      @showDialog()
 
     if message.action is 'pour-end'
       @pourComplete()
