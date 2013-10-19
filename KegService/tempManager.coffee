@@ -5,8 +5,8 @@ class TempManager
   list: (callback) =>
     @tempDao.list(callback)
 
-  create: (degrees) =>
-    @tempDao.create(degrees)
+  create: (degrees, callback) =>
+    @tempDao.create(degrees, callback)
     @socket.broadcast
       action: 'temp'
       temp: degrees

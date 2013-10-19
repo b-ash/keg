@@ -114,8 +114,9 @@ server.get(base + '/temps', (request, response) ->
 )
 
 server.post(base + '/temps', (request, response) ->
-  tempManager.create(request.body.degrees)
-  response.send(204)
+  tempManager.create(request.body.degrees, ->
+    response.send(204)
+  )
 )
 
 app.listen(8000)
