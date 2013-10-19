@@ -27,7 +27,7 @@ class SocketListener
   onMessage: (e) =>
     message = JSON.parse(e.data)
 
-    if @pourDialog.$el.is(':hidden') and message.action in ['pour', 'pour-end']
+    if @pourDialog.$el.is(':hidden') and message.action is 'pour'
       @showDialog()
 
     if message.action is 'pour-end'

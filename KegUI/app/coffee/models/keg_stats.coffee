@@ -5,6 +5,7 @@ class KegStats extends Backbone.Model
 
   parse: (json) ->
     json.poursLeft = ((json.volume - json.consumed) / 16).toFixed(3)
+    json.consumed = (json.consumed / 16).toFixed(3)
     json.lastPour = moment(json.lastPour).format('MM/DD/YY')
     json
 
