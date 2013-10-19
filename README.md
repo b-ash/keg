@@ -7,6 +7,7 @@ Keg stats and information
 Webservice
 - Spin up mysql locally
 - Run `KegService/schema.sql`
+- Run `KegService/start.sql` to get some data in there
 - cd into `KegService`
 - `node server.js`
 
