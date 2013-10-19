@@ -47,6 +47,7 @@ class SocketListener
 
     setTimeout =>
       @pourDialog.close()
+      @model.fetch()
     , 2000
 
 
