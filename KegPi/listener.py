@@ -39,7 +39,7 @@ while True:
             continue
 
         action, output = rawInput
-        
+
         if action == 'pour':
             data = {
                 'endpoint': 'pours',
