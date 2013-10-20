@@ -33,7 +33,7 @@ class TempChart extends Backbone.View
     }]
 
   chart: ->
-    unless collection.length
+    unless @collection.length
       return
 
     @$el.highcharts @getChartOptions()
