@@ -10,25 +10,25 @@ app = require('http').createServer(server)
 Socket = require('./socket')
 socket = new Socket(app)
 
-TempDao = require('./tempDao')
+TempDao = require('./data/tempDao')
 tempDao = new TempDao(dbRunner)
 
-TempManager = require('./tempManager')
+TempManager = require('./api/tempManager')
 tempManager = new TempManager(tempDao, socket)
 
-KegDao = require('./kegDao')
+KegDao = require('./data/kegDao')
 kegDao = new KegDao(dbRunner)
 
-PourDao = require('./pourDao')
+PourDao = require('./data/pourDao')
 pourDao = new PourDao(dbRunner)
 
-KegManager = require('./kegManager')
+KegManager = require('./api/kegManager')
 kegManager = new KegManager(kegDao, pourDao, tempDao)
 
-PourManager = require('./pourManager')
+PourManager = require('./api/pourManager')
 pourManager = new PourManager(pourDao, socket)
 
-BannerDao = require('./bannerDao')
+BannerDao = require('./data/bannerDao')
 bannerDao = new BannerDao(dbRunner)
 
 base = "/api";
