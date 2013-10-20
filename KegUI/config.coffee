@@ -16,6 +16,7 @@ module.exports.config =
           'vendor/scripts/jquery.js'
           'vendor/scripts/jquery.scrollto.js'
           'vendor/scripts/jquery.ticker.js'
+          'vendor/scripts/highcharts.src.js'
           'vendor/scripts/bootstrap.js'
           'vendor/scripts/moment.js'
           'vendor/scripts/handlebars.js'

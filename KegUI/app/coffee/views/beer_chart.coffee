@@ -1,6 +1,6 @@
 BEERS_IN_KEG = 41
 
-class ChartView extends Backbone.View
+class BeerChartView extends Backbone.View
 
   className: 'chart'
   el: '.daily-row'
@@ -101,4 +101,4 @@ class ChartView extends Backbone.View
 
       @createText(g, data[group], group * (beersWide + 2) + beersWide / 2)
 
-module.exports = ChartView
+module.exports = BeerChartView

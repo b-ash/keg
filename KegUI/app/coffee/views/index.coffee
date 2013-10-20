@@ -1,7 +1,8 @@
 View = require('coffee/views/view')
 TickerView = require('coffee/views/ticker')
 BrandBannerTemplate = require('html/brand_banner')
-ChartView = require('coffee/views/chart')
+BeerChartView = require('coffee/views/beer_chart')
+TempChartView = require('coffee/views/temp_chart')
 PoursSummary = require("coffee/collections/pours_summary")
 
 
@@ -41,8 +42,8 @@ class IndexView extends View
     dailyCollection = new PoursSummary()
     dailyCollection.period = 'daily'
     dailyCollection.fetch
-      success: =>
-        dailyView = new ChartView
+      success: ->
+        dailyView = new BeerChartView
           collection: dailyCollection
           el: '.daily-chart'
         dailyView.chart()
@@ -50,7 +51,7 @@ class IndexView extends View
     weeklyCollection = new PoursSummary()
     weeklyCollection.period = 'weekly'
     weeklyCollection.fetch
-      success: =>
+      success: ->
         weeklyView = new ChartView
           collection: weeklyCollection
           el: '.weekly-chart'
