@@ -2,8 +2,8 @@ class TempManager
 
   constructor: (@tempDao, @socket) ->
 
-  list: (callback) =>
-    @tempDao.list(callback)
+  list: (options, callback) =>
+    @tempDao.list(options, callback)
 
   create: (degrees, callback) =>
     @tempDao.create(degrees, callback)

@@ -99,7 +99,7 @@ server.post(base + '/banners', (request, response) ->
 )
 
 server.get(base + '/temps', (request, response) ->
-  tempManager.list _.bind(response.json, response)
+  tempManager.list request.query, _.bind(response.json, response)
 )
 
 server.post(base + '/temps', (request, response) ->
