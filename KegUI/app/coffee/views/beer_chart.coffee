@@ -2,7 +2,7 @@ BEERS_IN_KEG = 41
 
 class BeerChartView extends Backbone.View
 
-  className: 'chart'
+  className: 'beer-chart'
   el: '.daily-row'
 
   chart: ->
