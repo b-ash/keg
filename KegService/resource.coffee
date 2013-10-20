@@ -31,12 +31,10 @@ pourManager = new PourManager(pourDao, socket)
 BannerDao = require('./data/bannerDao')
 bannerDao = new BannerDao(dbRunner)
 
-base = "/api";
+base = '/api'
 
 server.get(base + '/kegs', (request, response) ->
-  kegManager.list((kegs) ->
-    response.json(kegs)
-  )
+  kegManager.list _.bind(response.json, response)
 )
 
 server.post(base + '/kegs', (request, response) ->
@@ -46,15 +44,11 @@ server.post(base + '/kegs', (request, response) ->
 )
 
 server.get(base + '/kegs/current', (request, response) ->
-  kegManager.current((keg) ->
-    response.json(keg)
-  )
+  kegManager.current _.bind(response.json, response)
 )
 
 server.get(base + '/kegs/:kegId', (request, response) ->
-  kegManager.get(request.params.kegId, (keg) ->
-    response.json(keg)
-  )
+  kegManager.get request.params.kegId, _.bind(response.json, response)
 )
 
 server.post(base + '/pours', (request, response) ->
@@ -69,9 +63,7 @@ server.post(base + '/pour-end', (request, response) ->
 )
 
 server.get(base + '/kegs/:kegId/pours', (request, response) ->
-  pourManager.list(request.params.kegId, (pours) ->
-    response.json(pours)
-  )
+  pourManager.list request.params.kegId, _.bind(response.json, response)
 )
 
 server.get(base + '/pours/daily', (request, response) ->
@@ -93,15 +85,11 @@ server.get(base + '/pours/weekly', (request, response) ->
 )
 
 server.get(base + '/kegs/:kegId/pours/:pourId', (request, response) ->
-  pourManager.get(request.params.pourId, (pour) ->
-    response.json(pour)
-  )
+  pourManager.get request.params.pourId, _.bind(response.json, response)
 )
 
 server.get(base + '/banners', (request, response) ->
-  bannerDao.list((banners) ->
-    response.json(banners)
-  )
+  bannerDao.list _.bind(response.json, response)
 )
 
 server.post(base + '/banners', (request, response) ->
@@ -111,9 +99,7 @@ server.post(base + '/banners', (request, response) ->
 )
 
 server.get(base + '/temps', (request, response) ->
-  tempManager.list((temps) ->
-    response.json(temps)
-  )
+  tempManager.list _.bind(response.json, response)
 )
 
 server.post(base + '/temps', (request, response) ->
