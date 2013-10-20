@@ -19,9 +19,11 @@ def send(data):
     url = "http://keg.bry.io/api/%s" % data['endpoint']
 
     print "%s to receive %s" % (url, payload)
-    resp = requests.post(url, data=payload, headers={'content-type': 'application/json'})
-    resp.raise_for_status()
-    return resp
+    try:
+        resp = requests.post(url, data=payload, headers={'content-type': 'application/json'})
+        resp.raise_for_status()
+    except:
+        print 'Post failed.'
 
 
 def parse_ounces(output):
