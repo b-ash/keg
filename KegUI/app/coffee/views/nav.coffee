@@ -8,9 +8,17 @@ class Nav extends View
   events:
     'click a': 'routeEvent'
 
+  getRenderData: ->
+    @options.activeItem
+
   routeEvent: (event) =>
+    $target = $(event.currentTarget)
     @$('li.active').removeClass('active')
-    $(event.currentTarget).parent().addClass('active')
+
+    if $target.hasClass('navbar-brand')
+      $target = @$('.home')
+
+    $target.parent().addClass('active')
 
     super
 

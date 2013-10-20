@@ -7,7 +7,15 @@
   <a class="navbar-brand" href="#">Kegums</a>
 </div>
 <ul class="nav navbar-nav">
-  <li class="active">
-    <a href="#">Home</a>
+  <li class="{{getActiveClass this "home"}}">
+    <a href="#" class="home">Home</a>
+  </li>
+
+  <li class="{{getActiveClass this "beers"}}">
+    <a href="#/beers">Beers</a>
+  </li>
+
+  <li class="{{getActiveClass this "fridge"}}">
+    <a href="#/fridge">Fridge</a>
   </li>
 </ul>
