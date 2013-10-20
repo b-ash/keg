@@ -1,16 +1,17 @@
 Temp = require('coffee/models/temp')
+Globals = require('coffee/lib/globals')
 
 
 class Temps extends Backbone.Collection
 
-  apiTimeFormat: 'YYYY/MM/DD hh:mm:ss'
+  apiTimeFormat: 'YYYY/MM/DD HH:mm:ss'
   model: Temp
 
   url: ->
-    end = moment().format(@apiTimeFormat)
-    start = moment().subtract(7, 'days').format(@apiTimeFormat)
+    end = moment.utc().format(@apiTimeFormat)
+    start = moment.utc().subtract(7, 'days').format(@apiTimeFormat)
 
-    "/api/temps?start=#{start}&end=#{end}"
+    "#{Globals.apiOverride}/api/temps?start=#{start}&end=#{end}"
 
 
 module.exports = Temps

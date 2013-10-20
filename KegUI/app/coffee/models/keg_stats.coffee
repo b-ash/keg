@@ -1,7 +1,10 @@
+Globals = require('coffee/lib/globals')
+
+
 class KegStats extends Backbone.Model
 
   url: ->
-    '/api/kegs/current'
+    "#{Globals.apiOverride}/api/kegs/current"
 
   parse: (json) ->
     if json.kicked?

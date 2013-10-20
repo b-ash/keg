@@ -42,26 +42,26 @@ class IndexView extends View
 
     dailyCollection = new PoursSummary('daily')
     dailyCollection.fetch
-      success: ->
-        dailyView = new BeerChartView
+      success: =>
+        @dailyView = new BeerChartView
           collection: dailyCollection
           el: '.daily-chart'
-        dailyView.chart()
+        @dailyView.chart()
 
     weeklyCollection = new PoursSummary('weekly')
     weeklyCollection.fetch
-      success: ->
-        weeklyView = new BeerChartView
+      success: =>
+        @weeklyView = new BeerChartView
           collection: weeklyCollection
           el: '.weekly-chart'
-        weeklyView.chart()
+        @weeklyView.chart()
 
     temps = new Temps
     temps.fetch
-      success: ->
-        tempsView = new TempChartView
+      success: =>
+        @tempsView = new TempChartView
           collection: temps
-        tempsView.chart()
+        @tempsView.chart()
 
   updateEllipsis: (count) =>
     =>
