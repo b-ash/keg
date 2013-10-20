@@ -1,21 +1,24 @@
 <div class="navbar-header">
   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    <span class="sr-only">Toggle navigation</span>
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
   </button>
   <a class="navbar-brand" href="#">Kegums</a>
 </div>
-<ul class="nav navbar-nav">
-  <li class="{{getActiveClass this "home"}}">
-    <a href="#" class="home">Home</a>
-  </li>
+<div class="collapse navbar-collapse navbar-collapse">
+  <ul class="nav navbar-nav">
+    <li class="{{getActiveClass this "home"}}">
+      <a href="#" class="home">Home</a>
+    </li>
 
-  <li class="{{getActiveClass this "beers"}}">
-    <a href="#/beers">Beers</a>
-  </li>
+    <li class="{{getActiveClass this "beers"}}">
+      <a href="#/beers">Beers</a>
+    </li>
 
-  <li class="{{getActiveClass this "fridge"}}">
-    <a href="#/fridge">Fridge</a>
-  </li>
-</ul>
+    <li class="{{getActiveClass this "fridge"}}">
+      <a href="#/fridge">Fridge</a>
+    </li>
+  </ul>
+</div>
