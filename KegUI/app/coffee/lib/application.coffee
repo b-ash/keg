@@ -32,7 +32,7 @@ class Application
     @dailyPours = @deferredObj(new PoursSummary 'daily')
     @weeklyPours = @deferredObj(new PoursSummary 'weekly')
 
-    @socket = new SocketListener(@model).listen()
+    @socket = new SocketListener(@model.obj).listen()
     @router = new Router
       model: @model.obj
       deferredTemps: @temps.promise
