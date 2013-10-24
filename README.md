@@ -1,4 +1,4 @@
-## Keg.bry.io
+## Kegums
 
 Keg stats and information for project Codename: Kegums.
 
