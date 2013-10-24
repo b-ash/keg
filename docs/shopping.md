@@ -4,6 +4,8 @@ This is just our take on how to hook up a keg in a fun way. It does require some
 
 Prices are accurate as of 10/23/13. Without the Kegerator, the total is around $175. There may be places to cut corners (ie. not using a raspberry pi) that would allow you to save some cash, but you would have to rework some things with the setup later on.
 
+I will also mention that no kegerator is complete without sick tap handles. Ebay is your friend - some are very cheap if you get them used, others normally range between $20-40.
+
 ### Amazon
 
 - [The Kegerator!](http://www.amazon.com/gp/product/B007HDDPJG/ref=oh_details_o02_s00_i00?ie=UTF8&psc=1) - $485
