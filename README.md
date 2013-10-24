@@ -6,10 +6,10 @@ The hardware design is heavily influenced by the awesome guys at [KegBot.org](ht
 
 ### Docs
 
-- [Shopping list](Docs/shopping.md)
-- [Setting up the Arduino](Docs/arduino.md)
-- [Setting up the Raspberry Pi](Docs/pi.md)
-- [Hooking it all up](Docs/setup.md)
+- [Shopping list](docs/shopping.md)
+- [Setting up the Arduino](docs/arduino.md)
+- [Setting up the Raspberry Pi](docs/pi.md)
+- [Hooking it all up](docs/setup.md)
 
 ### External Credits
 
