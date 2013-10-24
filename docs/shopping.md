@@ -1,6 +1,6 @@
 ## Shopping List
 
-This is just our take on how to hook up a keg in a fun way. It does require some technical know-how, but that's part of the fun :meatonbone:
+This is just our take on how to hook up a keg in a fun way. It does require some technical know-how, but that's part of the fun :meat_on_bone:
 
 Prices are accurate as of 10/23/13. Without the Kegerator, the total is around $175. There may be places to cut corners (ie. not using a raspberry pi) that would allow you to save some cash, but you would have to rework some things with the setup later on.
 
