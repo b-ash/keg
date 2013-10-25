@@ -28,11 +28,20 @@ kegManager = new KegManager(kegDao, pourDao, tempDao)
 PourManager = require('./api/pourManager')
 pourManager = new PourManager(pourDao, socket)
 
+DrinkerDao = require('./data/drinkerDao')
+drinkerDao = new DrinkerDao(dbRunner)
+
+DrinkerManager = require('./api/drinkerManager')
+drinkerManager = new DrinkerManager(drinkerDao)
+
 BannerDao = require('./data/bannerDao')
 bannerDao = new BannerDao(dbRunner)
 
 base = '/api'
 
+###
+Keg routes
+###
 server.get(base + '/kegs', (request, response) ->
   kegManager.list _.bind(response.json, response)
 )
@@ -51,6 +60,13 @@ server.get(base + '/kegs/:kegId', (request, response) ->
   kegManager.get request.params.kegId, _.bind(response.json, response)
 )
 
+###
+Pour routes
+###
+server.get(base + '/pours', (request, response) ->
+  pourManager.list _.bind(response.json, response)
+)
+
 server.post(base + '/pours', (request, response) ->
   pourManager.pour(request.body.volume)
   response.send(204)
@@ -62,8 +78,23 @@ server.post(base + '/pour-end', (request, response) ->
   )
 )
 
+server.get(base + '/drinkers/:drinkerId/poured', (request, response) ->
+  pourManager.setDrinkerForLastPour request.params.drinkerId, (results) ->
+    if results.success
+      response.send(200)
+    else
+      response.send(400)
+)
+
+server.get(base + '/drinkers/:drinkerId/pours', (request, response) ->
+  pourManager.listByDrinkers _.bind(response.json, response)
+)
+
 server.get(base + '/kegs/:kegId/pours', (request, response) ->
-  pourManager.list request.params.kegId, _.bind(response.json, response)
+  pourManager.list _.bind(response.json, response), {
+    where:
+      kegId: request.params.kegId
+  }
 )
 
 server.get(base + '/pours/daily', (request, response) ->
@@ -84,10 +115,9 @@ server.get(base + '/pours/weekly', (request, response) ->
   )
 )
 
-server.get(base + '/kegs/:kegId/pours/:pourId', (request, response) ->
-  pourManager.get request.params.pourId, _.bind(response.json, response)
-)
-
+###
+Banner routes
+###
 server.get(base + '/banners', (request, response) ->
   bannerDao.list _.bind(response.json, response)
 )
@@ -98,6 +128,9 @@ server.post(base + '/banners', (request, response) ->
   )
 )
 
+###
+Temp routes
+###
 server.get(base + '/temps', (request, response) ->
   tempManager.list request.query, _.bind(response.json, response)
 )
@@ -106,6 +139,31 @@ server.post(base + '/temps', (request, response) ->
   tempManager.create(request.body.degrees, ->
     response.send(204)
   )
+)
+
+###
+Drinker routes
+###
+server.get(base + '/drinkers', (request, response) ->
+  drinkerManager.list _.bind(response.json, response)
+)
+
+server.post(base + '/drinkers', (request, response) ->
+  drinkerManager.create request.body.name, ->
+    response.send(204)
+)
+
+server.post(base + '/drinkers/:drinkerId/request-drink', (request, response) ->
+  drinkerManager.requestDrink request.params.drinkerId, (resp) ->
+    if resp.success
+      response.send(200)
+    else
+      response.send(400)
+)
+
+server.post(base + '/drinkers/:drinkerId/end-drink', (request, response) ->
+  drinkerManager.endDrink request.params.drinkerId, ->
+    response.send(200)
 )
 
 app.listen(8000)

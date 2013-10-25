@@ -13,6 +13,7 @@ executeQuery = (query, params=[], callback, singleResult=false) ->
       console.log 'Error aquiring connection from pool'
       throw err
 
+    console.log query
     connection.query query, params, (err, results) ->
       connection.release()
 

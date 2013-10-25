@@ -23,11 +23,35 @@ CREATE TABLE pours (
 CREATE TABLE banners (
   id INT AUTO_INCREMENT KEY,
   url VARCHAR(128) NOT NULL
-);  
+);
 
 CREATE TABLE temperature (
   id INT AUTO_INCREMENT KEY,
   degrees FLOAT NOT NULL,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP  
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE drinkers (
+  id INT AUTO_INCREMENT KEY,
+  name VARCHAR(48) NOT NULL
+);
+
+CREATE TABLE drinking (
+  drinkerId INT NULL,
+  CONSTRAINT drinking_drinker_pk
+    FOREIGN KEY (drinkerId)
+    REFERENCES drinkers(id)
+);
+
+ALTER TABLE pours
+  DROP COLUMN end,
+  ADD drinkerId INT
+;
+
+INSERT INTO drinking (drinkerId) values (NULL);
+
+ALTER TABLE pours
+  ADD CONSTRAINT pour_drinker_fk
+    FOREIGN KEY(drinkerId)
+    REFERENCES drinkers(id)
+;

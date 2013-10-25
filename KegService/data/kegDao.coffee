@@ -1,12 +1,11 @@
-class KegDao
+Dao = require('./dao')
 
-  constructor: (@runner) ->
+class KegDao extends Dao
+  table: 'keg'
+  fields: ['id', 'name', 'volume', 'tapped', 'kicked', 'bannerId']
 
   list: (callback) =>
     @runner('SELECT kegs.id, name, url FROM kegs LEFT JOIN banners ON banners.id = bannerId', [], callback)
-
-  create: (keg, callback) =>
-    @runner('INSERT INTO kegs SET ?', [keg], callback)
 
   get: (id, callback) =>
     @runner('SELECT kegs.id, name, volume, tapped, kicked, url FROM kegs LEFT JOIN banners ON banners.id = bannerId WHERE kegs.id = ?', [id], callback, true)

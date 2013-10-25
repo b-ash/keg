@@ -9,7 +9,7 @@ class Temps extends Backbone.Collection
 
   url: ->
     end = moment.utc().format(@apiTimeFormat)
-    start = moment.utc().subtract(7, 'days').format(@apiTimeFormat)
+    start = moment.utc().subtract(1, 'days').format(@apiTimeFormat)
 
     "#{Globals.apiOverride}/api/temps?start=#{start}&end=#{end}"
 

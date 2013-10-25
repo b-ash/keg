@@ -3,10 +3,10 @@ class TempManager
   constructor: (@tempDao, @socket) ->
 
   list: (options, callback) =>
-    @tempDao.list(options, callback)
+    @tempDao.list(callback, options)
 
   create: (degrees, callback) =>
-    @tempDao.create(degrees, callback)
+    @tempDao.create({degrees}, callback)
     @socket.broadcast
       action: 'temp'
       temp: degrees
