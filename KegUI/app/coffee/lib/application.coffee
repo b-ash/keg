@@ -8,6 +8,7 @@ PoursSummary = require('coffee/collections/pours_summary')
 $ = jQuery
 
 vex.defaultOptions.className = 'vex-theme-wireframe'
+shouldLimitApiCalls = 'mobile' in navigator.userAgent and 'nexus 7' not in navigator.userAgent
 
 class Application
 
@@ -23,28 +24,35 @@ class Application
     Handlebars.registerHelper 'getActiveClass', (active, claxx) ->
       if active is claxx
         return 'active'
+    Handlebars.registerHelper 'shouldShowBeerGraphs', (options) ->
+      if shouldLimitApiCalls
+        options.inverse()
+      else
+        options.fn()
 
   start: =>
     @initHelpers()
 
     @model = @deferredObj(new KegStats)
     @temps = @deferredObj(new Temps)
-    @dailyPours = @deferredObj(new PoursSummary 'daily')
-    @weeklyPours = @deferredObj(new PoursSummary 'weekly')
+
+    unless shouldLimitApiCalls
+      @dailyPours = @deferredObj(new PoursSummary 'daily')
+      @weeklyPours = @deferredObj(new PoursSummary 'weekly')
 
     @socket = new SocketListener(@model.obj).listen()
     @router = new Router
       model: @model.obj
       deferredTemps: @temps.promise
-      deferredDaily: @dailyPours.promise
-      deferredWeekly: @weeklyPours.promise
+      deferredDaily: @dailyPours?.promise
+      deferredWeekly: @weeklyPours?.promise
 
     Backbone.history.start()
 
     @model.fetch()
     @temps.fetch()
-    @dailyPours.fetch()
-    @weeklyPours.fetch()
+    @dailyPours?.fetch()
+    @weeklyPours?.fetch()
 
 $ ->
   window.app = new Application
