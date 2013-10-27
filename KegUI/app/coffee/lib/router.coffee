@@ -4,6 +4,7 @@ EditView = require('coffee/views/edit')
 FridgeView = require('coffee/views/fridge')
 BeersView = require('coffee/views/beers')
 DrinkView = require('coffee/views/drink')
+LeaderboardView = require('coffee/views/leaderboard')
 Simulation = require('coffee/lib/simulation')
 
 $ = jQuery
@@ -15,6 +16,7 @@ class Router extends Backbone.Router
     'fridge': 'fridge'
     'beers': 'beers'
     'drink': 'drink'
+    'leaderboard': 'leaderboard'
     'simulate': 'simulate'
     '*query': 'index'
 
@@ -43,6 +45,9 @@ class Router extends Backbone.Router
     @changeView DrinkView, 'drink',
       model: @options.model
       deferredDrinkers: @options.deferredDrinkers
+
+  leaderboard: =>
+    @changeView LeaderboardView, 'leaderboard', {model: @options.model}
 
   simulate: =>
     @index()

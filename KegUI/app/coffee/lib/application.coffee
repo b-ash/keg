@@ -1,3 +1,4 @@
+Globals = require('coffee/lib/globals')
 Router = require('coffee/lib/router')
 SocketListener = require('coffee/lib/socket_listener')
 
@@ -30,6 +31,8 @@ class Application
         options.inverse()
       else
         options.fn()
+    Handlebars.registerHelper 'getBeers', (ounces) ->
+      (ounces / Globals.beerSize).toFixed(3)
 
   start: =>
     @initHelpers()

@@ -1,4 +1,4 @@
-BEERS_IN_KEG = 41
+BEERS_IN_KEG = 55
 
 class BeerChartView extends Backbone.View
 
@@ -71,7 +71,7 @@ class BeerChartView extends Backbone.View
 
     for group in [0 .. data.length]
       g = @main.append('g')
-      count = data[group] / 16  # 16oz per beer
+      count = data[group] / 12  # 12oz per beer
       row = 0
       rows = 1
       column = group * (beersWide + 2)
