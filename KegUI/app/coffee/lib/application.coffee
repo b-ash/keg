@@ -3,6 +3,7 @@ SocketListener = require('coffee/lib/socket_listener')
 
 KegStats = require('coffee/models/keg_stats')
 Temps = require('coffee/collections/temps')
+Drinkers = require('coffee/collections/drinkers')
 PoursSummary = require('coffee/collections/pours_summary')
 
 $ = jQuery
@@ -35,6 +36,7 @@ class Application
 
     @model = @deferredObj(new KegStats)
     @temps = @deferredObj(new Temps)
+    @drinkers = @deferredObj(new Drinkers)
 
     unless shouldLimitApiCalls
       @dailyPours = @deferredObj(new PoursSummary 'daily')
@@ -44,6 +46,7 @@ class Application
     @router = new Router
       model: @model.obj
       deferredTemps: @temps.promise
+      deferredDrinkers: @drinkers.promise
       deferredDaily: @dailyPours?.promise
       deferredWeekly: @weeklyPours?.promise
 
@@ -51,6 +54,7 @@ class Application
 
     @model.fetch()
     @temps.fetch()
+    @drinkers.fetch()
     @dailyPours?.fetch()
     @weeklyPours?.fetch()
 

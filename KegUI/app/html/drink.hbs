@@ -1,0 +1,19 @@
+<div class="row">
+  <h2>Select a drinker</h2>
+
+  <table id="drinkers">
+    <thead>
+      <tr>
+        <td class="name"></td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each drinkers}}
+      <tr id="{{id}}">
+        <td>{{name}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

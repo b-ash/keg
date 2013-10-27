@@ -43,6 +43,10 @@ class SocketListener
     console.error 'Socket was closed.', e.reason
 
   pourComplete: =>
+    if window.app.drinker?
+      window.app.drinker.endAndSetLastPour()
+      window.app.drinker = null
+
     @pourDialog.showPourComplete()
 
     setTimeout =>

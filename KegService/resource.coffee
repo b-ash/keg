@@ -78,7 +78,7 @@ server.post(base + '/pour-end', (request, response) ->
   )
 )
 
-server.get(base + '/drinkers/:drinkerId/poured', (request, response) ->
+server.post(base + '/drinkers/:drinkerId/poured', (request, response) ->
   pourManager.setDrinkerForLastPour request.params.drinkerId, (results) ->
     if results.success
       response.send(200)
@@ -86,8 +86,12 @@ server.get(base + '/drinkers/:drinkerId/poured', (request, response) ->
       response.send(400)
 )
 
-server.get(base + '/drinkers/:drinkerId/pours', (request, response) ->
+server.get(base + '/drinkers/pours', (request, response) ->
   pourManager.listByDrinkers _.bind(response.json, response)
+)
+
+server.get(base + '/drinkers/:drinkerId/pours', (request, response) ->
+  pourManager.getByDrinker request.params.drinkerId, _.bind(response.json, response)
 )
 
 server.get(base + '/kegs/:kegId/pours', (request, response) ->

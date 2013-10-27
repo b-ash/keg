@@ -3,6 +3,7 @@ IndexView = require('coffee/views/index')
 EditView = require('coffee/views/edit')
 FridgeView = require('coffee/views/fridge')
 BeersView = require('coffee/views/beers')
+DrinkView = require('coffee/views/drink')
 Simulation = require('coffee/lib/simulation')
 
 $ = jQuery
@@ -13,6 +14,7 @@ class Router extends Backbone.Router
     'edit': 'edit'
     'fridge': 'fridge'
     'beers': 'beers'
+    'drink': 'drink'
     'simulate': 'simulate'
     '*query': 'index'
 
@@ -36,6 +38,11 @@ class Router extends Backbone.Router
       model: @options.model
       deferredDaily: @options.deferredDaily
       deferredWeekly: @options.deferredWeekly
+
+  drink: =>
+    @changeView DrinkView, 'drink',
+      model: @options.model
+      deferredDrinkers: @options.deferredDrinkers
 
   simulate: =>
     @index()

@@ -19,5 +19,8 @@ class PourDao extends Dao
   listByDrinkers: (callback) =>
     @runner('SELECT kegId, sum(volume) AS volume, drinkerId FROM pours GROUP BY drinkerId', [], callback)
 
+  getByDrinker: (drinkerId, callback) =>
+    @runner('SELECT kegId, sum(volume) AS volume, drinkerId FROM pours where drinkerId = ?', [drinkerId], callback, true)
+
 
 module.exports = PourDao

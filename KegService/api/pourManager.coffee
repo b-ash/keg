@@ -22,6 +22,9 @@ class PourManager
   listByDrinkers: (callback) ->
     @pourDao.listByDrinkers callback
 
+  getByDrinker: (drinkerId, callback) ->
+    @pourDao.getByDrinker drinkerId, callback
+
   daily: (callback) ->
     @pourDao.daily(callback)
 
