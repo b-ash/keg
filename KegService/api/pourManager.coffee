@@ -5,7 +5,7 @@ class PourManager
   constructor: (@pourDao, @socket) ->
 
   create: (volume, callback) ->
-    @pourDao.create({volume}, callback)
+    @pourDao.create(volume, callback)
     @socket.broadcast {action: 'pour-end'}
 
   pour: (volume) ->
