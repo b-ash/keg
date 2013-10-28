@@ -27,6 +27,11 @@ class Application
     Handlebars.registerHelper 'getActiveClass', (active, claxx) ->
       if active is claxx
         return 'active'
+    Handlebars.registerHelper 'isNexus7', (options) ->
+      if /(nexus 7)/gi.test(navigator.userAgent)
+        options.fn()
+      else
+        options.inverse()
     Handlebars.registerHelper 'unlessLimitedMobile', (options) ->
       if shouldLimitApiCalls
         options.inverse()
