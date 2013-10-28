@@ -9,7 +9,7 @@ class DrinkerManager
     @drinkerDao.list(callback)
 
   create: (name, callback) =>
-    @drinkerDao.create(name, callback)
+    @drinkerDao.create({name}, callback)
 
   requestDrink: (drinkerId, callback) =>
     @drinkerDao.requestDrink drinkerId, (result) ->

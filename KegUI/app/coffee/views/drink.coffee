@@ -1,4 +1,5 @@
 View = require('coffee/views/view')
+CreateDrinkerDialog = require('coffee/views/create_drinker_dialog')
 $ = jQuery
 
 class DrinkView extends View
@@ -6,6 +7,14 @@ class DrinkView extends View
   template: require('html/drink')
   events:
     'click tr': 'selectDrinker'
+    'click #create button': 'createDrinker'
+
+  getRenderData: ->
+    drinkers: @collection?.toJSON() ? []
+
+  postRender: ->
+    @options.deferredDrinkers.done (@collection) =>
+      @render()
 
   selectDrinker: (event) =>
     id = $(event.currentTarget).attr('id')
@@ -31,12 +40,12 @@ class DrinkView extends View
         setTimeout vex.close, 1500
       )
 
-  getRenderData: ->
-    drinkers: @collection?.toJSON() ? []
+  createDrinker: (event) =>
+    dialog = new CreateDrinkerDialog
+      collection: @collection
+      successCallback: @render
 
-  postRender: ->
-    @options.deferredDrinkers.done (@collection) =>
-      @render()
+    dialog.render()
 
 
 module.exports = DrinkView
