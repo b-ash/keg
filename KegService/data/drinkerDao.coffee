@@ -10,6 +10,8 @@ class DrinkerDao extends Dao
 
     super(obj, createdCallback)
 
+  getDrinking: (callback) =>
+    @runner("SELECT drinkerId as id, name FROM drinking LEFT JOIN drinkers ON drinkerId = drinkers.id WHERE drinkerId IS NOT NULL", [], callback, true)
 
   requestDrink: (drinkerId, callback) =>
     @runner('UPDATE drinking set drinkerId = ? WHERE drinkerId IS NULL', [drinkerId], callback)

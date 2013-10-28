@@ -169,5 +169,9 @@ server.post(base + '/drinkers/:drinkerId/end-drink', (request, response) ->
     response.send(200)
 )
 
+server.get(base + '/drinking', (request, response) ->
+  drinkerManager.getDrinking _.bind(response.json, response)
+)
+
 app.listen(8000)
 console.log 'Server listening on port 8000'

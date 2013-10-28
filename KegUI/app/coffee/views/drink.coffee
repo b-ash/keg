@@ -8,9 +8,11 @@ class DrinkView extends View
   events:
     'click tr': 'selectDrinker'
     'click #create button': 'createDrinker'
+    'click #cancel button': 'cancelDrinker'
 
   getRenderData: ->
     drinkers: @collection?.toJSON() ? []
+    drinker: window.app.drinker?.toJSON()
 
   postRender: ->
     @options.deferredDrinkers.done (@collection) =>
@@ -21,13 +23,17 @@ class DrinkView extends View
     drinker = @collection.get(id)
     drinker
       .requestDrink()
-      .then(->
+      .then(=>
         window.app.drinker = drinker
 
         vex.open
           content: "<h2>Drink up #{drinker.get('name')}</h2>"
 
-        setTimeout vex.close, 1500
+        @render()
+
+        setTimeout =>
+          vex.close()
+        , 1500
       ).fail((xhr) ->
         if xhr.status is 400
           msg = 'Hold up, someone else is drinking.'
@@ -39,6 +45,11 @@ class DrinkView extends View
 
         setTimeout vex.close, 1500
       )
+
+  cancelDrinker: (event) ->
+    window.app.drinker.endDrink()
+    window.app.drinker = null
+    @render()
 
   createDrinker: (event) =>
     dialog = new CreateDrinkerDialog

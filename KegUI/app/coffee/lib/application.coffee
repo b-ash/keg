@@ -5,6 +5,7 @@ SocketListener = require('coffee/lib/socket_listener')
 KegStats = require('coffee/models/keg_stats')
 Temps = require('coffee/collections/temps')
 Drinkers = require('coffee/collections/drinkers')
+Drinker = require('coffee/models/drinker')
 PoursSummary = require('coffee/collections/pours_summary')
 
 $ = jQuery
@@ -33,6 +34,13 @@ class Application
         options.fn()
     Handlebars.registerHelper 'getBeers', (ounces) ->
       (ounces / Globals.beerSize).toFixed(3)
+    Handlebars.registerHelper 'getDrinkerName', (defaultName) ->
+      window.app.drinker?.get('name') ? defaultName
+
+  setGlobalDrinker: =>
+    $.getJSON '/api/drinking', (json) =>
+      if json?
+        @drinker = @drinkers.obj.get(json.id)
 
   start: =>
     @initHelpers()
@@ -57,7 +65,7 @@ class Application
 
     @model.fetch()
     @temps.fetch()
-    @drinkers.fetch()
+    @drinkers.fetch().then(@setGlobalDrinker)
     @dailyPours?.fetch()
     @weeklyPours?.fetch()
 

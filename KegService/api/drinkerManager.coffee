@@ -11,6 +11,9 @@ class DrinkerManager
   create: (name, callback) =>
     @drinkerDao.create({name}, callback)
 
+  getDrinking: (callback) =>
+    @drinkerDao.getDrinking(callback)
+
   requestDrink: (drinkerId, callback) =>
     @drinkerDao.requestDrink drinkerId, (result) ->
       callback {success: result.affectedRows is 1}

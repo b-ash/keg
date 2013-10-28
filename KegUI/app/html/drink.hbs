@@ -1,4 +1,10 @@
 <div class="row">
+  {{#if drinker}}
+  <h2>Current drinker: {{drinker.name}}</h2>
+  <div id="cancel">
+    <button class="btn btn-primary">Cancel drinker</button>
+  </div>
+  {{else}}
   <h2>Select a drinker</h2>
 
   <table id="drinkers">
@@ -20,4 +26,5 @@
   <div id="create">
     <button class="btn btn-primary">Add yourself</button>
   </div>
+  {{/if}}
 </div>
