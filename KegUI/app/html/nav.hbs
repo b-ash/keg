@@ -13,11 +13,11 @@
       <a href="#" class="home">Home</a>
     </li>
 
-    {{#shouldShowBeerGraphs}}
+    {{#unlessLimitedMobile}}
     <li class="{{getActiveClass this "beers"}}">
       <a href="#/beers">Beers</a>
     </li>
-    {{/shouldShowBeerGraphs}}
+    {{/unlessLimitedMobile}}
 
     <li class="{{getActiveClass this "fridge"}}">
       <a href="#/fridge">Fridge</a>
@@ -27,8 +27,10 @@
       <a href="#/leaderboard">Leaderboard</a>
     </li>
 
+    {{#unlessLimitedMobile}}
     <li class="{{getActiveClass this "drink"}}">
       <a href="#/drink">Drink</a>
     </li>
+    {{/unlessLimitedMobile}}
   </ul>
 </div>

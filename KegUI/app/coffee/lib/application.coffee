@@ -27,7 +27,7 @@ class Application
     Handlebars.registerHelper 'getActiveClass', (active, claxx) ->
       if active is claxx
         return 'active'
-    Handlebars.registerHelper 'shouldShowBeerGraphs', (options) ->
+    Handlebars.registerHelper 'unlessLimitedMobile', (options) ->
       if shouldLimitApiCalls
         options.inverse()
       else
