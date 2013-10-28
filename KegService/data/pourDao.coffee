@@ -5,6 +5,7 @@ class PourDao extends Dao
   fields: ['id', 'kegId', 'volume', 'start', 'drinkerId']
 
   create: (volume, callback) =>
+    console.log "Inserting pour with volume #{volume}"
     @runner('INSERT INTO pours SET kegId = (SELECT max(id) FROM kegs), volume = ?', [volume], callback)
 
   daily: (callback) =>
