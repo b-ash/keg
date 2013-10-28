@@ -153,8 +153,7 @@ server.get(base + '/drinkers', (request, response) ->
 )
 
 server.post(base + '/drinkers', (request, response) ->
-  drinkerManager.create request.body.name, ->
-    response.send(204)
+  drinkerManager.create request.body.name, _.bind(response.json, response)
 )
 
 server.post(base + '/drinkers/:drinkerId/request-drink', (request, response) ->
