@@ -11,7 +11,7 @@ PoursSummary = require('coffee/collections/pours_summary')
 $ = jQuery
 
 vex.defaultOptions.className = 'vex-theme-wireframe'
-shouldLimitApiCalls = 'mobile' in navigator.userAgent and 'nexus 7' not in navigator.userAgent
+shouldLimitApiCalls = /(mobile|iphone)/gi.test(navigator.userAgent) and not /(nexus 7)/gi.test(navigator.userAgent)
 
 class Application
 
