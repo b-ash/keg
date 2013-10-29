@@ -14,13 +14,13 @@ class PourDao extends Dao
     @runner('SELECT start, sum(volume) as volume FROM pours GROUP BY WEEK(start) ORDER BY start DESC LIMIT 7', [], callback)
 
   setDrinkerForLastPour: (drinkerId, callback) =>
-    @runner('UPDATE pours SET drinkerId = ? where drinkerId IS NULL ORDER BY id DESC LIMIT 1', [drinkerId], callback)
+    @runner('UPDATE pours SET drinkerId = ? WHERE drinkerId IS NULL ORDER BY id DESC LIMIT 1', [drinkerId], callback)
 
   listByDrinkers: (callback) =>
-    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId, name as drinkerName FROM pours LEFT JOIN drinkers ON drinkers.id = drinkerId WHEN drinkerId IS NOT NULL GROUP BY drinkerId ORDER BY volume DESC', [], callback)
+    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId, name as drinkerName FROM pours LEFT JOIN drinkers ON drinkers.id = drinkerId WHERE drinkerId IS NOT NULL GROUP BY drinkerId ORDER BY volume DESC', [], callback)
 
   getByDrinker: (drinkerId, callback) =>
-    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId FROM pours where drinkerId = ?', [drinkerId], callback, true)
+    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId FROM pours WHERE drinkerId = ?', [drinkerId], callback, true)
 
 
 module.exports = PourDao
