@@ -5,7 +5,7 @@ class TickerView extends Backbone.View
 
   ticking: false
   speed: 30
-  alph: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890/.'
+  alph: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890/.-'
 
   initialize: (options={}) =>
     unless @model? and options.field? and options.length?
