@@ -17,7 +17,7 @@ class PourDao extends Dao
     @runner('UPDATE pours SET drinkerId = ? where drinkerId IS NULL ORDER BY id DESC LIMIT 1', [drinkerId], callback)
 
   listByDrinkers: (callback) =>
-    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId, name as drinkerName FROM pours LEFT JOIN drinkers ON drinkers.id = drinkerId GROUP BY drinkerId ORDER BY volume DESC', [], callback)
+    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId, name as drinkerName FROM pours LEFT JOIN drinkers ON drinkers.id = drinkerId WHEN drinkerId IS NOT NULL GROUP BY drinkerId ORDER BY volume DESC', [], callback)
 
   getByDrinker: (drinkerId, callback) =>
     @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId FROM pours where drinkerId = ?', [drinkerId], callback, true)
