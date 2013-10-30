@@ -48,7 +48,7 @@ server.get(base + '/kegs', (request, response) ->
 
 server.post(base + '/kegs', (request, response) ->
   kegManager.create(request.body, ->
-    response.send(201)
+    kegManager.current _.bind(response.json, response)
   )
 )
 
@@ -58,6 +58,11 @@ server.get(base + '/kegs/current', (request, response) ->
 
 server.get(base + '/kegs/:kegId', (request, response) ->
   kegManager.get request.params.kegId, _.bind(response.json, response)
+)
+
+server.put(base + '/kegs/:kegId', (request, response) ->
+  kegManager.update request.params.kegId, request.body, ->
+    kegManager.current _.bind(response.json, response)
 )
 
 ###

@@ -1,8 +1,11 @@
 Dao = require('./dao')
 
 class KegDao extends Dao
-  table: 'keg'
+  table: 'kegs'
   fields: ['id', 'name', 'volume', 'tapped', 'kicked', 'bannerId']
+
+  update: (id, params, callback) =>
+    @runner("UPDATE kegs SET ? WHERE id = #{id}", params, callback)
 
   list: (callback) =>
     @runner('SELECT kegs.id, name, url FROM kegs LEFT JOIN banners ON banners.id = bannerId', [], callback)

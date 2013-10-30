@@ -10,6 +10,9 @@ class KegManager
   get: (kegId, callback) =>
     @kegDao.get(kegId, callback)
 
+  update: (kegId, params, callback) =>
+    @kegDao.update(kegId, params, callback)
+
   list: (callback) =>
     @kegDao.list(callback)
 

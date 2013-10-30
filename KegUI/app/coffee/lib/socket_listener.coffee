@@ -50,6 +50,7 @@ class SocketListener
     @pourDialog.showPourComplete()
 
     setTimeout =>
+      app.router.navigate '#/', {trigger: true}
       @pourDialog.close()
       @model.fetch()
     , 2000

@@ -1,6 +1,6 @@
 Nav = require('coffee/views/nav')
 IndexView = require('coffee/views/index')
-EditView = require('coffee/views/edit')
+AdminView = require('coffee/views/admin')
 FridgeView = require('coffee/views/fridge')
 BeersView = require('coffee/views/beers')
 DrinkView = require('coffee/views/drink')
@@ -12,7 +12,7 @@ $ = jQuery
 class Router extends Backbone.Router
 
   routes:
-    'edit': 'edit'
+    'admin': 'admin'
     'fridge': 'fridge'
     'beers': 'beers'
     'drink': 'drink'
@@ -27,8 +27,8 @@ class Router extends Backbone.Router
   index: =>
     @changeView IndexView, 'home', {model: @options.model}
 
-  edit: =>
-    @changeView EditView, '', {model: @options.model}
+  admin: =>
+    @changeView AdminView, '', {model: @options.model}
 
   fridge: =>
     @changeView FridgeView, 'fridge',
@@ -68,7 +68,13 @@ class Router extends Backbone.Router
     @currentView?.close()
     @currentView = @view
 
-    $('.content').html @view.render().el
+    render = =>
+      $('.content').html @view.render().el
+
+    if @view.deferredRender?
+      @view.deferredRender render
+    else
+      render()
 
     @currentView.postRender?()
 
