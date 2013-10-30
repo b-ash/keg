@@ -32,11 +32,11 @@ class Application
         options.fn()
       else
         options.inverse()
-    Handlebars.registerHelper 'unlessLimitedMobile', (options) ->
+    Handlebars.registerHelper 'unlessLimitedMobile', (ctx, options) ->
       if shouldLimitApiCalls
-        options.inverse()
+        options.inverse ctx
       else
-        options.fn()
+        options.fn ctx
     Handlebars.registerHelper 'getBeers', (ounces) ->
       (ounces / Globals.beerSize).toFixed(3)
     Handlebars.registerHelper 'getDrinkerName', (defaultName) ->

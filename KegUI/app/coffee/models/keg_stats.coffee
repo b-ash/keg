@@ -23,7 +23,7 @@ class KegStats extends Backbone.Model
     else
       json.lastPour = 'never'
 
-    json.temp = json.temp.toFixed(3)
+    json.temp = json.temp?.toFixed(3)
     json
 
 module.exports = KegStats
