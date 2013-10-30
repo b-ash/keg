@@ -10,7 +10,7 @@ int FLOW_METER_PIN = 2;
 
 int POUR_INTERVAL_LOOPS = 60; // ~6 seconds
 int TEMP_INTERVAL_LOOPS = 300; // ~30 seconds
-int POUR_DEBOUNCE_PULSES = 10;
+int POUR_DEBOUNCE_PULSES = 170;
 
 int rawPulses = 0;
 int rawPulsesPrev = 0;
@@ -51,19 +51,19 @@ void pourLoop() {
   if (rawPulses <= 0) {
     return;
   }
-  
+
   Serial.print('info:raw pulses:');
   Serial.println(rawPulses, DEC);
-  
+
   if (rawPulses == rawPulsesPrev) {
     loopsAfterPourWithoutPulses += 1;
   }
-  
+
   rawPulsesPrev = rawPulses;
   boolean pouring = rawPulses > POUR_DEBOUNCE_PULSES;
   boolean finished = loopsAfterPourWithoutPulses >= POUR_INTERVAL_LOOPS;
   digitalWrite(POUR_LED_PIN, pouring && !finished);
-  
+
   if (pouring) {
     if (rawPulses - lastPourSend >= 150) {
       sendPourToSerial();
@@ -73,7 +73,7 @@ void pourLoop() {
       sendPourEndToSerial();
     }
   }
-  
+
   if (finished) {
     resetPourCounters();
   }
@@ -89,7 +89,7 @@ void tempLoop() {
     int rawTemp = analogRead(TEMP_SENSOR_PIN);
     float temp = ((rawTemp / 1024.0 * 5 * 1000) - 500) / 10 * 9 / 5 + 32;
     Serial.print("temp:");
-    Serial.println(temp, DEC); 
+    Serial.println(temp, DEC);
   }
 }
 
