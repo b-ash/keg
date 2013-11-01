@@ -39,6 +39,11 @@ class Application
         options.fn ctx
     Handlebars.registerHelper 'getBeers', (ounces) ->
       (ounces / Globals.beerSize).toFixed(3)
+    Handlebars.registerHelper 'getFixedNumber', (ounces) ->
+      try
+        ounces.toFixed(3)
+      catch e
+        ounces
     Handlebars.registerHelper 'getDrinkerName', (defaultName) ->
       window.app.drinker?.get('name') ? defaultName
 
