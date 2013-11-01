@@ -4,7 +4,7 @@ Highcharts.setOptions {global: useUTC: false}
 class TempChart extends Backbone.View
 
   el: '#temp_chart'
-  title: 'Fridge temperature'
+  title: 'Fridge temperature last 24 hours'
   subtitle: '(click and drag to zoom)'
 
   getChartOptions: ->
