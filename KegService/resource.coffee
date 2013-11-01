@@ -77,6 +77,12 @@ server.post(base + '/pours', (request, response) ->
   response.send(204)
 )
 
+server.put(base + '/pours/:pourId', (request, response) ->
+  pourManager.update(request.params.pourId, request.body, ->
+    pourManager.get(request.params.pourId, _.bind(response.json, response))
+  )
+)
+
 server.post(base + '/pour-end', (request, response) ->
   pourManager.create(request.body.volume, ->
     response.send(201)

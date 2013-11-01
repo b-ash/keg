@@ -1,9 +1,9 @@
 Globals = require('coffee/lib/globals')
-DrinkerPour = require('coffee/models/drinker_pour')
+Pour = require('coffee/models/pour')
 
 class DrinkersPours extends Backbone.Collection
 
-  model: DrinkerPour
+  model: Pour
 
   url: ->
     "#{Globals.apiOverride}/api/drinkers/pours"

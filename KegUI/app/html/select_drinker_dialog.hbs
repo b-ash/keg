@@ -1,0 +1,17 @@
+<h3>Who you be?</h3>
+
+<table id="drinkers" class="kegums-table">
+  <thead>
+    <tr>
+      <td>Name</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each drinkers}}
+    <tr id="{{id}}" class="clickable">
+      <td>{{name}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

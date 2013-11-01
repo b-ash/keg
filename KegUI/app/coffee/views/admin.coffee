@@ -52,7 +52,7 @@ class AdminView extends View
     @model.save data,
       wait: true
       success: ->
-        app.router.navigate '#', {trigger: true}
+        app.router.navigate '#/', {trigger: true}
 
   toggle: (event) =>
     id = $(event.currentTarget).data('toggle')

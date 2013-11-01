@@ -8,6 +8,10 @@ class Nav extends View
   events:
     'click a': 'routeEvent'
 
+  updateActive: (route) ->
+    @$('.active').removeClass('active')
+    @$("[data-route='#{route}']").addClass('active')
+
   getRenderData: ->
     @options.activeItem
 

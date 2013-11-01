@@ -4,6 +4,7 @@ AdminView = require('coffee/views/admin')
 FridgeView = require('coffee/views/fridge')
 BeersView = require('coffee/views/beers')
 DrinkView = require('coffee/views/drink')
+ClaimView = require('coffee/views/claim')
 LeaderboardView = require('coffee/views/leaderboard')
 Simulation = require('coffee/lib/simulation')
 
@@ -16,12 +17,17 @@ class Router extends Backbone.Router
     'fridge': 'fridge'
     'beers': 'beers'
     'drink': 'drink'
+    'claim': 'claim'
     'leaderboard': 'leaderboard'
     'simulate': 'simulate'
     '*query': 'index'
 
   initialize: (options) =>
     @options = options
+    super
+
+  navigate: (route, options) ->
+    @nav?.updateActive(route.slice(2))
     super
 
   index: =>
@@ -43,6 +49,11 @@ class Router extends Backbone.Router
 
   drink: =>
     @changeView DrinkView, 'drink',
+      model: @options.model
+      deferredDrinkers: @options.deferredDrinkers
+
+  claim: =>
+    @changeView ClaimView, 'claim',
       model: @options.model
       deferredDrinkers: @options.deferredDrinkers
 

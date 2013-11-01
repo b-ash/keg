@@ -1,8 +1,12 @@
 Dao = require('./dao')
+_ = require('underscore')
+
+fields = ['id', 'kegId', 'volume', 'start', 'drinkerId']
 
 class PourDao extends Dao
   table: 'pours'
-  fields: ['id', 'kegId', 'volume', 'start', 'drinkerId']
+  fields: fields
+  updateFields: _.without(fields, 'start')
 
   create: (volume, callback) =>
     @runner('INSERT INTO pours SET kegId = (SELECT max(id) FROM kegs), volume = ?', [volume], callback)

@@ -27,5 +27,8 @@ class Dao
   create: (obj, callback) =>
     @runner("INSERT INTO #{@table} SET ?", _.pick(obj, @fields), callback)
 
+  update: (id, obj, callback) =>
+    @runner("UPDATE #{@table} SET ? WHERE id = #{id}", _.pick(obj, @updateFields ? @fields), callback)
+
 
 module.exports = Dao

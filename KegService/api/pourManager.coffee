@@ -8,6 +8,9 @@ class PourManager
     @pourDao.create(volume, callback)
     @socket.broadcast {action: 'pour-end'}
 
+  update: (id, params, callback) ->
+    @pourDao.update(id, params, callback)
+
   pour: (volume) ->
     @socket.broadcast
       action: 'pour'

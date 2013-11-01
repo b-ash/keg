@@ -1,0 +1,26 @@
+<div class="row">
+  <h2>Select a pour to claim</h2>
+  <h4>Note: you can only claim drinks from the current keg</h4>
+
+  {{#if pours}}
+  <table id="pours" class="kegums-table">
+    <thead>
+      <tr>
+        <td>Time poured</td>
+        <td>Amount</td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each pours}}
+      <tr id="{{id}}" class="clickable">
+        <td>{{timeDisplay}}</td>
+        <td>{{getBeers volume}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  <p class="empty-message">All pours accounted for.</p>
+  {{/if}}
+</div>
