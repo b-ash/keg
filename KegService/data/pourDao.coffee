@@ -19,6 +19,11 @@ class PourDao extends Dao
   listByDrinkers: (callback) =>
     @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId, name as drinkerName FROM pours LEFT JOIN drinkers ON drinkers.id = drinkerId WHERE drinkerId IS NOT NULL GROUP BY drinkerId ORDER BY volume DESC', [], callback)
 
+  listMissed: (callback) =>
+    @list callback,
+      whereRaw: 'drinkerId IS NULL AND kegId = (SELECT max(id) FROM kegs)'
+      orderBy: 'id DESC'
+
   getByDrinker: (drinkerId, callback) =>
     @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId FROM pours WHERE drinkerId = ?', [drinkerId], callback, true)
 

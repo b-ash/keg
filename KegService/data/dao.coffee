@@ -10,12 +10,17 @@ class Dao
   list: (callback, options={}) =>
     sql = "SELECT #{@fields.join(',')} FROM #{@table}"
 
-    if options.where
+    if options.whereRaw?
+      sql += " WHERE #{options.whereRaw}"
+    else if options.where?
       sql += ' WHERE ?'
       params = options.where
 
     if options.groupBy?
       sql += " GROUP BY #{options.groupBy}"
+
+    if options.orderBy?
+      sql += " ORDER BY #{options.orderBy}"
 
     @runner(sql, params ? {}, callback)
 

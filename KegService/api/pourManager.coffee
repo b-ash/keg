@@ -19,6 +19,9 @@ class PourManager
   list: (callback, options) ->
     @pourDao.list callback, options
 
+  listMissed: (callback, options) ->
+    @pourDao.listMissed callback, options
+
   listByDrinkers: (callback) ->
     @pourDao.listByDrinkers callback
 

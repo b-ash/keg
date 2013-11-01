@@ -83,6 +83,10 @@ server.post(base + '/pour-end', (request, response) ->
   )
 )
 
+server.get(base + '/pours/missed', (request, response) ->
+  pourManager.listMissed _.bind(response.json, response)
+)
+
 server.post(base + '/drinkers/:drinkerId/poured', (request, response) ->
   pourManager.setDrinkerForLastPour request.params.drinkerId, (results) ->
     if results.success
