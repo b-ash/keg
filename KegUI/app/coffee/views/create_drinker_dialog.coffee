@@ -5,11 +5,16 @@ class CreateDrinkerDialog extends View
   template: require('html/create_drinker_dialog')
   events:
     'click button': 'createDrinker'
+    'keyup #name': 'checkSubmit'
 
   render: =>
     super
     vex.open {content: @$el}
     @
+
+  checkSubmit: (event) =>
+    if event.keyCode is 13
+      @createDrinker()
 
   createDrinker: =>
     name = @$('#name').val()
