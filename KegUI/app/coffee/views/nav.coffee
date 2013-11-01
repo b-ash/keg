@@ -9,6 +9,9 @@ class Nav extends View
     'click a': 'routeEvent'
 
   updateActive: (route) ->
+    unless route?.length
+      route = 'home'
+
     @$('.active').removeClass('active')
     @$("[data-route='#{route}']").addClass('active')
 
