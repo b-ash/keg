@@ -7,7 +7,7 @@
     <thead>
       <tr>
         <td>Time poured</td>
-        <td>Amount</td>
+        <td>Ounces served</td>
       </tr>
     </thead>
 
@@ -15,7 +15,7 @@
       {{#each pours}}
       <tr id="{{id}}" class="clickable">
         <td>{{timeDisplay}}</td>
-        <td>{{getBeers volume}}</td>
+        <td>{{volume}}</td>
       </tr>
       {{/each}}
     </tbody>
