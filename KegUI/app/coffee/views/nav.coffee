@@ -16,7 +16,8 @@ class Nav extends View
     @$("[data-route='#{route}']").addClass('active')
 
   getRenderData: ->
-    @options.activeItem
+    item: @options.activeItem
+    interactive: @options.interactive
 
   routeEvent: (event) =>
     $target = $(event.currentTarget)

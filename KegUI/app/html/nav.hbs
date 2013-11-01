@@ -9,32 +9,32 @@
 </div>
 <div class="collapse navbar-collapse navbar-collapse">
   <ul class="nav navbar-nav">
-    <li data-route="home" class="{{getActiveClass this "home"}}">
+    <li data-route="home" class="{{getActiveClass item "home"}}">
       <a href="#" class="home">Home</a>
     </li>
 
-    {{#unlessLimitedMobile this}}
-    <li data-route="beers" class="{{getActiveClass this "beers"}}">
+    {{#unlessLimitedMobile item}}
+    <li data-route="beers" class="{{getActiveClass item "beers"}}">
       <a href="#/beers">Beers</a>
     </li>
     {{/unlessLimitedMobile}}
 
-    <li data-route="fridge" class="{{getActiveClass this "fridge"}}">
+    <li data-route="fridge" class="{{getActiveClass item "fridge"}}">
       <a href="#/fridge">Fridge</a>
     </li>
 
-    <li data-route="leaderboard" class="{{getActiveClass this "leaderboard"}}">
+    <li data-route="leaderboard" class="{{getActiveClass item "leaderboard"}}">
       <a href="#/leaderboard">Leaderboard</a>
     </li>
 
-    {{#isNexus7}}
-    <li data-route="drink" class="{{getActiveClass this "drink"}}">
+    {{#if interactive}}
+    <li data-route="drink" class="{{getActiveClass item "drink"}}">
       <a href="#/drink">Drink</a>
     </li>
 
-    <li data-route="claim" class="{{getActiveClass this "claim"}}">
+    <li data-route="claim" class="{{getActiveClass item "claim"}}">
       <a href="#/claim">Claim Drink</a>
     </li>
-    {{/isNexus7}}
+    {{/if}}
   </ul>
 </div>

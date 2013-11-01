@@ -13,6 +13,11 @@ $ = jQuery
 vex.defaultOptions.className = 'vex-theme-wireframe'
 shouldLimitApiCalls = /(mobile|iphone)/gi.test(navigator.userAgent) and not /(nexus 7)/gi.test(navigator.userAgent)
 
+
+getURLParameter = (name='bad') ->
+  return (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[null,null])[1]
+
+
 class Application
 
   deferredObj: (obj) =>
@@ -53,31 +58,50 @@ class Application
         @drinker = @drinkers.obj.get(json.id)
 
   start: =>
-    @initHelpers()
+    interactiveParam = getURLParameter('interactive')
 
-    @model = @deferredObj(new KegStats)
-    @temps = @deferredObj(new Temps)
-    @drinkers = @deferredObj(new Drinkers)
+    _start = (interactive=false) =>
+      @initHelpers()
 
-    unless shouldLimitApiCalls
-      @dailyPours = @deferredObj(new PoursSummary 'daily')
-      @weeklyPours = @deferredObj(new PoursSummary 'weekly')
+      @model = @deferredObj(new KegStats)
+      @temps = @deferredObj(new Temps)
+      @drinkers = @deferredObj(new Drinkers)
 
-    @socket = new SocketListener(@model.obj).listen()
-    @router = new Router
-      model: @model.obj
-      deferredTemps: @temps.promise
-      deferredDrinkers: @drinkers.promise
-      deferredDaily: @dailyPours?.promise
-      deferredWeekly: @weeklyPours?.promise
+      unless shouldLimitApiCalls
+        @dailyPours = @deferredObj(new PoursSummary 'daily')
+        @weeklyPours = @deferredObj(new PoursSummary 'weekly')
 
-    Backbone.history.start()
+      @socket = new SocketListener(@model.obj).listen()
+      @router = new Router
+        interactive: interactive
+        model: @model.obj
+        deferredTemps: @temps.promise
+        deferredDrinkers: @drinkers.promise
+        deferredDaily: @dailyPours?.promise
+        deferredWeekly: @weeklyPours?.promise
 
-    @model.fetch()
-    @temps.fetch()
-    @drinkers.fetch().then(@setGlobalDrinker)
-    @dailyPours?.fetch()
-    @weeklyPours?.fetch()
+      Backbone.history.start()
+
+      @model.fetch()
+      @temps.fetch()
+      @drinkers.fetch().then(@setGlobalDrinker)
+      @dailyPours?.fetch()
+      @weeklyPours?.fetch()
+
+    if interactiveParam?.length
+      $.ajax
+        type: 'POST'
+        url: '/api/interactive'
+        dataType: 'json'
+        contentType: 'application/json'
+        data: JSON.stringify {key: interactiveParam}
+        success: (resp) ->
+          _start(resp.interactive)
+        error: (resp) ->
+          _start()
+    else
+      _start()
+
 
 $ ->
   window.app = new Application

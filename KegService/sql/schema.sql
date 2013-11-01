@@ -31,6 +31,7 @@ CREATE TABLE temperature (
   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+# Schema v1.1
 CREATE TABLE drinkers (
   id INT AUTO_INCREMENT KEY,
   name VARCHAR(48) NOT NULL

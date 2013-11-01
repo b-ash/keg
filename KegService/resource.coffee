@@ -188,5 +188,9 @@ server.get(base + '/drinking', (request, response) ->
   drinkerManager.getDrinking _.bind(response.json, response)
 )
 
+server.post(base + '/interactive', (request, response) ->
+  response.json {interactive: request.body.key is process.env.KEG_ADMIN}
+)
+
 app.listen(8000)
 console.log 'Server listening on port 8000'

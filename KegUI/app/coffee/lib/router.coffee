@@ -22,8 +22,7 @@ class Router extends Backbone.Router
     'simulate': 'simulate'
     '*query': 'index'
 
-  initialize: (options) =>
-    @options = options
+  initialize: (@options) =>
     super
 
   navigate: (route, options) ->
@@ -66,7 +65,9 @@ class Router extends Backbone.Router
 
   setupNav: (navItem) =>
     unless @nav?
-      @nav = new Nav {activeItem: navItem}
+      @nav = new Nav
+        activeItem: navItem
+        interactive: @options.interactive
       $('.navbar').html @nav.render().el
 
   changeView: (Claxx, navItem, classOptions) =>
