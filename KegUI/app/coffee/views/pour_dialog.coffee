@@ -15,14 +15,11 @@ class PourDialog extends View
   updatePour: (oz) =>
     @$('#amount').text oz
 
-  showPourComplete: =>
-    @_showMessage @successTemplate
+  showPourComplete: (drinkerName) =>
+    @$el.html @successTemplate {drinkerName}
 
   showPourError: =>
-    @_showMessage @errorTemplate
-
-  _showMessage: (template) =>
-    @$el.html template()
+    @$el.html @errorTemplate()
 
   close: =>
     vex.close()

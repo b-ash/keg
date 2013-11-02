@@ -49,8 +49,6 @@ class Application
         ounces.toFixed(3)
       catch e
         ounces
-    Handlebars.registerHelper 'getDrinkerName', (defaultName) ->
-      window.app.drinker?.get('name') ? defaultName
 
   setGlobalDrinker: =>
     $.getJSON '/api/drinking', (json) =>
