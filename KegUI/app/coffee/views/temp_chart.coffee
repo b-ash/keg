@@ -11,7 +11,7 @@ class TempChart extends Backbone.View
     chart:
       global:
         useUTC: false
-      backgroundColor: '#121212'
+      backgroundColor: '#1a1a1a'
       zoomType: 'x'
       resetZoomButton:
         position:
@@ -20,7 +20,7 @@ class TempChart extends Backbone.View
     title:
       text: @title
       style:
-        color: '#FFF'
+        color: '#999'
         fontWeight: 'bold'
     subtitle:
       text: @subtitle

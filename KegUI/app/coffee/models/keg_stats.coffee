@@ -23,6 +23,7 @@ class KegStats extends Backbone.Model
     else
       json.lastPour = 'never'
 
+    json.tapped = moment(json.tapped).format('MM/DD/YY')
     json.temp = json.temp?.toFixed(1)
     json
 

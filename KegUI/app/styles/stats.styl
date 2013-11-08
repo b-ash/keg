@@ -3,7 +3,7 @@
   margin: 25px
 
 .labels
-  &.last-pour, &.fridge-temp
+  &.last-pour, &.fridge-temp, &.tapped
     padding-top: 45px
 
   > span
@@ -19,11 +19,21 @@
       margin-left: -100px
 
 .numbers
-  height: 150px
+  padding-top: 20px
+  height: 120px
 
   > span
-    font: 120px/1 "Lato"
-    padding: 0 10px
+    font: 80px/1 "Lato"
+    padding: 0 5px
 
     &.separator
       font-height: 10px
+
+@media (min-width: 500px)
+  .numbers
+    padding-top: 0
+    height: 150px
+
+    > span
+      font: 120px/1 "Lato"
+      padding: 0 10px

@@ -21,17 +21,14 @@ class IndexView extends View
       lastPour:
         el: @$('#last_pour')
         length: 8
-      consumed:
-        el: @$('#total_pours')
-        length: 2
-      poursLeft:
-        el: @$('#pours_left')
-        length: 2
+      tapped:
+        el: @$('#tapped')
+        length: 8
       temp:
         el: @$('#temp')
         length: 4
 
-    for key in ['lastPour', 'temp']
+    for key in ['lastPour', 'tapped', 'temp']
       ticker = new TickerView
         model: @model
         length: opts[key].length
