@@ -1,0 +1,30 @@
+@import nib
+
+table.kegums-table
+  width: 100%
+  border-collapse: separate
+  border-spacing: 10px
+
+  tbody >
+    tr
+      &.clickable:hover
+        cursor: pointer
+
+      > td
+        background-color: #444
+        border-radius(4px)
+        padding: 5px 0 5px 10px
+        color: #999
+
+  tbody.leaders tr:first-child td:first-child:after
+    content: url(/static/images/crown.png)
+    margin-left: 10px
+
+#create_drinker
+  margin-top: 25px
+
+  > button
+    float: right
+
+p.empty-message
+  margin-top: 50px

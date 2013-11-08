@@ -3,8 +3,7 @@ View = require('coffee/views/view')
 
 
 class AdminView extends View
-
-  className: 'row jumbotron'
+  className: 'spanning-full'
   template: require('html/admin')
   events:
     'submit #create_form': 'create'

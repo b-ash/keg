@@ -2,7 +2,7 @@ View = require('coffee/views/view')
 DrinkersPours = require('coffee/collections/drinkers_pours')
 
 class LeaderboardView extends View
-  className: 'row jumbotron'
+  className: 'spanning-full table-view'
   template: require('html/leaderboard')
 
   initialize: ->
