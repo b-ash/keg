@@ -4,7 +4,7 @@ BeerChartView = require('coffee/views/beer_chart')
 
 class BeersView extends View
 
-  className: 'row jumbotron'
+  className: 'spanning-full'
   template: require('html/beers')
 
   postRender: =>

@@ -1,6 +1,5 @@
 View = require('coffee/views/view')
 TickerView = require('coffee/views/ticker')
-BrandBannerTemplate = require('html/brand_banner')
 
 
 class IndexView extends View
@@ -40,24 +39,10 @@ class IndexView extends View
 
       opts[key].el.append ticker.render().el
 
-  updateEllipsis: (count) =>
-    =>
-      ellipsis = ('.' for i in [0...(count % 3) + 1]).join('')
-      count++
-
-      @$('.ellipsis').text ellipsis
-
   updateStats: =>
     @$('#keg_name').text @model.get('name')
-    @$('#brand_banner_wrap')
-      .html(BrandBannerTemplate {bannerImage: @model.get('url')})
-      .find('img')
-      .fadeIn()
     @$('#total_pours').text @model.get('consumed')
     @$('#pours_left').text @model.get('poursLeft')
-
-  onClose: =>
-    clearTimeout @timeout
 
 
 module.exports = IndexView

@@ -63,10 +63,10 @@ class TempChart extends Backbone.View
         turboThreshold: 1
 
   chart: ->
-    unless @collection.length
-      return
-
-    @$el.highcharts @getChartOptions()
+    if @collection.length
+      @$el.highcharts @getChartOptions()
+    else
+      @$el.html 'No temperatures found to chart.'
 
 
 module.exports = TempChart

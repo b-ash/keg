@@ -5,13 +5,13 @@ TempChartView = require('coffee/views/temp_chart')
 
 class FridgeView extends View
 
-  className: 'row jumbotron'
+  className: 'spanning-full'
   template: require('html/fridge')
 
   afterRender: =>
     @tickerView = new TickerView
       model: @model
-      length: 8
+      length: 4
       field: 'temp'
 
     @$('#temp').append @tickerView.render().el
