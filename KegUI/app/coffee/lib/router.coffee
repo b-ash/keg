@@ -19,7 +19,6 @@ class Router extends Backbone.Router
     'drink': 'drink'
     'claim': 'claim'
     'leaderboard': 'leaderboard'
-    'simulate': 'simulate'
     '*query': 'index'
 
   initialize: (@options) =>
@@ -58,10 +57,6 @@ class Router extends Backbone.Router
 
   leaderboard: =>
     @changeView LeaderboardView, 'leaderboard', {model: @options.model}
-
-  simulate: =>
-    @index()
-    Simulation.start()
 
   setupNav: (navItem) =>
     unless @nav?
