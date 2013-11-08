@@ -12,7 +12,8 @@ class DrinkerManager
     @drinkerDao.create({name}, callback)
 
   getDrinking: (callback) =>
-    @drinkerDao.getDrinking(callback)
+    @drinkerDao.getDrinking (result) ->
+      callback(result or {})
 
   requestDrink: (drinkerId, callback) =>
     @drinkerDao.requestDrink drinkerId, (result) ->
