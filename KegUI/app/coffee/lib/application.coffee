@@ -28,6 +28,14 @@ class Application
 
     {promise, fetch, obj}
 
+  deferredObjForDrinkers: (obj) =>
+    deferred = @deferredObj(obj)
+    deferred.fetch = =>
+      obj.fetch().then =>
+        @setGlobalDrinker().then ->
+          deferred.promise.resolve obj
+    deferred
+
   initHelpers: ->
     Handlebars.registerHelper 'getActiveClass', (active, claxx) ->
       if active is claxx
@@ -63,7 +71,7 @@ class Application
 
       @model = @deferredObj(new KegStats)
       @temps = @deferredObj(new Temps)
-      @drinkers = @deferredObj(new Drinkers)
+      @drinkers = @deferredObjForDrinkers(new Drinkers)
 
       unless shouldLimitApiCalls
         @dailyPours = @deferredObj(new PoursSummary 'daily')
@@ -82,7 +90,7 @@ class Application
 
       @model.fetch()
       @temps.fetch()
-      @drinkers.fetch().then(@setGlobalDrinker)
+      @drinkers.fetch()
       @dailyPours?.fetch()
       @weeklyPours?.fetch()
 
