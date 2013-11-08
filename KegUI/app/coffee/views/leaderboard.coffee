@@ -11,6 +11,9 @@ class LeaderboardView extends View
   getRenderData: ->
     drinkers: @collection.toJSON()
 
+  afterRender: ->
+    @$('.leaders span:first-child').html """<img src="/static/images/crown.png" />"""
+
   postRender: ->
     @collection.fetch().done(@render)
 

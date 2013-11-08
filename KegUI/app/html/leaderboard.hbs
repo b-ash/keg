@@ -1,21 +1,12 @@
-<h2>Drinker leaderboard (all time)</h2>
+<div class="bar-span">
+  <span>Drinking leaders (all time)</span>
+</div>
 
-<table id="drinkers" class="kegums-table">
-  <thead>
-    <tr>
-      <td>Placement</td>
-      <td>Name</td>
-      <td>Beers</td>
-    </tr>
-  </thead>
-
-  <tbody class="leaders">
-    {{#each drinkers}}
-    <tr id="{{drinkerId}}">
-      <td>{{place}}</td>
-      <td>{{drinkerName}}</td>
-      <td>{{getBeers volume}}</td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+<div class="leaders">
+{{#each drinkers}}
+  <span>{{place}}</span>
+  <span>{{drinkerName}}</span>
+  <span>{{getBeers volume}}</span>
+  <div class="bar-span thin"></div>
+{{/each}}
+</div>
