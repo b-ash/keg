@@ -1,30 +1,45 @@
-<div class="row">
-  {{#if drinker}}
-  <h2>Current drinker: {{drinker.name}}</h2>
-  <div id="cancel">
-    <button class="btn btn-primary">Cancel drinker</button>
-  </div>
-  {{else}}
-  <h2>Select a drinker</h2>
+{{#if drinker}}
 
-  <table id="drinkers" class="kegums-table">
-    <thead>
-      <tr>
-        <td class="name"></td>
-      </tr>
-    </thead>
-
-    <tbody>
-      {{#each drinkers}}
-      <tr id="{{id}}" class="clickable">
-        <td>{{name}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-
-  <div id="create_drinker">
-    <button class="btn btn-primary">Add yourself</button>
-  </div>
-  {{/if}}
+<div class="bar-span">
+  <span>{{drinker.name}} is drinking</span>
 </div>
+<table id="drinkers" class="kegums-table">
+  <thead class="hidden">
+    <tr>
+      <td></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr id="cancel_drinker" class="clickable">
+      <td>--- cancel drinker ---</td>
+    </tr>
+  </tbody>
+</table>
+
+{{else}}
+
+<div class="bar-span">
+  <span>Select a drinker</span>
+</div>
+
+<table id="drinkers" class="kegums-table">
+  <thead class="hidden">
+    <tr>
+      <td></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each drinkers}}
+    <tr id="{{id}}" class="clickable">
+      <td>{{name}}</td>
+    </tr>
+    {{/each}}
+    <tr id="create_drinker" class="clickable">
+      <td>--- add a new drinker ---</td>
+    </tr>
+  </tbody>
+</table>
+
+{{/if}}

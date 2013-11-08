@@ -36,6 +36,11 @@ class Application
           deferred.promise.resolve obj
     deferred
 
+  setGlobalDrinker: =>
+    $.get '/api/drinking', (json) =>
+      if json?.id
+        @drinker = @drinkers.obj.get(json.id)
+
   initHelpers: ->
     Handlebars.registerHelper 'getActiveClass', (active, claxx) ->
       if active is claxx
@@ -57,11 +62,6 @@ class Application
         ounces.toFixed(3)
       catch e
         ounces
-
-  setGlobalDrinker: =>
-    $.getJSON '/api/drinking', (json) =>
-      if json?
-        @drinker = @drinkers.obj.get(json.id)
 
   start: =>
     interactiveParam = getURLParameter('interactive')

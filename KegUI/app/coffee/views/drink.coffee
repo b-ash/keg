@@ -3,12 +3,12 @@ CreateDrinkerDialog = require('coffee/views/create_drinker_dialog')
 $ = jQuery
 
 class DrinkView extends View
-  className: 'row jumbotron'
+  className: 'spanning-full'
   template: require('html/drink')
   events:
     'click tr': 'selectDrinker'
-    'click #create_drinker button': 'createDrinker'
-    'click #cancel button': 'cancelDrinker'
+    'click #create_drinker': 'createDrinker'
+    'click #cancel_drinker': 'cancelDrinker'
 
   getRenderData: ->
     drinkers: @collection?.toJSON() ? []
@@ -20,6 +20,10 @@ class DrinkView extends View
 
   selectDrinker: (event) =>
     id = $(event.currentTarget).attr('id')
+
+    if id is 'create_drinker' or id is 'cancel_drinker'
+      return
+
     drinker = @collection.get(id)
     drinker
       .requestDrink()

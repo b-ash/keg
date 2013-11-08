@@ -9,28 +9,25 @@
 
 table.kegums-table
   width: 100%
-  // border-collapse: separate
-  // border-spacing: 5px
+  border-collapse: separate
+  border-spacing: 10px
 
-  tbody >
-    tr
-      &.clickable:hover
-        cursor: pointer
+  tbody > tr
+    &.clickable:hover
+      cursor: pointer
 
-      > td
-        padding: 15px
-        font: 30px/1 "PT Serif"
-        color: #999
-
-  tbody.leaders tr:first-child td:first-child:after
-    content: url(/static/images/crown.png)
-    margin-left: 10px
+    > td
+      padding: 30px
+      font: 30px/1 "PT Serif"
+      background-color: #333
+      color: #999
 
 #create_drinker
   margin-top: 25px
 
   > button
     float: right
+    margin-right: 20px
 
 p.empty-message
   margin-top: 50px
