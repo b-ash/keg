@@ -6,7 +6,6 @@ BeersView = require('coffee/views/beers')
 DrinkView = require('coffee/views/drink')
 ClaimView = require('coffee/views/claim')
 LeaderboardView = require('coffee/views/leaderboard')
-Simulation = require('coffee/lib/simulation')
 
 $ = jQuery
 
