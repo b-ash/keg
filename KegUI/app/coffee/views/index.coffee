@@ -5,36 +5,40 @@ BrandBannerTemplate = require('html/brand_banner')
 
 class IndexView extends View
 
-  className: 'row jumbotron'
+  className: 'spanning-full'
   template: require('html/index')
 
   initialize: =>
-    @model.on 'change:name', @updateKegName
-    @model.on 'change:url', @updateBanner
+    @model.on 'change', @updateStats
 
   getRenderData: =>
     @model.toJSON()
 
   afterRender: =>
     if @model.get('name')?
-      @updateKegName()
+      @updateStats()
 
-    if @model.get('url')?
-      @updateBanner()
+    opts =
+      lastPour:
+        el: @$('#last_pour')
+        length: 8
+      consumed:
+        el: @$('#total_pours')
+        length: 2
+      poursLeft:
+        el: @$('#pours_left')
+        length: 2
+      temp:
+        el: @$('#temp')
+        length: 4
 
-    els =
-      lastPour: @$('#last_pour')
-      consumed: @$('#total_pours')
-      poursLeft: @$('#pours_left')
-      temp: @$('#temp')
-
-    for key in ['lastPour', 'consumed', 'poursLeft', 'temp']
+    for key in ['lastPour', 'temp']
       ticker = new TickerView
         model: @model
-        length: 8
+        length: opts[key].length
         field: key
 
-      els[key].append ticker.render().el
+      opts[key].el.append ticker.render().el
 
   updateEllipsis: (count) =>
     =>
@@ -43,14 +47,14 @@ class IndexView extends View
 
       @$('.ellipsis').text ellipsis
 
-  updateKegName: =>
-    @$('#keg_wrap p').text @model.get('name')
-
-  updateBanner: =>
+  updateStats: =>
+    @$('#keg_name').text @model.get('name')
     @$('#brand_banner_wrap')
       .html(BrandBannerTemplate {bannerImage: @model.get('url')})
       .find('img')
       .fadeIn()
+    @$('#total_pours').text @model.get('consumed')
+    @$('#pours_left').text @model.get('poursLeft')
 
   onClose: =>
     clearTimeout @timeout

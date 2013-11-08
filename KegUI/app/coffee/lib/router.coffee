@@ -81,7 +81,7 @@ class Router extends Backbone.Router
     @currentView = @view
 
     render = =>
-      $('.content').html @view.render().el
+      $('#content').html @view.render().el
 
     if @view.deferredRender?
       @view.deferredRender render

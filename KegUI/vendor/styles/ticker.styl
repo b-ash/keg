@@ -1,14 +1,43 @@
-.ticker
-  overflow: hidden
-  font: 30px/1 monospace
+.ticker-container
+  padding-top: 30px
+  height: 80px
 
-  span
+.ticker-wrap
+  position: absolute
+  left: 50%
+
+  &.last-pour
+    width: 324px
+    margin-left: -162px
+
+    .ticker
+      font: 60px/1 "Lato"
+
+      > span
+        width: 40px
+
+  &.fridge-temp
+    width: 200px
+    margin-left: -100px
+
+    .ticker
+      font: 80px/1 "Lato"
+
+.ticker
+  > span
     display: block
     float: left
-    background: #444
-    color: #fff
-    margin-right: 1px
+    color: #999
+    width: 50px
 
-@media (min-width: 768px)
-  .ticker
-    font: 35px/1 monospace
+@media (min-width: 500px)
+  .ticker-container
+    .ticker-wrap.last-pour
+      width: 400px
+      margin-left: -200px
+
+      .ticker
+        font: 80px/1 "Lato"
+
+        > span
+          width: 50px

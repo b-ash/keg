@@ -1,10 +1,91 @@
 @import nib
 
-body
-  background-color: #FFF
+.bar-span
+  height: 50px
+  background-color: #EEE
+  color: #333
+  font: 30px/1 "Lato"
+  letter-spacing: -2px
+  line-height: 45px
 
-::selection
-  background: #999
+  &.thin
+    height: 10px
+
+@media (min-width: 768px)
+  .bar-span
+    height: 100px
+    font: 80px/1 "Lato"
+    letter-spacing: -5px
+
+    &.thin
+      height: 20px
+
+
+.stats-block
+  height: 200px
+  margin: 25px
+
+  .labels
+    &.last-pour, &.fridge-temp
+      padding-top: 45px
+
+    > span
+      font: 30px/1 "PT Serif"
+
+    > .beers-number
+      position: absolute
+      left: 50%
+
+      &.beers-separator
+        margin-left: -4px
+      &.beers-drank
+        margin-left: 40px
+      &.beers-left
+        margin-left: -100px
+
+  .numbers
+    height: 150px
+
+    > span
+      font: 120px/1 "Lato"
+      padding: 0 10px
+
+      &.separator
+        font-height: 10px
+
+
+.spanning-full
+  width: 100%
+  text-align: center
+
+#content
+  margin-top: 50px
+
+.brand-banner
+  padding: 15%
+  width: 100%
+  overflow: hidden
+  position: relative
+
+  img
+    position: absolute
+    top: -5%
+    left: 0
+    width: 100%
+
+@media (min-width: 768px)
+  .brand-banner
+    padding: 10%
+
+    img
+      top: -10%
+
+
+
+
+
+
+
 
 .large-text
   font-size: 30px
@@ -12,32 +93,6 @@ body
 .content
   h3
     font-size: 23px
-
-  > div
-    padding-left: inherit
-
-  .brand-banner
-    border-radius(6px)
-    box-shadow(inset 0 0 5px 5px #444)
-    border: 1px solid #2a2a2a
-
-    width: 310px
-    height: 114px
-    margin-top: -5px
-    padding: 5px
-
-    > p
-      text-align: center
-      margin-top: 40px
-
-    > div
-      border-radius(6px)
-      overflow: hidden
-
-      img
-        display: none
-        width: 300px
-        height: 104px
 
   form
     margin-left: 15px
@@ -93,14 +148,11 @@ table.kegums-table
     content: url(/static/images/crown.png)
     margin-left: 10px
 
-#create
+#create_drinker
   margin-top: 25px
 
   > button
     float: right
-
-h3[data-toggle]
-  cursor: pointer
 
 p.empty-message
   margin-top: 50px

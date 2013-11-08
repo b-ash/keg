@@ -7,7 +7,7 @@ class DrinkView extends View
   template: require('html/drink')
   events:
     'click tr': 'selectDrinker'
-    'click #create button': 'createDrinker'
+    'click #create_drinker button': 'createDrinker'
     'click #cancel button': 'cancelDrinker'
 
   getRenderData: ->

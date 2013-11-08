@@ -1,36 +1,45 @@
-<div class="row">
-  <div id="keg_wrap" class="col-xs-6 col-sm-6 col-lg-6">
-    <h3>Current keg</h3>
-    <p>Looking in the fridge...</p>
+<div id="brand_banner_wrap" class="brand-banner">
+  <p>finding banner...</p>
+</div>
+
+<div class="bar-span">
+  <span id="keg_name">looking...</span>
+</div>
+
+<div class="stats-block">
+  <div class="numbers">
+    <span id="pours_left"></span>
+    <span class="separator">|</span>
+    <span id="total_pours"></span>
   </div>
 
-  <div class="col-xs-6 col-sm-6 col-lg-6 banner-wrap-responsive">
-    <div id="brand_banner_wrap" class="brand-banner">
-      <p>Finding banner...</p>
-    </div>
+  <div class="labels">
+    <span class="beers-number beers-left">left</span>
+    <span class="beers-number beers-separator">|</span>
+    <span class="beers-number beers-drank">drank</span>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-6 col-sm-6 col-lg-6">
-    <h3>Last pour</h3>
-    <div id="last_pour" class="ticker-wrap"></div>
+<div class="bar-span thin"></div>
+
+<div class="stats-block">
+  <div class="ticker-container">
+    <div id="last_pour" class="ticker-wrap last-pour"></div>
   </div>
 
-  <div class="col-xs-6 col-sm-6 col-lg-6">
-    <h3>Beers poured</h3>
-    <div id="total_pours" class="ticker-wrap"></div>
+  <div class="labels last-pour">
+    <span>last pour</span>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-6 col-sm-6 col-lg-6">
-    <h3>Beers until empty</h3>
-    <div id="pours_left" class="ticker-wrap"></div>
+<div class="bar-span thin"></div>
+
+<div class="stats-block">
+  <div class="ticker-container">
+    <div id="temp" class="ticker-wrap fridge-temp"></div>
   </div>
 
-  <div class="col-xs-6 col-sm-6 col-lg-6">
-    <h3>Current fridge temp</h3>
-    <div id="temp" class="ticker-wrap"></div>
+  <div class="labels fridge-temp">
+    <span>current fridge temp</span>
   </div>
 </div>

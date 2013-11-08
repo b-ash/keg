@@ -12,18 +12,18 @@ class KegStats extends Backbone.Model
 
   parse: (json) ->
     if json.kicked?
-      json.poursLeft = 'kicked'
+      json.poursLeft = 0
     else
-      json.poursLeft = ((json.volume - json.consumed) / Globals.beerSize).toFixed(3)
+      json.poursLeft = Math.round((json.volume - json.consumed) / Globals.beerSize)
 
-    json.consumed = (json.consumed / Globals.beerSize).toFixed(3)
+    json.consumed = Math.round(json.consumed / Globals.beerSize)
 
     if json.lastPour?
       json.lastPour = moment(json.lastPour).format('MM/DD/YY')
     else
       json.lastPour = 'never'
 
-    json.temp = json.temp?.toFixed(3)
+    json.temp = json.temp?.toFixed(1)
     json
 
 module.exports = KegStats
