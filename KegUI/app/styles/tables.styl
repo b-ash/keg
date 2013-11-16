@@ -4,8 +4,20 @@
   > span
     display: inline-block
     font: 30px/1 "Lato"
-    padding: 40px
-    width: 250px
+    padding: 40px 0
+    width: 100px
+
+    &.bold
+      font-weight: bold
+
+    &.rank
+      width: 40px
+
+@media (min-width: 768px)
+  .leaders
+    > span, > span.rank
+      padding: 40px
+      width: 250px
 
 table.kegums-table
   width: 100%
