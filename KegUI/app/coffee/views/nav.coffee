@@ -28,6 +28,9 @@ class Nav extends View
 
     $target.parent().addClass('active')
 
+    if @$('.navbar-collapse').hasClass('in')
+      @$('button').click()
+
     super
 
 
