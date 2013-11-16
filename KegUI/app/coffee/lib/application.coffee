@@ -70,27 +70,28 @@ class Application
       @initHelpers()
 
       @model = @deferredObj(new KegStats)
-      @temps = @deferredObj(new Temps)
       @drinkers = @deferredObjForDrinkers(new Drinkers)
 
       unless shouldLimitApiCalls
         @dailyPours = @deferredObj(new PoursSummary 'daily')
         @weeklyPours = @deferredObj(new PoursSummary 'weekly')
+        @temps = @deferredObj(new Temps)
+
 
       @socket = new SocketListener(@model.obj).listen()
       @router = new Router
         interactive: interactive
         model: @model.obj
-        deferredTemps: @temps.promise
         deferredDrinkers: @drinkers.promise
+        deferredTemps: @temps?.promise
         deferredDaily: @dailyPours?.promise
         deferredWeekly: @weeklyPours?.promise
 
       Backbone.history.start()
 
       @model.fetch()
-      @temps.fetch()
       @drinkers.fetch()
+      @temps?.fetch()
       @dailyPours?.fetch()
       @weeklyPours?.fetch()
 
