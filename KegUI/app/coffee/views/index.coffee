@@ -3,8 +3,6 @@ TickerView = require('coffee/views/ticker')
 
 
 class IndexView extends View
-
-  className: 'spanning-full'
   template: require('html/index')
 
   initialize: =>

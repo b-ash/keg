@@ -24,8 +24,8 @@ We used a few helpful articles that I want to give a shout-out (relevant links t
 
 Webservice
 - Spin up mysql locally
-- Run `KegService/schema.sql`
-- Run `KegService/start.sql` to get some data in there
+- Run `KegService/sql/schema.sql`
+- Run `KegService/sql/start.sql` to get some data in there
 - cd into `KegService`
 - `node server.js`
 

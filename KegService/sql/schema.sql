@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS Kegums;
 
 USE Kegums;
 
-CREATE TABLE kegs (
+CREATE TABLE IF NOT EXISTS kegs (
   id INT AUTO_INCREMENT KEY,
   name VARCHAR(48) NOT NULL,
   volume FLOAT NOT NULL DEFAULT 661,
@@ -11,7 +11,7 @@ CREATE TABLE kegs (
   bannerId INT NULL
 );
 
-CREATE TABLE pours (
+CREATE TABLE IF NOT EXISTS pours (
   id INT AUTO_INCREMENT KEY,
   kegId INT NOT NULL,
   volume FLOAT NOT NULL,
@@ -20,24 +20,24 @@ CREATE TABLE pours (
   INDEX(`kegId`)
 );
 
-CREATE TABLE banners (
+CREATE TABLE IF NOT EXISTS banners (
   id INT AUTO_INCREMENT KEY,
   url VARCHAR(128) NOT NULL
 );
 
-CREATE TABLE temperature (
+CREATE TABLE IF NOT EXISTS temperature (
   id INT AUTO_INCREMENT KEY,
   degrees FLOAT NOT NULL,
   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 # Schema v1.1
-CREATE TABLE drinkers (
+CREATE TABLE IF NOT EXISTS drinkers (
   id INT AUTO_INCREMENT KEY,
   name VARCHAR(48) NOT NULL
 );
 
-CREATE TABLE drinking (
+CREATE TABLE IF NOT EXISTS drinking (
   drinkerId INT NULL,
   CONSTRAINT drinking_drinker_pk
     FOREIGN KEY (drinkerId)

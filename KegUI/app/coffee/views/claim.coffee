@@ -4,7 +4,6 @@ SelectDrinkerDialog = require('coffee/views/select_drinker_dialog')
 $ = jQuery
 
 class ClaimView extends View
-  className: 'spanning-full'
   template: require('html/claim')
   events:
     'click tr': 'selectPour'

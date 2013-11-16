@@ -23,18 +23,19 @@ class BeerChartView extends Backbone.View
     "/static/images/beer#{number}.png"
 
   createText: (group, count, column) ->
-    # group.append('text')
-    #   .attr('x', column * @beerWidth)
-    #   .attr('y', @svgHeight)
-    #   .attr('text-anchor', 'middle')
-    #   .text(count)
+    group.append('text')
+      .attr('x', column * @beerWidth)
+      .attr('y', @svgHeight)
+      .attr('dy', 20)
+      .attr('text-anchor', 'middle')
+      .text(count)
 
   createBeerImage: (group, row, column) ->
     x = column * @beerWidth
     y = @svgHeight - row * @beerHeight - @beerHeight
     g = group.append('g').attr('transform', 'translate(' + x + ',' + y + ')')
     g.append('image')
-      .attr('xlink:href', @getRandomBeerType())
+      .attr('xlink:href', '/static/images/beer.png')
       .attr('width', @beerWidth)
       .attr('height', @beerHeight)
 
@@ -50,13 +51,17 @@ class BeerChartView extends Backbone.View
   createGraph: ->
     @main.empty()
 
-    data = _.pluck(@collection.toJSON(), 'volume')
+    data = @collection.toJSON()
 
     if not data
       return
 
-    max = d3.max(data, (n) ->
-      n % BEERS_IN_KEG
+    _.map(data, (point) ->
+      point.volume = Math.ceil(point.volume / 12)  # 12oz per beer
+    )
+
+    max = d3.max(data, (point) ->
+      point.volume % BEERS_IN_KEG
     )
 
     beersWide = Math.ceil(Math.min(Math.ceil(max), 6))
@@ -64,41 +69,53 @@ class BeerChartView extends Backbone.View
     if beersWide % 2 is 1
       beersWide++
 
-    max = Math.ceil(max / beersWide)
+    beersTall = d3.max(data, (point) ->
+      Math.ceil((point.volume % BEERS_IN_KEG) / beersWide)
+    )
 
-    @beerHeight = Math.min(@svgHeight / max / 2, @svgWidth / ((beersWide + 2) * data.length * 23) * 60, 60)
-    @beerWidth = @beerHeight / 60 * 25
+    @beerHeight = Math.min(@svgHeight / beersTall, @svgWidth / ((beersWide + 2) * data.length) * 1.8, 149)
+    @beerWidth = @beerHeight / 149 * 91
+
+    @svgHeight = (beersTall + 3) * @beerHeight + 50
+    @svg.attr('height', @svgHeight * 1.2)
 
     for group in [0 .. data.length]
       g = @main.append('g')
-      count = data[group] / 12  # 12oz per beer
-      row = 0
-      rows = 1
-      column = group * (beersWide + 2)
-      if count > 0
-        while count > 0
-          if count >= BEERS_IN_KEG
-            rows = 2
-            @createKegImage(g, row, column)
+      point = data[group]
+      if point
+        count = point.volume
+        row = 0
+        rows = 1
+        column = group * (beersWide + 2)
+        if count > 0
+          while count > 0
+            if count >= BEERS_IN_KEG
+              rows = 2
+              @createKegImage(g, row, column)
 
-            column += 2
-            count -= BEERS_IN_KEG
+              column += 2
+              count -= BEERS_IN_KEG
 
-          else
-            @createBeerImage(g, row, column)
-            count -= 1
-
-            if count >= 1 and rows is 2
-              @createBeerImage(g, row + 1, column)
+            else
+              @createBeerImage(g, row, column)
               count -= 1
 
-            column += 1
+              if count >= 1 and rows is 2
+                @createBeerImage(g, row + 1, column)
+                count -= 1
 
-          if column >= group * (beersWide + 2) + beersWide
-            column = group * (beersWide + 2)
-            row += rows
-            rows = 1
+              column += 1
 
-      @createText(g, data[group], group * (beersWide + 2) + beersWide / 2)
+            if column >= group * (beersWide + 2) + beersWide
+              column = group * (beersWide + 2)
+              row += rows
+              rows = 1
+
+        if @options.type is 'weekly'
+          date = moment().isoWeek(point.start).format('MMM D')
+        else
+          date = moment().dayOfYear(point.start).format('MMM D')
+
+        @createText(g, date, group * (beersWide + 2) + beersWide / 2)
 
 module.exports = BeerChartView

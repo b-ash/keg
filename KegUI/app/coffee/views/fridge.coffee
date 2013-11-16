@@ -4,8 +4,7 @@ TempChartView = require('coffee/views/temp_chart')
 
 
 class FridgeView extends View
-
-  className: 'spanning-full'
+  className: 'container'
   template: require('html/fridge')
 
   afterRender: =>

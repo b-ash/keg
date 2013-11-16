@@ -3,7 +3,6 @@ CreateDrinkerDialog = require('coffee/views/create_drinker_dialog')
 $ = jQuery
 
 class DrinkView extends View
-  className: 'spanning-full'
   template: require('html/drink')
   events:
     'click tr': 'selectDrinker'
