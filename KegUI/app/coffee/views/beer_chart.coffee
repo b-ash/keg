@@ -73,11 +73,11 @@ class BeerChartView extends Backbone.View
       Math.ceil((point.volume % BEERS_IN_KEG) / beersWide)
     )
 
-    @beerHeight = Math.min(@svgHeight / beersTall, @svgWidth / ((beersWide + 2) * data.length) * 1.8, 149)
-    @beerWidth = @beerHeight / 149 * 91
+    @beerHeight = Math.min(@svgHeight / beersTall, @svgWidth / ((beersWide + 2) * data.length) * 1.8, 77)
+    @beerWidth = @beerHeight / 77 * 47
 
-    @svgHeight = (beersTall + 3) * @beerHeight + 50
-    @svg.attr('height', @svgHeight * 1.2)
+    @svgHeight = (beersTall + 3) * @beerHeight
+    @svg.attr('height', @svgHeight * 1.1 + 20)
 
     for group in [0 .. data.length]
       g = @main.append('g')
