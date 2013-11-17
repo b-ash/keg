@@ -19,7 +19,7 @@ class KegManager
   current: (callback) =>
     @kegDao.current (keg) =>
       @tempDao.current (temp) =>
-          keg.temp = temp?.degrees
+        keg.temp = temp?.degrees
 
         @pourDao.list (pours) ->
           keg.lastPour = _.last(pours)?.start
