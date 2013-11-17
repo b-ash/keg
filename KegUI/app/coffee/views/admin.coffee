@@ -1,4 +1,3 @@
-Banners = require('coffee/collections/banners')
 View = require('coffee/views/view')
 
 

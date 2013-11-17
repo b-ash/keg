@@ -1,26 +1,11 @@
 <h2>Admin</h2>
 
-<!-- <h3 data-toggle="banners">Banners</h3>
-<div id="banners" class="toggling">
-  <ul>
-    {{#each banners}}
-    <li>
-      <span>{{id}}</span>
-      <img src="/static/images/{{url}}" />
-    </li>
-    {{/each}}
-  </ul>
-</div> -->
-
 <h3 data-toggle="create_form">Create</h3>
 <div id="create_form" class="toggling">
   <form role="form">
     <div class="form-group">
       <label>Keg name</label>
       <input type="text" name="name" class="form-control" placeholder="Keg name" />
-
-      <!-- <label>Banner id</label>
-      <input type="number" name="bannerId" class="form-control" placeholder="Banner image id" /> -->
 
       <label>Tapped</label>
       <input type="text" name="tapped" class="form-control" placeholder="When was this tapped?" />
@@ -45,9 +30,6 @@
     <div class="form-group">
       <label>Keg name</label>
       <input type="text" name="name" class="form-control" placeholder="Keg name" value="{{name}}" />
-
-      <!-- <label>Banner id</label>
-      <input type="number" name="bannerId" class="form-control" placeholder="Banner image id" /> -->
 
       <label>Tapped</label>
       <input type="text" name="tapped" class="form-control" placeholder="When was this tapped?" value="{{tapped}}" />

@@ -34,9 +34,6 @@ drinkerDao = new DrinkerDao(dbRunner)
 DrinkerManager = require('./api/drinkerManager')
 drinkerManager = new DrinkerManager(drinkerDao, pourDao)
 
-BannerDao = require('./data/bannerDao')
-bannerDao = new BannerDao(dbRunner)
-
 base = '/api'
 
 ###
@@ -131,19 +128,6 @@ server.get(base + '/pours/weekly', (request, response) ->
       obj.start = moment(obj.start).format('w')
       obj
     ))
-  )
-)
-
-###
-Banner routes
-###
-server.get(base + '/banners', (request, response) ->
-  bannerDao.list _.bind(response.json, response)
-)
-
-server.post(base + '/banners', (request, response) ->
-  bannerDao.create(request.body.url, ->
-    response.send(201)
   )
 )
 
