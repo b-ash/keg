@@ -54,3 +54,5 @@ ALTER TABLE pours
 ALTER TABLE kegs
   DROP COLUMN bannerId
 ;
+
+DROP TABLE banners;
