@@ -12,7 +12,7 @@ class KegStats extends Backbone.Model
 
   kick: (options={}) ->
     options.url = "#{@url()}/kick"
-    @save {kicked: moment().format('YYYY-MM-DD HH:MM:SS')}, options
+    @save {kicked: moment().format(Globals.apiTimeFormat)}, options
 
   parse: (json) ->
     if json.kicked?
@@ -27,8 +27,8 @@ class KegStats extends Backbone.Model
     else
       json.lastPour = 'never'
 
-    json.tapped = moment(json.tapped).format('YYYY-MM-DD HH:MM:SS')
-    json.kicked = moment(json.kicked)?.format('YYYY-MM-DD HH:MM:SS')
+    json.tapped = moment(json.tapped).format(Globals.apiTimeFormat)
+    json.kicked = moment(json.kicked)?.format(Globals.apiTimeFormat)
     json.temp = json.temp?.toFixed(1)
     json
 
