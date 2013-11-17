@@ -5,10 +5,10 @@ class Dao
   constructor: (@runner) ->
 
   get: (id, callback) =>
-    @runner("SELECT #{@fields.join(',')} FROM #{@table} WHERE id = ?", [id], callback, true)
+    @runner("SELECT #{@fields.join(', ')} FROM #{@table} WHERE id = ?", [id], callback, true)
 
   list: (callback, options={}) =>
-    sql = "SELECT #{@fields.join(',')} FROM #{@table}"
+    sql = "SELECT #{@fields.join(', ')} FROM #{@table}"
 
     if options.whereRaw?
       sql += " WHERE #{options.whereRaw}"
