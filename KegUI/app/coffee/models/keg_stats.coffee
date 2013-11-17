@@ -3,12 +3,16 @@ Globals = require('coffee/lib/globals')
 
 class KegStats extends Backbone.Model
 
-  url: ->
+  urlRoot: ->
     "#{Globals.apiOverride}/api/kegs"
 
   fetch: (options={}) ->
-    options.url = "#{@url()}/current"
+    options.url = "#{@urlRoot()}/current"
     super(options)
+
+  kick: (options={}) ->
+    options.url = "#{@url()}/kick"
+    @save {kicked: moment().format('YYYY-MM-DD HH:MM:SS')}, options
 
   parse: (json) ->
     if json.kicked?
@@ -23,7 +27,8 @@ class KegStats extends Backbone.Model
     else
       json.lastPour = 'never'
 
-    json.tapped = moment(json.tapped).format('MM/DD/YY')
+    json.tapped = moment(json.tapped).format('YYYY-MM-DD HH:MM:SS')
+    json.kicked = moment(json.kicked)?.format('YYYY-MM-DD HH:MM:SS')
     json.temp = json.temp?.toFixed(1)
     json
 

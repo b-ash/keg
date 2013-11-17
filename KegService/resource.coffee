@@ -58,7 +58,15 @@ server.get(base + '/kegs/:kegId', (request, response) ->
 )
 
 server.put(base + '/kegs/:kegId', (request, response) ->
-  kegManager.update request.params.kegId, request.body, ->
+  kegManager.update request.params.kegId, _.map(_.pick(request.body, 'id', 'name', 'volume', 'tapped', 'kicked'), (val, key, obj) ->
+    obj[key] = val or null
+    obj
+  ), ->
+    kegManager.current _.bind(response.json, response)
+)
+
+server.put(base + '/kegs/:kegId/kick', (request, response) ->
+  kegManager.update request.params.kegId, {kicked: request.body.kicked}, ->
     kegManager.current _.bind(response.json, response)
 )
 

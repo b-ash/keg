@@ -16,4 +16,5 @@ class KegDao extends Dao
   current: (callback) =>
     @runner('SELECT id, name, volume, tapped, kicked FROM kegs WHERE id = (SELECT MAX(id) FROM kegs)', [], callback, true)
 
+
 module.exports = KegDao

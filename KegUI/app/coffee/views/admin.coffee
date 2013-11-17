@@ -8,6 +8,7 @@ class AdminView extends View
     'submit #edit_form': 'edit'
     'click h3[data-toggle]': 'toggle'
     'click #drinkers tr.clickable': 'removeDrinker'
+    'click #kick': 'kickKeg'
 
   initialize: ->
     @promise = @options.deferredDrinkers
@@ -39,10 +40,7 @@ class AdminView extends View
 
     for input in $inputs
       $input = $(input)
-      val = $input.val()
-
-      if val.length
-        data[$input.attr('name')] = val
+      data[$input.attr('name')] = $input.val()
 
     @model.save data,
       wait: true
@@ -72,6 +70,9 @@ class AdminView extends View
             $target.remove()
           error: ->
             vex.dialog.alert('Didn\'t work.')
+
+  kickKeg: ->
+    @model.kick()
 
 
 module.exports = AdminView

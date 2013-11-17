@@ -22,6 +22,8 @@ class IndexView extends View
       tapped:
         el: @$('#tapped')
         length: 8
+        translateVal: (tapped) ->
+          moment(tapped).format('MM/DD/YY')
       temp:
         el: @$('#temp')
         length: 4
@@ -31,6 +33,7 @@ class IndexView extends View
         model: @model
         length: opts[key].length
         field: key
+        translateVal: opts[key].translateVal
 
       opts[key].el.append ticker.render().el
 

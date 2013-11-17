@@ -73,6 +73,9 @@ class TickerView extends Backbone.View
   getLettersForField: (placeholder='&nbsp;') =>
     val = @model.get(@options.field)
 
+    if @options.translateVal?
+      val = @options.translateVal(val)
+
     unless val?
       return (placeholder for i in [0...@options.length])
 
