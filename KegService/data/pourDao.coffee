@@ -25,7 +25,7 @@ class PourDao extends Dao
 
   listMissed: (callback) =>
     @list callback,
-      whereRaw: 'drinkerId IS NULL AND kegId = (SELECT max(id) FROM kegs)'
+      whereRaw: 'drinkerId IS NULL AND kegId = (SELECT max(id) FROM kegs) AND start > NOW() - INTERVAL 2 DAY'
       orderBy: 'id DESC'
 
   getByDrinker: (drinkerId, callback) =>
