@@ -31,7 +31,9 @@ class Router extends Backbone.Router
     @changeView IndexView, 'home', {model: @options.model}
 
   admin: =>
-    @changeView AdminView, '', {model: @options.model}
+    @changeView AdminView, '',
+      model: @options.model
+      deferredDrinkers: @options.deferredDrinkers
 
   fridge: =>
     @changeView FridgeView, 'fridge',

@@ -1,6 +1,6 @@
 class DrinkerManager
 
-  constructor: (@drinkerDao, @socket) ->
+  constructor: (@drinkerDao, @pourDao) ->
 
   get: (id, callback) =>
     @drinkerDao.get(id, callback)
@@ -21,5 +21,10 @@ class DrinkerManager
 
   endDrink: (drinkerId, callback) =>
     @drinkerDao.endDrink drinkerId, callback
+
+  removeDrinker: (drinkerId, callback) =>
+    @pourDao.removeDrinker(drinkerId, =>
+      @drinkerDao.removeDrinker(drinkerId, callback)
+    )
 
 module.exports = DrinkerManager

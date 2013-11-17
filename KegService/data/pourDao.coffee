@@ -31,5 +31,8 @@ class PourDao extends Dao
   getByDrinker: (drinkerId, callback) =>
     @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId FROM pours WHERE drinkerId = ?', [drinkerId], callback, true)
 
+  removeDrinker: (drinkerId, callback) =>
+    @runner('UPDATE pours SET drinkerId = NULL WHERE drinkerId = ?', [drinkerId], callback)
+
 
 module.exports = PourDao

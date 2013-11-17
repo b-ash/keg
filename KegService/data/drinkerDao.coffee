@@ -19,5 +19,8 @@ class DrinkerDao extends Dao
   endDrink: (drinkerId, callback) =>
     @runner('UPDATE drinking set drinkerId = NULL WHERE drinkerId = ?', [drinkerId], callback)
 
+  removeDrinker: (drinkerId, callback) =>
+    @runner("DELETE FROM #{@table} WHERE id = ?", [drinkerId], callback)
+
 
 module.exports = DrinkerDao

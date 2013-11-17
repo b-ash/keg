@@ -32,7 +32,7 @@ DrinkerDao = require('./data/drinkerDao')
 drinkerDao = new DrinkerDao(dbRunner)
 
 DrinkerManager = require('./api/drinkerManager')
-drinkerManager = new DrinkerManager(drinkerDao)
+drinkerManager = new DrinkerManager(drinkerDao, pourDao)
 
 BannerDao = require('./data/bannerDao')
 bannerDao = new BannerDao(dbRunner)
@@ -169,6 +169,11 @@ server.get(base + '/drinkers', (request, response) ->
 
 server.post(base + '/drinkers', (request, response) ->
   drinkerManager.create request.body.name, _.bind(response.json, response)
+)
+
+server.delete(base + '/drinkers/:drinkerId', (request, response) ->
+  drinkerManager.removeDrinker request.params.drinkerId, ->
+    response.send (204)
 )
 
 server.post(base + '/drinkers/:drinkerId/request-drink', (request, response) ->

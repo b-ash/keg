@@ -65,3 +65,22 @@
   </form>
   {{/with}}
 </div>
+
+<h3 data-toggle="remove_drinker">Remove drinker</h3>
+<div id="remove_drinker" class="toggling">
+  <table id="drinkers" class="kegums-table">
+    <thead>
+      <tr>
+        <td></td>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each drinkers}}
+      <tr id="{{id}}" class="clickable">
+        <td>{{name}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

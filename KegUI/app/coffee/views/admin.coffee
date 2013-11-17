@@ -8,19 +8,17 @@ class AdminView extends View
     'submit #create_form': 'create'
     'submit #edit_form': 'edit'
     'click h3[data-toggle]': 'toggle'
+    'click #drinkers tr.clickable': 'removeDrinker'
 
   initialize: ->
-    @banners = new Banners
-    @promise = @banners.fetch()
+    @promise = @options.deferredDrinkers
 
   deferredRender: (cb) ->
-    if @promise.state() is 'pending'
-      @promise.then cb
-    else
+    @promise.then (@drinkers) =>
       cb()
 
   getRenderData: ->
-    banners: @banners.toJSON()
+    drinkers: @drinkers.toJSON()
     keg: @model.toJSON()
 
   afterRender: ->
@@ -60,6 +58,21 @@ class AdminView extends View
       $el.show()
     else
       $el.hide()
+
+  removeDrinker: (event) ->
+    $target = $(event.currentTarget)
+    id = $target.attr('id')
+
+    vex.dialog.confirm
+      message: 'You sure? This can\'t be undone.'
+      callback: (value) =>
+        return unless value
+
+        @drinkers.get(id).destroy
+          success: ->
+            $target.remove()
+          error: ->
+            vex.dialog.alert('Didn\'t work.')
 
 
 module.exports = AdminView
