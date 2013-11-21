@@ -1,12 +1,12 @@
 Globals = require('coffee/lib/globals')
 Pour = require('coffee/models/pour')
 
-class DrinkersPours extends Backbone.Collection
+class LeaderboardDrinkers extends Backbone.Collection
 
   model: Pour
 
   url: ->
-    "#{Globals.apiOverride}/api/drinkers/pours"
+    "#{Globals.apiOverride}/api/leaderboard"
 
   parse: (json) ->
     for drinker, i in json
@@ -14,4 +14,4 @@ class DrinkersPours extends Backbone.Collection
     json
 
 
-module.exports = DrinkersPours
+module.exports = LeaderboardDrinkers

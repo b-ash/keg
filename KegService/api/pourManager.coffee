@@ -2,7 +2,7 @@ _ = require('underscore')
 
 class PourManager
 
-  constructor: (@pourDao, @socket) ->
+  constructor: (@pourDao, @kegDao, @socket) ->
 
   create: (volume, callback) ->
     @pourDao.create(volume, callback)
@@ -25,8 +25,29 @@ class PourManager
   listMissed: (callback, options) ->
     @pourDao.listMissed callback, options
 
-  listByDrinkers: (callback) ->
-    @pourDao.listByDrinkers callback
+  leaderboard: (callback) ->
+    @pourDao.listByKegByDrinker (pours) =>
+      @kegDao.current (currentKeg) =>
+        sumOfKegIds = _.reduce [1...currentKeg.id + 1], (memo, id) ->
+          (memo + id)
+        , 0
+
+        drinkers = {}
+        for drinkerByKeg in pours
+          drinkers[drinkerByKeg.drinkerId] ?=
+            name: drinkerByKeg.drinkerName
+            weightedPours: 0
+
+          drinkers[drinkerByKeg.drinkerId].weightedPours += (drinkerByKeg.volume * drinkerByKeg.kegId)
+
+        response = for id, drinker of drinkers
+          volume: (drinker.weightedPours / sumOfKegIds)
+          drinkerName: drinker.name
+
+        response = _.sortBy response, (drinker) ->
+          drinker.volume * -1
+
+        callback response
 
   getByDrinker: (drinkerId, callback) ->
     @pourDao.getByDrinker drinkerId, callback

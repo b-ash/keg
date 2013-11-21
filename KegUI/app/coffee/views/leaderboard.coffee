@@ -1,12 +1,12 @@
 View = require('coffee/views/view')
-DrinkersPours = require('coffee/collections/drinkers_pours')
+LeaderboardDrinkers = require('coffee/collections/leaderboard_drinkers')
 
 class LeaderboardView extends View
   className: 'table-view'
   template: require('html/leaderboard')
 
   initialize: ->
-    @collection = new DrinkersPours
+    @collection = new LeaderboardDrinkers
 
   getRenderData: ->
     drinkers: @collection.toJSON()

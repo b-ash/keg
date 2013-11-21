@@ -20,8 +20,16 @@ class PourDao extends Dao
   setDrinkerForLastPour: (drinkerId, callback) =>
     @runner('UPDATE pours SET drinkerId = ? WHERE drinkerId IS NULL ORDER BY id DESC LIMIT 1', [drinkerId], callback)
 
-  listByDrinkers: (callback) =>
-    @runner('SELECT kegId, sum(volume) AS volume, count(*) as pours, drinkerId, name as drinkerName FROM pours LEFT JOIN drinkers ON drinkers.id = drinkerId WHERE drinkerId IS NOT NULL AND kegId = (SELECT max(id) FROM kegs) GROUP BY drinkerId ORDER BY volume DESC', [], callback)
+  listByKegByDrinker: (callback) =>
+    @runner('
+      SELECT SUM(p.volume) AS volume, p.drinkerId AS drinkerId, d.name AS drinkerName, k.id AS kegId
+      FROM pours p, kegs k, drinkers d
+      WHERE p.drinkerId = d.id
+        AND p.drinkerid IS NOT NULL
+        AND p.kegId = k.id
+        AND k.id > (SELECT MAX(id) FROM kegs ORDER BY id DESC) - 3
+      GROUP BY drinkerId, k.id'
+    , [], callback)
 
   listMissed: (callback) =>
     @list callback,

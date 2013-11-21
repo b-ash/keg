@@ -26,7 +26,7 @@ KegManager = require('./api/kegManager')
 kegManager = new KegManager(kegDao, pourDao, tempDao)
 
 PourManager = require('./api/pourManager')
-pourManager = new PourManager(pourDao, socket)
+pourManager = new PourManager(pourDao, kegDao, socket)
 
 DrinkerDao = require('./data/drinkerDao')
 drinkerDao = new DrinkerDao(dbRunner)
@@ -106,8 +106,8 @@ server.post(base + '/drinkers/:drinkerId/poured', (request, response) ->
       response.send(400)
 )
 
-server.get(base + '/drinkers/pours', (request, response) ->
-  pourManager.listByDrinkers _.bind(response.json, response)
+server.get(base + '/leaderboard', (request, response) ->
+  pourManager.leaderboard _.bind(response.json, response)
 )
 
 server.get(base + '/drinkers/:drinkerId/pours', (request, response) ->
