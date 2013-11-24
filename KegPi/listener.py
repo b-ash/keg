@@ -13,17 +13,19 @@ try:
 except:
     input = serial.Serial('/dev/ttyACM1', 9600, timeout=1)
 
+log = open('listener.log', 'w', 0)
+
 
 def send(data):
     payload = json.dumps(data)
     url = "http://keg.bry.io/api/%s" % data['endpoint']
 
-    print "%s to receive %s" % (url, payload)
+    log.write("%s to receive %s" % (url, payload))
     try:
         resp = requests.post(url, data=payload, headers={'content-type': 'application/json'})
         resp.raise_for_status()
     except:
-        print 'Post failed.'
+        log.write('Post failed.')
 
 
 def parse_ounces(output):
@@ -58,7 +60,7 @@ while True:
                 'degrees': output.strip()
             }
         else:
-            print "Ignoring unknown action %s" % action
+            log.write("Ignoring unknown action %s" % action)
             continue
 
         send(data)
