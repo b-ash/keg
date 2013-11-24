@@ -16,16 +16,20 @@ except:
 log = open('listener.log', 'w', 0)
 
 
+def print_debug(line):
+    log.write('%s\n' % line)
+
+
 def send(data):
     payload = json.dumps(data)
     url = "http://keg.bry.io/api/%s" % data['endpoint']
 
-    log.write("%s to receive %s" % (url, payload))
+    print_debug("%s to receive %s" % (url, payload))
     try:
         resp = requests.post(url, data=payload, headers={'content-type': 'application/json'})
         resp.raise_for_status()
     except:
-        log.write('Post failed.')
+        print_debug('Post failed')
 
 
 def parse_ounces(output):
@@ -60,7 +64,7 @@ while True:
                 'degrees': output.strip()
             }
         else:
-            log.write("Ignoring unknown action %s" % action)
+            print_debug("Ignoring unknown action %s" % action)
             continue
 
         send(data)
