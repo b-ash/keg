@@ -22,7 +22,7 @@ def print_debug(line):
 
 
 def get_time():
-    strftime("%Y-%m-%d %H:%M:%S", localtime())
+    return strftime("%Y-%m-%d %H:%M:%S", localtime())
 
 
 def send(data):
