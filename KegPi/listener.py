@@ -7,6 +7,7 @@
 import serial
 import requests
 import json
+from time import localtime, strftime
 
 try:
     input = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -17,7 +18,11 @@ log = open('listener.log', 'w', 0)
 
 
 def print_debug(line):
-    log.write('%s\n' % line)
+    log.write('[%s] %s\n' % (get_time(), line))
+
+
+def get_time():
+    strftime("%Y-%m-%d %H:%M:%S", localtime())
 
 
 def send(data):
