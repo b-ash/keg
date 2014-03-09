@@ -8,5 +8,9 @@ class Drinkers extends Backbone.Collection
   url: ->
     "#{Globals.apiOverride}/api/drinkers"
 
+  parse: (json) ->
+    _.sortBy json, (drinker) ->
+      drinker.name
+
 
 module.exports = Drinkers
