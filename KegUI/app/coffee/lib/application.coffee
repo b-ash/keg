@@ -37,7 +37,7 @@ class Application
     deferred
 
   setGlobalDrinker: =>
-    $.get '/api/drinking', (json) =>
+    $.get "#{Globals.apiOverride}/api/drinking", (json) =>
       if json?.id
         @drinker = @drinkers.obj.get(json.id)
 
@@ -98,7 +98,7 @@ class Application
     if interactiveParam?.length
       $.ajax
         type: 'POST'
-        url: '/api/interactive'
+        url: "#{Globals.apiOverride}/api/interactive"
         dataType: 'json'
         contentType: 'application/json'
         data: JSON.stringify {key: interactiveParam}
