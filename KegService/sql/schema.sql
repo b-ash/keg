@@ -62,3 +62,9 @@ ALTER TABLE kegs
 ;
 
 DROP TABLE banners;
+
+ALTER TABLE kegs
+  ADD price DECIMAL(6,2)
+;
+
+UPDATE kegs SET price = 86;
