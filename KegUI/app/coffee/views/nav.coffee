@@ -3,35 +3,15 @@ $ = jQuery
 
 class Nav extends View
 
-  className: 'container'
+  el: '#sidenav'
   template: require('html/nav')
-  events:
-    'click a': 'routeEvent'
 
-  updateActive: (route) ->
-    unless route?.length
-      route = 'home'
+  initialize: ({@interactive}) ->
 
-    @$('.active').removeClass('active')
-    @$("[data-route='#{route}']").addClass('active')
+  setActiveItem: (@item) ->
 
   getRenderData: ->
-    item: @options.activeItem
-    interactive: @options.interactive
-
-  routeEvent: (event) =>
-    $target = $(event.currentTarget)
-    @$('li.active').removeClass('active')
-
-    if $target.hasClass('navbar-brand')
-      $target = @$('.home')
-
-    $target.parent().addClass('active')
-
-    if @$('.navbar-collapse').hasClass('in')
-      @$('button').click()
-
-    super
+    {@item, @interactive}
 
 
 module.exports = Nav

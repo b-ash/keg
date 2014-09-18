@@ -60,11 +60,11 @@ class Router extends Backbone.Router
     @changeView LeaderboardView, 'leaderboard', {model: @options.model}
 
   setupNav: (navItem) =>
-    unless @nav?
-      @nav = new Nav
-        activeItem: navItem
+      @nav ?= new Nav
         interactive: @options.interactive
-      $('.navbar').html @nav.render().el
+
+      @nav.setActiveItem(navItem)
+      @nav.render()
 
   changeView: (Claxx, navItem, classOptions) =>
     @view = new Claxx classOptions
@@ -77,7 +77,7 @@ class Router extends Backbone.Router
     @currentView = @view
 
     render = =>
-      $('#content').html @view.render().el
+      $('#inner_content').html @view.render().el
 
     if @view.deferredRender?
       @view.deferredRender render

@@ -1,8 +1,8 @@
 @import nib
+@import colors
 
-body.inverse
-  background-color: #1a1a1a
-  color: #999
+body
+  background-color: $background
 
 .bold
   font-weight: bold
@@ -48,26 +48,35 @@ body.inverse
 
 .spanning-full
   width: 100%
-  text-align: center
 
-#content
-  margin-top: 50px
+#inner_content
+  margin-left: 200px
+  padding: 15px
 
-.brand-banner
-  padding: 15%
-  width: 100%
-  overflow: hidden
-  position: relative
+  .widget
+    width: 300px
+    height: 150px
+    border-radius: 6px
+    margin: 0 15px 15px
+    padding: 40px
+    background-color: $secondary
+    color: $text
 
-  img
-    position: absolute
-    top: -5%
-    left: 0
-    width: 100%
+// .brand-banner
+//   padding: 15%
+//   width: 100%
+//   overflow: hidden
+//   position: relative
 
-@media (min-width: 768px)
-  .brand-banner
-    padding: 10%
+//   img
+//     position: absolute
+//     top: -5%
+//     left: 0
+//     width: 100%
 
-    img
-      top: -10%
+// @media (min-width: 768px)
+//   .brand-banner
+//     padding: 10%
+
+//     img
+//       top: -10%

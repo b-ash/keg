@@ -1,40 +1,29 @@
-<div class="navbar-header">
-  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-    <span class="sr-only">Toggle navigation</span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
-  <a class="navbar-brand" href="#">Kegums</a>
-</div>
-<div class="collapse navbar-collapse navbar-collapse">
-  <ul class="nav navbar-nav">
-    <li data-route="home" class="{{getActiveClass item "home"}}">
-      <a href="#" class="home">Home</a>
-    </li>
+<ul>
+  <li data-route="home" class="{{getActiveClass item "home"}}">
+    <a href="#" class="home">Kegums</a>
+  </li>
 
-    {{#unlessLimitedMobile item}}
-    <li data-route="beers" class="{{getActiveClass item "beers"}}">
-      <a href="#/beers">Beers</a>
-    </li>
+  {{#unlessLimitedMobile item}}
+  <li data-route="beers" class="{{getActiveClass item "beers"}}">
+    <a href="#/beers">Visualize</a>
+  </li>
 
-    <li data-route="fridge" class="{{getActiveClass item "fridge"}}">
-      <a href="#/fridge">Fridge</a>
-    </li>
-    {{/unlessLimitedMobile}}
+  <li data-route="fridge" class="{{getActiveClass item "fridge"}}">
+    <a href="#/fridge">Temp</a>
+  </li>
+  {{/unlessLimitedMobile}}
 
-    <li data-route="leaderboard" class="{{getActiveClass item "leaderboard"}}">
-      <a href="#/leaderboard">Leaderboard</a>
-    </li>
+  <!--   {{#if interactive}}
+  <li data-route="drink" class="{{getActiveClass item "drink"}}">
+    <a href="#/drink">Drink</a>
+  </li>
 
-    {{#if interactive}}
-    <li data-route="drink" class="{{getActiveClass item "drink"}}">
-      <a href="#/drink">Drink</a>
-    </li>
+  <li data-route="claim" class="{{getActiveClass item "claim"}}">
+    <a href="#/claim">Claim Drink</a>
+  </li>
+  {{/if}} -->
+</ul>
 
-    <li data-route="claim" class="{{getActiveClass item "claim"}}">
-      <a href="#/claim">Claim Drink</a>
-    </li>
-    {{/if}}
-  </ul>
+<div class="footer">
+  <span>&copy;2014 Kegums. &hearts; beer</span>
 </div>
