@@ -20,6 +20,6 @@ class KegDao extends Dao
     @runner('SELECT name FROM kegs WHERE kicked IS NOT NULL ORDER BY kicked ASC LIMIT 3', [], callback)
 
   getAverageTimeToKick: (callback) =>
-    @runner('SELECT AVG(TIME_TO_SEC(TIMEDIFF(kicked, tapped))) / 60 / 60 / 24 time FROM kegs WHERE kicked IS NOT NULL', [], callback, true)
+    @runner('SELECT ROUND(AVG(TIME_TO_SEC(TIMEDIFF(kicked, tapped))) / 60 / 60 / 24, 2) time FROM kegs WHERE kicked IS NOT NULL', [], callback, true)
 
 module.exports = KegDao

@@ -1,0 +1,19 @@
+<h2 class="title">{{title}}</h2>
+
+{{#if isList}}
+  <ul>
+  {{#each stat}}
+    <li>
+      <span>{{name}}</span>
+      {{#if value}}
+      : {{value}}
+      {{/if}}
+    </li>
+  {{/each}}
+  </ul>
+{{else}}
+  <span class="stat {{#unless unit}}no-unit{{/unless}}">{{stat}}</span>
+  {{#if unit}}
+  <span class="unit">{{unit}}</span>
+  {{/if}}
+{{/if}}

@@ -24,13 +24,13 @@ class DrinkerDao extends Dao
 
   getBarTabs: (callback) =>
     @runner("""
-      SELECT d.name, SUM(k.price / k.volume * p.volume) dollars
+      SELECT d.name, ROUND(SUM(k.price / k.volume * p.volume), 2) value
       FROM pours p
       JOIN drinkers d ON p.drinkerId = d.id
       JOIN kegs k ON p.kegId = k.id
       WHERE p.drinkerId IS NOT NULL
       GROUP BY p.drinkerId
-      ORDER BY dollars DESC
+      ORDER BY value DESC
     """, [], callback)
 
   ###
@@ -38,7 +38,7 @@ class DrinkerDao extends Dao
   ###
   getRagingDrinks: (callback) ->
     @runner("""
-      SELECT d.name, MAX(volume) ounces
+      SELECT d.name, ROUND(MAX(volume) / 12, 2) value
       FROM (
         SELECT a.drinkerId, a.id, a.start, SUM(b.volume) volume
         FROM pours a
@@ -48,7 +48,7 @@ class DrinkerDao extends Dao
       JOIN drinkers d
         ON drinkerId = d.id
       GROUP BY d.name
-      ORDER BY ounces DESC
+      ORDER BY value DESC
       LIMIT 5;
     """, [], callback)
 
