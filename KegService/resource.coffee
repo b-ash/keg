@@ -35,7 +35,7 @@ DrinkerManager = require('./api/drinkerManager')
 drinkerManager = new DrinkerManager(drinkerDao, pourDao)
 
 DashboardManager = require('./api/dashboardManager')
-dashboardManager = new DashboardManager(pourDao)
+dashboardManager = new DashboardManager(drinkerDao, kegDao, pourDao)
 
 base = '/api'
 

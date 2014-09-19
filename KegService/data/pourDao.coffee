@@ -43,6 +43,6 @@ class PourDao extends Dao
     @runner('UPDATE pours SET drinkerId = NULL WHERE drinkerId = ?', [drinkerId], callback)
 
   getLonelyCount: (callback) =>
-    @runner('SELECT count(*) pours FROM pours WHERE drinkerId IS NULL', [], callback, true)
+    @runner('SELECT count(*) count FROM pours WHERE drinkerId IS NULL', [], callback, true)
 
 module.exports = PourDao
