@@ -21,15 +21,15 @@ class PourDao extends Dao
     @runner('UPDATE pours SET drinkerId = ? WHERE drinkerId IS NULL ORDER BY id DESC LIMIT 1', [drinkerId], callback)
 
   listByKegByDrinker: (callback) =>
-    @runner('
+    @runner("""
       SELECT SUM(p.volume) AS volume, p.drinkerId AS drinkerId, d.name AS drinkerName, k.id AS kegId
       FROM pours p, kegs k, drinkers d
       WHERE p.drinkerId = d.id
         AND p.drinkerid IS NOT NULL
         AND p.kegId = k.id
         AND k.id > (SELECT MAX(id) FROM kegs ORDER BY id DESC) - 3
-      GROUP BY drinkerId, k.id'
-    , [], callback)
+      GROUP BY drinkerId, k.id
+    """, [], callback)
 
   listMissed: (callback) =>
     @list callback,
@@ -42,5 +42,23 @@ class PourDao extends Dao
   removeDrinker: (drinkerId, callback) =>
     @runner('UPDATE pours SET drinkerId = NULL WHERE drinkerId = ?', [drinkerId], callback)
 
+  ###
+  Most ounces in a 4 hour span
+  ###
+  getRagingDrinks: (callback) ->
+    @runner("""
+      SELECT d.name, MAX(volume) ounces
+      FROM (
+        SELECT a.drinkerId, a.id, a.start, SUM(b.volume) volume
+        FROM pours a
+        JOIN pours b ON a.drinkerId = b.drinkerId AND TIMESTAMPDIFF(HOUR, b.start, a.start) BETWEEN 0 AND 3
+        GROUP BY 1,2,3
+      ) c
+      JOIN drinkers d
+        ON drinkerId = d.id
+      GROUP BY d.name
+      ORDER BY ounces DESC
+      LIMIT 5;
+    """, [], callback)
 
 module.exports = PourDao

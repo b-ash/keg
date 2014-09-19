@@ -34,6 +34,9 @@ drinkerDao = new DrinkerDao(dbRunner)
 DrinkerManager = require('./api/drinkerManager')
 drinkerManager = new DrinkerManager(drinkerDao, pourDao)
 
+DashboardManager = require('./api/dashboardManager')
+dashboardManager = new DashboardManager(pourDao)
+
 base = '/api'
 
 ###
@@ -187,6 +190,10 @@ server.get(base + '/drinking', (request, response) ->
 
 server.post(base + '/interactive', (request, response) ->
   response.json {interactive: request.body.key is process.env.KEG_ADMIN}
+)
+
+server.get(base + '/dashboard', (request, response) ->
+  dashboardManager.getStats _.bind(response.json, response)
 )
 
 app.listen(8000)
