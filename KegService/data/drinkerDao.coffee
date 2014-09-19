@@ -42,7 +42,7 @@ class DrinkerDao extends Dao
       FROM (
         SELECT a.drinkerId, a.id, a.start, SUM(b.volume) volume
         FROM pours a
-        JOIN pours b ON a.drinkerId = b.drinkerId AND TIMESTAMPDIFF(HOUR, b.start, a.start) BETWEEN 0 AND 3
+        JOIN pours b ON a.drinkerId = b.drinkerId AND TIMESTAMPDIFF(MINUTE, b.start, a.start) BETWEEN 0 AND 240
         GROUP BY 1,2,3
       ) c
       JOIN drinkers d
