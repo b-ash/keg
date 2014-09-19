@@ -16,5 +16,7 @@ class KegDao extends Dao
   current: (callback) =>
     @runner('SELECT id, name, volume, tapped, kicked, price FROM kegs WHERE id = (SELECT MAX(id) FROM kegs)', [], callback, true)
 
+  getAverageTimeToKick: (callback) =>
+    @runner('SELECT AVG(TIME_TO_SEC(TIMEDIFF(kicked, tapped))) avgKickSeconds FROM kegs WHERE kicked IS NOT NULL', [], callback)
 
 module.exports = KegDao
