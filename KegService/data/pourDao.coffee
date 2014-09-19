@@ -42,23 +42,7 @@ class PourDao extends Dao
   removeDrinker: (drinkerId, callback) =>
     @runner('UPDATE pours SET drinkerId = NULL WHERE drinkerId = ?', [drinkerId], callback)
 
-  ###
-  Most ounces in a 4 hour span
-  ###
-  getRagingDrinks: (callback) ->
-    @runner("""
-      SELECT d.name, MAX(volume) ounces
-      FROM (
-        SELECT a.drinkerId, a.id, a.start, SUM(b.volume) volume
-        FROM pours a
-        JOIN pours b ON a.drinkerId = b.drinkerId AND TIMESTAMPDIFF(HOUR, b.start, a.start) BETWEEN 0 AND 3
-        GROUP BY 1,2,3
-      ) c
-      JOIN drinkers d
-        ON drinkerId = d.id
-      GROUP BY d.name
-      ORDER BY ounces DESC
-      LIMIT 5;
-    """, [], callback)
+  getLonelyCount: (callback) =>
+    @runner('SELECT count(*) pours FROM pours WHERE drinkerId IS NULL', [], callback, true)
 
 module.exports = PourDao
