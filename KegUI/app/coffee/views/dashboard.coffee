@@ -4,11 +4,12 @@ View = require('coffee/views/view')
 
 class DashboardView extends View
 
+  className: 'dashboard-content'
+
   template: require('html/dashboard')
 
   initialize: ->
     @stats = new DashboardStats
-    $('html').addClass('dashboard')
 
   getWidgets: ->
     [
@@ -82,8 +83,5 @@ class DashboardView extends View
 
     slide()
     setInterval(slide, 10000)
-
-  onClose: ->
-    $('html').removeClass('dashboard')
 
 module.exports = DashboardView
