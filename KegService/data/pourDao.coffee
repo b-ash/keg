@@ -53,7 +53,8 @@ class PourDao extends Dao
         AND p.drinkerid IS NOT NULL
         AND p.kegId = k.id
         AND k.id = (SELECT MAX(id) FROM kegs)
-      GROUP BY drinkerId, k.id
+      GROUP BY drinkerId
+      ORDER BY value DESC
     """, [], callback)
 
 module.exports = PourDao
