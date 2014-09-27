@@ -49,7 +49,6 @@ class DrinkerDao extends Dao
         ON drinkerId = d.id
       GROUP BY d.name
       ORDER BY value DESC
-      LIMIT 5;
     """, [], callback)
 
 

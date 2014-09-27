@@ -22,18 +22,23 @@ class DashboardManager
     lonely = Q.defer()
     @pourDao.getLonelyCount _.bind(lonely.resolve, lonely)
 
+    currentLeaders = Q.defer()
+    @pourDao.getCurrentLeaders _.bind(currentLeaders.resolve, currentLeaders)
+
     Q.all([
       ragingDrinks.promise
       kickTime.promise
       recent.promise
       tabs.promise
       lonely.promise
-    ]).spread (rd, kt, r, t, l) ->
+      currentLeaders.promise
+    ]).spread (rd, kt, r, t, l, cl) ->
       callback
         ragingDrinkers: rd
         avgKickTimeDays: kt.time
         recentKegs: r
         barTabs: t
         unclaimedPours: l.count
+        currentKegLeaders: cl
 
 module.exports = DashboardManager

@@ -14,6 +14,7 @@ module.exports.config =
         ]
         before: [
           'vendor/scripts/jquery.js'
+          'vendor/scripts/jquery-ui.js'
           'vendor/scripts/jquery.scrollto.js'
           'vendor/scripts/jquery.ticker.js'
           'vendor/scripts/highcharts.src.js'

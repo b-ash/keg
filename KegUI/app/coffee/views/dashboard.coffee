@@ -8,45 +8,82 @@ class DashboardView extends View
 
   initialize: ->
     @stats = new DashboardStats
+    $('html').addClass('dashboard')
 
-  afterRender: ->
-    if @stats.has('ragingDrinkers')
-      @$el.append (new Widget
-        el: '#raging_drinkers'
+  getWidgets: ->
+    [
+      (new Widget
         stat: @stats.get('ragingDrinkers')
         title: 'True Partiers'
-      ).render().el
+        unit: 'beers'
+      ).render()
 
-    if @stats.has('avgKickTimeDays')
-      @$el.append (new Widget
-        el: '#kick_time'
+      (new Widget
         stat: @stats.get('avgKickTimeDays')
         unit: 'Days'
         title: 'Avg Keg Life'
-      ).render().el
+      ).render()
 
-    if @stats.has('recentKegs')
-      @$el.append (new Widget
-        el: '#recent_kegs'
+      (new Widget
         stat: @stats.get('recentKegs')
         title: 'Kegs Crushed'
-      ).render().el
+      ).render()
 
-    if @stats.has('barTabs')
-      @$el.append (new Widget
-        el: '#bar_tabs'
+      (new Widget
         stat: @stats.get('barTabs')
         title: 'Bar Tabs'
-      ).render().el
+        prefix: '$'
+      ).render()
 
-    if @stats.has('unclaimedPours')
-      @$el.append (new Widget
-        el: '#unclaimed_pours'
+      (new Widget
         stat: @stats.get('unclaimedPours')
         title: 'Unclaimed Pours'
-      ).render().el
+      ).render()
+
+      (new Widget
+        stat: @stats.get('currentKegLeaders')
+        title: 'Current Keg Leaders'
+      ).render()
+    ]
 
   postRender: ->
-    @stats.fetch().done(@render)
+    @stats.fetch().done(@startStats)
+
+  startStats: =>
+    widgets = @getWidgets()
+    current = 0
+    widget1 = null
+    widget2 = null
+
+    slideOne = (widget, position, side, op1, op2) =>
+      animation = {}
+      animation["margin-#{side}"] = "#{op2}=900"
+
+      # Slide out and remove
+      widget?.$el.animate(animation, 'slow', null, ((shown) -> -> shown.$el.remove())(widget))
+
+      widget = widgets[current % widgets.length]
+      widget.$el
+        .css("margin-#{side}", position)
+        .css(side, 0)
+
+      @$('.slider').append(widget.el)
+
+      # Slide in
+      animation["margin-#{side}"] = "#{op1}=900"
+      widget.$el.animate(animation, 'slow')
+
+      current++
+      return widget
+
+    slide = =>
+      widget1 = slideOne(widget1, '-350px', 'right', '+', '+')
+      widget2 = slideOne(widget2, '-350px', 'left', '+', '+')
+
+    slide()
+    setInterval(slide, 10000)
+
+  onClose: ->
+    $('html').removeClass('dashboard')
 
 module.exports = DashboardView

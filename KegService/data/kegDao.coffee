@@ -17,7 +17,7 @@ class KegDao extends Dao
     @runner('SELECT id, name, volume, tapped, kicked, price FROM kegs WHERE id = (SELECT MAX(id) FROM kegs)', [], callback, true)
 
   recent: (callback) =>
-    @runner('SELECT name FROM kegs WHERE kicked IS NOT NULL ORDER BY kicked ASC LIMIT 3', [], callback)
+    @runner('SELECT name FROM kegs WHERE kicked IS NOT NULL ORDER BY kicked ASC', [], callback)
 
   getAverageTimeToKick: (callback) =>
     @runner('SELECT ROUND(AVG(TIME_TO_SEC(TIMEDIFF(kicked, tapped))) / 60 / 60 / 24, 2) time FROM kegs WHERE kicked IS NOT NULL', [], callback, true)

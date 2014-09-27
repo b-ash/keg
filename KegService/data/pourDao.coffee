@@ -27,7 +27,7 @@ class PourDao extends Dao
       WHERE p.drinkerId = d.id
         AND p.drinkerid IS NOT NULL
         AND p.kegId = k.id
-        AND k.id > (SELECT MAX(id) FROM kegs ORDER BY id DESC) - 3
+        AND k.id > (SELECT MAX(id) FROM kegs) - 3
       GROUP BY drinkerId, k.id
     """, [], callback)
 
@@ -44,5 +44,16 @@ class PourDao extends Dao
 
   getLonelyCount: (callback) =>
     @runner('SELECT count(*) count FROM pours WHERE drinkerId IS NULL', [], callback, true)
+
+  getCurrentLeaders: (callback) =>
+    @runner("""
+      SELECT d.name, ROUND(SUM(p.volume) / 12, 2) AS value
+      FROM pours p, kegs k, drinkers d
+      WHERE p.drinkerId = d.id
+        AND p.drinkerid IS NOT NULL
+        AND p.kegId = k.id
+        AND k.id = (SELECT MAX(id) FROM kegs)
+      GROUP BY drinkerId, k.id
+    """, [], callback)
 
 module.exports = PourDao
