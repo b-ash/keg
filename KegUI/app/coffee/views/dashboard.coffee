@@ -44,6 +44,7 @@ class DashboardView extends View
       (new Widget
         stat: @stats.get('currentKegLeaders')
         title: 'Current Keg Leaders'
+        unit: 'beers'
       ).render()
     ]
 
