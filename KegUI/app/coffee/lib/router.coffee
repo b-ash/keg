@@ -6,6 +6,7 @@ BeersView = require('coffee/views/beers')
 DrinkView = require('coffee/views/drink')
 ClaimView = require('coffee/views/claim')
 LeaderboardView = require('coffee/views/leaderboard')
+DashboardView = require('coffee/views/dashboard')
 
 $ = jQuery
 
@@ -18,6 +19,7 @@ class Router extends Backbone.Router
     'drink': 'drink'
     'claim': 'claim'
     'leaderboard': 'leaderboard'
+    'dashboard': 'dashboard'
     '*query': 'index'
 
   initialize: (@options) =>
@@ -58,6 +60,10 @@ class Router extends Backbone.Router
 
   leaderboard: =>
     @changeView LeaderboardView, 'leaderboard', {model: @options.model}
+
+  dashboard: =>
+    @changeView DashboardView, 'dashboard',
+      model: @options.model
 
   setupNav: (navItem) =>
     unless @nav?
