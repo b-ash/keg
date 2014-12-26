@@ -53,6 +53,7 @@ class AdminView extends View
 
     if $el.is(':hidden')
       $el.show()
+      $el.siblings().filter(".toggling").hide()
     else
       $el.hide()
 
