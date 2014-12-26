@@ -30,12 +30,14 @@ Webservice
 - `node server.js`
 
 UI
-- Make sure you have [brunch](https://github.com/brunch/brunch) installed
+- Install [brunch](https://github.com/brunch/brunch).
 - cd into `KegUI`
 - `npm install`
 - `brunch watch --server`
 
-If you want to avoid CORS issues, you can run a proxy to hit those two services. Once example is [Vee](https://github.com/HubSpot/vee).
-- cd to the root of this repo
+Tying the two together:
+- Install [Vee](https://github.com/HubSpot/vee).
+- cd to the root of this repository
 - `sudo vee`
-- Navigate to localhost/
+- Navigate to localhost
+  - Add `?interactive=test` to the URL to show the drink/claim/dash nav options
