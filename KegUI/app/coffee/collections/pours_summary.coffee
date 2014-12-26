@@ -7,6 +7,6 @@ class PoursSummary extends Backbone.Collection
     super
 
   url: ->
-    "#{Globals.apiOverride}/api/pours/#{@period}"
+    "/api/pours/#{@period}"
 
 module.exports = PoursSummary

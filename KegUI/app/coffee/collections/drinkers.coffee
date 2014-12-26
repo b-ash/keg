@@ -6,7 +6,7 @@ class Drinkers extends Backbone.Collection
   model: Drinker
 
   url: ->
-    "#{Globals.apiOverride}/api/drinkers"
+    "/api/drinkers"
 
   parse: (json) ->
     _.sortBy json, (drinker) ->

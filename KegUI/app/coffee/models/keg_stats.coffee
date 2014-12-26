@@ -4,7 +4,7 @@ Globals = require('coffee/lib/globals')
 class KegStats extends Backbone.Model
 
   urlRoot: ->
-    "#{Globals.apiOverride}/api/kegs"
+    "/api/kegs"
 
   fetch: (options={}) ->
     options.url = "#{@urlRoot()}/current"

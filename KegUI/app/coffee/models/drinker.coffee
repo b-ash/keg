@@ -4,7 +4,7 @@ $ = jQuery
 class Drinker extends Backbone.Model
 
   urlRoot: ->
-    "#{Globals.apiOverride}/api/drinkers"
+    "/api/drinkers"
 
   # Set this user as the current drinker
   requestDrink: (options) ->

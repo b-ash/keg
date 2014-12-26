@@ -11,7 +11,7 @@ PoursSummary = require('coffee/collections/pours_summary')
 $ = jQuery
 
 vex.defaultOptions.className = 'vex-theme-wireframe'
-shouldLimitApiCalls = /(mobile|iphone)/gi.test(navigator.userAgent) and not /(nexus 7)/gi.test(navigator.userAgent)
+shouldLimitApiCalls = /(mobile|iphone)/gi.test(navigator.userAgent) and not /(nexus 7|iPad)/gi.test(navigator.userAgent)
 
 
 getURLParameter = (name='bad') ->
@@ -37,7 +37,7 @@ class Application
     deferred
 
   setGlobalDrinker: =>
-    $.get "#{Globals.apiOverride}/api/drinking", (json) =>
+    $.get "/api/drinking", (json) =>
       if json?.id
         @drinker = @drinkers.obj.get(json.id)
 
@@ -98,7 +98,7 @@ class Application
     if interactiveParam?.length
       $.ajax
         type: 'POST'
-        url: "#{Globals.apiOverride}/api/interactive"
+        url: "/api/interactive"
         dataType: 'json'
         contentType: 'application/json'
         data: JSON.stringify {key: interactiveParam}

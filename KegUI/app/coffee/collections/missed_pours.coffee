@@ -5,7 +5,7 @@ class MissedPours extends Backbone.Collection
   model: Pour
 
   url: ->
-    "#{Globals.apiOverride}/api/pours/missed"
+    "/api/pours/missed"
 
 
 module.exports = MissedPours

@@ -9,7 +9,7 @@ class Temps extends Backbone.Collection
     end = moment.utc().format(Globals.apiTimeFormat)
     start = moment.utc().subtract(1, 'days').format(Globals.apiTimeFormat)
 
-    "#{Globals.apiOverride}/api/temps?start=#{start}&end=#{end}"
+    "/api/temps?start=#{start}&end=#{end}"
 
 
 module.exports = Temps
