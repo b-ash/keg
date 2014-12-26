@@ -35,7 +35,7 @@ UI
 - `npm install`
 - `brunch watch --server`
 
-If you want to avoid CORS issues, you can run a proxy to hit those two services. Once example is vee.
+If you want to avoid CORS issues, you can run a proxy to hit those two services. Once example is [Vee](https://github.com/HubSpot/vee).
 - cd to the root of this repo
 - `sudo vee`
 - Navigate to localhost/
