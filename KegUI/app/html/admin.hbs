@@ -13,8 +13,7 @@
       <label>Kicked</label>
       <input type="text" name="kicked" class="form-control" placeholder="When was this kicked?" />
 
-      <label>Volume</label>
-      <input type="text" name="volume" class="form-control" placeholder="Ounces in this keg" />
+      {{> kegSizes}}
     </div>
 
     <div class="form-group">
@@ -37,8 +36,7 @@
       <label>Kicked</label>
       <input type="text" name="kicked" class="form-control" placeholder="When was this kicked?" value="{{kicked}}" />
 
-      <label>Volume</label>
-      <input type="text" name="volume" class="form-control" placeholder="Ounces in this keg" value="{{volume}}" />
+      {{> kegSizes}}
     </div>
 
     <div class="form-group">

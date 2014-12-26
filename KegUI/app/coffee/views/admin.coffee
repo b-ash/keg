@@ -1,4 +1,7 @@
 View = require('coffee/views/view')
+KegSizes = require('html/admin_keg_sizes')
+
+Handlebars.registerPartial 'kegSizes', KegSizes
 
 
 class AdminView extends View
@@ -54,8 +57,13 @@ class AdminView extends View
     if $el.is(':hidden')
       $el.show()
       $el.siblings().filter(".toggling").hide()
+      @["toggle_#{id}"]?($el)
     else
       $el.hide()
+
+  toggle_edit_form: ($el) ->
+    @$(':selected').removeAttr('selected')
+    $el.find("""option[value="#{@model.get('volume')}"]""").attr('selected', 'selected')
 
   removeDrinker: (event) ->
     $target = $(event.currentTarget)
