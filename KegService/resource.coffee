@@ -189,7 +189,7 @@ server.get(base + '/drinking', (request, response) ->
 )
 
 server.post(base + '/interactive', (request, response) ->
-  response.json {interactive: request.body.key is process.env.KEG_ADMIN}
+  response.json {interactive: request.body.key is process.env.KEGUMS_ADMIN}
 )
 
 server.get(base + '/dashboard', (request, response) ->

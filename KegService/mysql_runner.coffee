@@ -1,9 +1,9 @@
 mysql = require('mysql')
 
 pool = mysql.createPool
-  host: 'localhost'
-  user: 'root'
-  password: ''
+  host: process.env.KEGUMS_HOST or 'localhost'
+  user: process.env.KEGUMS_USER or 'root'
+  password: process.env.KEGUMS_PASS or ''
   database: 'Kegums'
   connectionLimit: 10
 
