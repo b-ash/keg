@@ -5,6 +5,7 @@ class KegManager
   constructor: (@kegDao, @pourDao, @tempDao) ->
 
   create: (keg, callback) =>
+    keg.kicked = keg.kicked or null
     @kegDao.create(keg, callback)
 
   get: (kegId, callback) =>

@@ -1,3 +1,4 @@
+Globals = require('coffee/lib/globals')
 View = require('coffee/views/view')
 KegSizes = require('html/admin_keg_sizes')
 
@@ -31,19 +32,25 @@ class AdminView extends View
     event.preventDefault()
     @model.clear()
     @model.id = null
-    @_saveForm @$('#create_form input')
+    @_saveForm @$('#create_form')
 
   edit: (event) =>
-    @_saveForm @$('#edit_form input')
+    @_saveForm @$('#edit_form')
 
-  _saveForm: ($inputs) =>
+  _saveForm: ($parent) =>
     event.preventDefault()
+    $inputs = $parent.find('input,select')
 
     data = {}
 
     for input in $inputs
       $input = $(input)
       data[$input.attr('name')] = $input.val()
+
+    for dateProp in ['tapped', 'kicked']
+      date = data[dateProp]
+      if date
+        data[dateProp] = moment.utc(date, 'MM/DD/YYYY').format(Globals.apiTimeFormat)
 
     @model.save data,
       wait: true
@@ -62,7 +69,7 @@ class AdminView extends View
       $el.hide()
 
   toggle_edit_form: ($el) ->
-    @$(':selected').removeAttr('selected')
+    $el.find(':selected').removeAttr('selected')
     $el.find("""option[value="#{@model.get('volume')}"]""").attr('selected', 'selected')
 
   removeDrinker: (event) ->
