@@ -14,11 +14,11 @@
     </li>
 
     {{#unlessLimitedMobile item}}
-    <li data-route="beers" class="{{getActiveClass item "beers"}}">
+    <li data-route="beers" class="{{getActiveClass this "beers"}}">
       <a href="#/beers">Beers</a>
     </li>
 
-    <li data-route="fridge" class="{{getActiveClass item "fridge"}}">
+    <li data-route="fridge" class="{{getActiveClass this "fridge"}}">
       <a href="#/fridge">Fridge</a>
     </li>
     {{/unlessLimitedMobile}}
