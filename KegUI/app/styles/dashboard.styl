@@ -1,12 +1,32 @@
 .dash-widget
   width: 325px
+  margin: 50px auto
+
+  &:first-child
+    margin-top: 90px
+
+@media (min-width: 675px)
+  .dash-widget
+    width: 50%
+    float: left
+
+    &:first-child
+      margin-top: 50px
+
+@media (min-width: 1000px)
+  .dash-widget
+    width: 33.3%
+    float: left
+
+    &:first-child
+      margin-top: 50px
+
+.dash-widget-inner
+  width: 325px
   height: 275px
-  margin: 90px
   border: 1px solid #333
   background-color: #1a1a1a
-  position: fixed
-  right: 0
-  margin-right: -350px
+  margin: 0 auto
 
   ul
     list-style: none
@@ -30,6 +50,7 @@
 .dashboard-content img
   height: 100%
   width: 100%
-  position: absolute
+  position: fixed
   top: 0
   left: 0
+  z-index: -1
