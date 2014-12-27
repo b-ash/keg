@@ -11,5 +11,12 @@ class Temps extends Backbone.Collection
 
     "/api/temps?start=#{start}&end=#{end}"
 
+  parse: (temps) ->
+    last = {}
+    _.filter temps, (temp) ->
+      outlier = Math.abs(last.degrees - temp.degrees) > 20
+      last = temp
+      !outlier
+
 
 module.exports = Temps
