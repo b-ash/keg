@@ -15,7 +15,12 @@ shouldLimitApiCalls = /(mobile|iphone)/gi.test(navigator.userAgent) and not /(ne
 
 
 getURLParameter = (name='bad') ->
-  return (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[null,null])[1]
+  (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[null,null])[1]
+
+getLocalStorageParam = (key) ->
+  try
+    localStorage.get("#{Globals.localStoragePrefix}:#{key}")
+  catch e
 
 
 class Application
@@ -64,50 +69,53 @@ class Application
         ounces
 
   start: =>
-    interactiveParam = getURLParameter('interactive')
+    adminParam = getURLParameter('admin')
+    remoteParam = getLocalStorageParam('remote')
 
-    _start = (interactive=false) =>
-      @initHelpers()
-
-      @model = @deferredObj(new KegStats)
-      @drinkers = @deferredObjForDrinkers(new Drinkers)
-
-      unless shouldLimitApiCalls
-        @dailyPours = @deferredObj(new PoursSummary 'daily')
-        @weeklyPours = @deferredObj(new PoursSummary 'weekly')
-        @temps = @deferredObj(new Temps)
-
-
-      @socket = new SocketListener(@model.obj).listen()
-      @router = new Router
-        interactive: interactive
-        model: @model.obj
-        deferredDrinkers: @drinkers.promise
-        deferredTemps: @temps?.promise
-        deferredDaily: @dailyPours?.promise
-        deferredWeekly: @weeklyPours?.promise
-
-      Backbone.history.start()
-
-      @model.fetch()
-      @drinkers.fetch()
-      @temps?.fetch()
-      @dailyPours?.fetch()
-      @weeklyPours?.fetch()
-
-    if interactiveParam?.length
+    if adminParam?.length or remoteParam?.length
       $.ajax
         type: 'POST'
         url: "/api/interactive"
         dataType: 'json'
         contentType: 'application/json'
-        data: JSON.stringify {key: interactiveParam}
-        success: (resp) ->
-          _start(resp.interactive)
-        error: (resp) ->
-          _start()
+        data: JSON.stringify {
+          admin: adminParam
+          remote: remoteParam
+        }
+        success: @_start
+        error: @_start
     else
-      _start()
+      @_start()
+
+  _start: ({admin, remote}={}) =>
+    @initHelpers()
+
+    @model = @deferredObj(new KegStats)
+    @drinkers = @deferredObjForDrinkers(new Drinkers)
+
+    unless shouldLimitApiCalls
+      @dailyPours = @deferredObj(new PoursSummary 'daily')
+      @weeklyPours = @deferredObj(new PoursSummary 'weekly')
+      @temps = @deferredObj(new Temps)
+
+
+    @socket = new SocketListener(@model.obj).listen()
+    @router = new Router
+      admin: admin
+      remote: remote
+      model: @model.obj
+      deferredDrinkers: @drinkers.promise
+      deferredTemps: @temps?.promise
+      deferredDaily: @dailyPours?.promise
+      deferredWeekly: @weeklyPours?.promise
+
+    Backbone.history.start()
+
+    @model.fetch()
+    @drinkers.fetch()
+    @temps?.fetch()
+    @dailyPours?.fetch()
+    @weeklyPours?.fetch()
 
 
 $ ->

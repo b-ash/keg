@@ -188,12 +188,17 @@ server.get(base + '/drinking', (request, response) ->
   drinkerManager.getDrinking _.bind(response.json, response)
 )
 
-server.post(base + '/interactive', (request, response) ->
-  response.json {interactive: request.body.key is process.env.KEGUMS_ADMIN}
-)
-
 server.get(base + '/dashboard', (request, response) ->
   dashboardManager.getStats _.bind(response.json, response)
+)
+
+checkKey = (name, key) ->
+  key is process.env[name]
+
+server.post(base + '/interactive', (request, response) ->
+  response.json
+    admin: checkKey('KEGUMS_ADMIN', request.body.admin)
+    remote: checkKey('KEGUMS_REMOTE', request.body.remote)
 )
 
 app.listen(8000)

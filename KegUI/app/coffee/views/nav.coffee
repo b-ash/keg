@@ -17,8 +17,8 @@ class Nav extends View
 
   getRenderData: ->
     item: @options.activeItem
-    interactive: @options.interactive
-    showDashboard: @options.interactive
+    admin: @options.admin
+    showRegister: not (@options.admin or @options.remote)
 
   routeEvent: (event) =>
     $target = $(event.currentTarget)

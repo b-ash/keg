@@ -69,7 +69,8 @@ class Router extends Backbone.Router
     unless @nav?
       @nav = new Nav
         activeItem: navItem
-        interactive: @options.interactive
+        admin: @options.admin
+        remote: @options.remote
       $('.navbar').html @nav.render().el
 
   changeView: (Claxx, navItem, classOptions) =>

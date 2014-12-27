@@ -27,7 +27,7 @@
       <a href="#/leaderboard">Leaderboard</a>
     </li>
 
-    {{#if interactive}}
+    {{#if admin}}
     <li data-route="drink" class="{{getActiveClass item "drink"}}">
       <a href="#/drink">Drink</a>
     </li>
@@ -40,5 +40,11 @@
     <li data-route="dashboard" class="{{getActiveClass item "dashboard"}}">
       <a href="#/dashboard">Dashboard</a>
     </li>
+
+    {{#if showRegister}}
+    <li data-route="register" class="{{getActiveClass item "register"}}">
+      <a href="#/register">Register Device</a>
+    </li>
+    {{/if}}
   </ul>
 </div>
