@@ -52,12 +52,10 @@ class RegisterRemoteView extends View
     }).render()
 
   registerRemote: (drinkerId) =>
-    remote =
-      remoteCode: @remoteCode
-      drinker: @drinkers.get(drinkerId).toJSON()
-
     try
-      app.setRemote(remote)
+      app.setRemote
+        remoteCode: @remoteCode
+        drinker: @drinkers.get(drinkerId).toJSON()
     catch e
       @showError('Couldn\'t save drinker info.')
 
