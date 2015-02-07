@@ -27,6 +27,10 @@ class DrinkView extends View
     @drink(id)
 
   drink: (id) ->
+    if window.app.drinker?.get('id') is id
+      @render()
+      return
+
     drinker = @collection.get(id)
     drinker
       .requestDrink()
