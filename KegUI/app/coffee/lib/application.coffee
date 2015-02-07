@@ -17,9 +17,11 @@ shouldLimitApiCalls = /(mobile|iphone)/gi.test(navigator.userAgent) and not /(ne
 getURLParameter = (name='bad') ->
   (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[null,null])[1]
 
-getLocalStorageParam = (key) ->
+getStoredRemote = ->
   try
-    localStorage.get("#{Globals.localStoragePrefix}:#{key}")
+    item = localStorage.getItem(Globals.localStorageRemoteKey)
+    if item
+      JSON.parse(item)
   catch e
 
 
@@ -68,11 +70,26 @@ class Application
       catch e
         ounces
 
+  initRemote: ->
+    @remote = getStoredRemote()
+
+  setRemote: (remote) ->
+    localStorage.setItem Globals.localStorageRemoteKey, JSON.stringify(remote)
+    @remote = remote
+    @router.nav.render()
+    @router.navigate '#/', {trigger: true}
+
+  removeRemote: ->
+    localStorage.removeItem Globals.localStorageRemoteKey
+    delete @remote
+    @router.nav.render()
+    @router.navigate '#/', {trigger: true}
+
   start: =>
     adminParam = getURLParameter('admin')
-    remoteParam = getLocalStorageParam('remote')
+    remoteParam = getStoredRemote()?.remoteCode
 
-    if adminParam?.length or remoteParam?.length
+    if adminParam or remoteParam
       $.ajax
         type: 'POST'
         url: "/api/interactive"
@@ -89,6 +106,7 @@ class Application
 
   _start: ({admin, remote}={}) =>
     @initHelpers()
+    @initRemote() if remote
 
     @model = @deferredObj(new KegStats)
     @drinkers = @deferredObjForDrinkers(new Drinkers)
@@ -102,7 +120,6 @@ class Application
     @socket = new SocketListener(@model.obj).listen()
     @router = new Router
       admin: admin
-      remote: remote
       model: @model.obj
       deferredDrinkers: @drinkers.promise
       deferredTemps: @temps?.promise
