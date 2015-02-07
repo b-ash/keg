@@ -19,14 +19,18 @@ class ClaimView extends View
       @render()
 
   selectPour: (event) =>
-    id = $(event.currentTarget).attr('id')
-    pour = @pours.get(id)
+    @selectDrinker $(event.currentTarget).attr('id')
 
-    dialog = new SelectDrinkerDialog
-      collection: @drinkers
-      successCallback: @getDrinkerSelectedCallback pour
+  selectDrinker: (id) ->
+    claim = @getDrinkerSelectedCallback @pours.get(id)
 
-    dialog.render()
+    if app.remote
+      claim(app.remote.drinker.id)
+    else
+      new SelectDrinkerDialog(
+        collection: @drinkers
+        successCallback: claim
+      ).render()
 
   getDrinkerSelectedCallback: (pour) ->
     (drinkerId) ->

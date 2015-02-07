@@ -1,13 +1,8 @@
-###
-Steps:
-      - don't require selection when clicking drink
-      - don't require selection when clicking claim
-###
-
 View = require('coffee/views/view')
 SelectDrinkerDialog = require('coffee/views/select_drinker_dialog')
 
 $ = jQuery
+
 
 class RegisterRemoteView extends View
 
