@@ -40,5 +40,16 @@
     <li data-route="dashboard" class="{{getActiveClass item "dashboard"}}">
       <a href="#/dashboard">Dashboard</a>
     </li>
+
+    {{#if remote}}
+    <li data-route="unregister" class="{{getActiveClass item "unregister"}}">
+      <a href="#/unregister">Unregister Device</a>
+    </li>
+    {{else}}{{#unless admin}}
+    <li data-route="register" class="{{getActiveClass item "register"}}">
+      <a href="#/register">Register Device</a>
+    </li>
+    {{/unless}}
+    {{/if}}
   </ul>
 </div>

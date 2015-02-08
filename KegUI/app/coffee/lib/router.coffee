@@ -7,6 +7,8 @@ DrinkView = require('coffee/views/drink')
 ClaimView = require('coffee/views/claim')
 LeaderboardView = require('coffee/views/leaderboard')
 DashboardView = require('coffee/views/dashboard')
+RegisterRemoteView = require('coffee/views/register_remote')
+UnregisterRemoteView = require('coffee/views/unregister_remote')
 
 $ = jQuery
 
@@ -20,6 +22,8 @@ class Router extends Backbone.Router
     'claim': 'claim'
     'leaderboard': 'leaderboard'
     'dashboard': 'dashboard'
+    'register': 'register'
+    'unregister': 'unregister'
     '*query': 'index'
 
   initialize: (@options) =>
@@ -59,17 +63,26 @@ class Router extends Backbone.Router
       deferredDrinkers: @options.deferredDrinkers
 
   leaderboard: =>
-    @changeView LeaderboardView, 'leaderboard', {model: @options.model}
+    @changeView LeaderboardView, 'leaderboard',
+      model: @options.model
 
   dashboard: =>
     @changeView DashboardView, 'dashboard',
       model: @options.model
 
+  register: =>
+    @changeView RegisterRemoteView, 'register',
+      admin: @options.admin
+      deferredDrinkers: @options.deferredDrinkers
+
+  unregister: =>
+    @changeView UnregisterRemoteView, 'unregister'
+
   setupNav: (navItem) =>
     unless @nav?
       @nav = new Nav
         activeItem: navItem
-        interactive: @options.interactive
+        admin: @options.admin
       $('.navbar').html @nav.render().el
 
   changeView: (Claxx, navItem, classOptions) =>

@@ -9,7 +9,7 @@ class IndexView extends View
     @model.on 'change', @updateStats
 
   getRenderData: =>
-    @model.toJSON()
+    app.remote or {}
 
   afterRender: =>
     if @model.get('name')?

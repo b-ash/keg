@@ -17,10 +17,18 @@ class DrinkView extends View
     @options.deferredDrinkers.done (@collection) =>
       @render()
 
+      if app.remote
+        @drink(app.remote.drinker.id)
+
   selectDrinker: (event) =>
     id = $(event.currentTarget).attr('id')
-
     if id is 'create_drinker' or id is 'cancel_drinker'
+      return
+    @drink(id)
+
+  drink: (id) ->
+    if window.app.drinker?.get('id') is id
+      @render()
       return
 
     drinker = @collection.get(id)

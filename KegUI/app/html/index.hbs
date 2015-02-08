@@ -55,6 +55,9 @@
   </div>
 </div>
 
-<div class="bar-span footer">
-  <span>&copy;2014 Kegums. &hearts; beer</span>
+<div class="bar-span footer {{#if drinker}}with-remote{{/if}}">
+  {{#if drinker}}
+  <span>Drinker: {{drinker.name}}</span>
+  {{/if}}
+  <span>&copy;2015 Kegums. &hearts; beer</span>
 </div>
