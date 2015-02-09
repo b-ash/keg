@@ -36,8 +36,7 @@ class DrinkView extends View
       .requestDrink()
       .then(=>
         window.app.drinker = drinker
-        @render()
-      ).fail((xhr) ->
+      ).fail((xhr) =>
         if xhr.status is 400
           msg = 'Hold up, someone else is drinking.'
         else
@@ -47,7 +46,7 @@ class DrinkView extends View
           content: "<h3>#{msg}</h3>"
 
         setTimeout vex.close, 1500
-      )
+      ).then(@render)
 
   cancelDrinker: (event) ->
     window.app.drinker.endDrink()
